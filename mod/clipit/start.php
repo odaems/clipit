@@ -1,10 +1,20 @@
 <?php
 
-/*
+/**
  * Project Name:            ClipIt Theme
  * Project Description:     Theme for Elgg 1.8
+ * @license GNU Affero General Public License v3 http://www.gnu.org/licenses/agpl-3.0.txt
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as
+    published by the Free Software Foundation, version 3. *
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    GNU Affero General Public License for more details. *
+    You should have received a copy of the GNU Affero General Public License
+    along with this program. If not, see http://www.gnu.org/licenses/agpl-3.0.txt.
+ * 
  */
-
 elgg_register_event_handler('init', 'system', 'clipit_init');
 
 function clipit_init() {
@@ -65,12 +75,12 @@ function clipit_init() {
     // Deshabilitar la opción de no mostrar el editor de texto TinyMCE
     elgg_unregister_plugin_hook_handler('register', 'menu:longtext', 'tinymce_longtext_menu');
     
-    elgg_unregister_plugin_hook_handler('entity:icon:url', 'object', 'file_icon_url_override');
+   elgg_unregister_plugin_hook_handler('entity:icon:url', 'object', 'file_icon_url_override');
     
     elgg_register_plugin_hook_handler('entity:icon:url', 'object', 'clipit_file_icon_url_override');
 }
 
- /**
+    /**
  * Override the default entity icon for files
  *
  * Plugins can override or extend the icons using the plugin hook: 'file:icon:url', 'override'
