@@ -93,6 +93,7 @@ class UBUser extends UBItem{
         $elgg_user->salt = $this->password_hash;
         $elgg_user->role = $this->role;
         $elgg_user->owner_guid = 0;
+        $elgg_user->container_guid = 0;
         $elgg_user->save();
         $this->time_created = $elgg_user->time_created;
         return $this->id = $elgg_user->guid;
