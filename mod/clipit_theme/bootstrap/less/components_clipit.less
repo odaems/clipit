@@ -1,0 +1,296 @@
+//
+// Load core variables and mixins
+// --------------------------------------------------
+@import "bootstrap.less";
+@import "variables_clipit.less";
+@import "theme_clipit.less";
+//@import "elgg_mod.less";
+//
+body{
+  font-family: Verdana;
+}
+// Custom Font
+// --------------------------------------------------
+@font-face {
+  font-family: 'Futura';
+  src: url('@{font-path}@{font-name-futura}.eot');
+  src: url('@{font-path}@{font-name-futura}.eot') format('embedded-opentype'),
+  url('@{font-path}@{font-name-futura}.woff') format('woff'),
+  url('@{font-path}@{font-name-futura}.ttf') format('truetype'),
+  url('@{font-path}@{font-name-futura}.svg#FuturaLTRegular') format('svg');
+}
+@font-face {
+  font-family: 'FuturaBoldRegular';
+  src: url('@{font-path}@{font-name-futurabold}.eot');
+  src: url('@{font-path}@{font-name-futurabold}.eot') format('embedded-opentype'),
+  url('@{font-path}@{font-name-futurabold}.woff') format('woff'),
+  url('@{font-path}@{font-name-futurabold}.ttf') format('truetype'),
+  url('@{font-path}@{font-name-futurabold}.svg#FuturaLTBold') format('svg');
+}
+// Mixin for generating new styles
+.btn-styles(@btn-color: #555) {
+  border: none;
+  background-color: @btn-color;
+  background-repeat: repeat-x;
+  font-family: @font-family-futurabold;
+  padding-left: 20px;
+  padding-right: 20px;
+  border-radius: 7px;
+  letter-spacing: 1px;
+  &:hover,
+  &:focus  {
+    background-color: darken(@btn-color, 8%);
+    background-position: 0 -15px;
+  }
+
+  &:active,
+  &.active {
+    background-color: darken(@btn-color, 12%);
+  }
+}
+//
+// Buttons
+// --------------------------------------------------
+.btn-normal {
+  .btn-styles(@btn-default-bg);
+  border: 2px solid #d9dadb;
+  color: #9c9e9f;
+  &:hover,
+  &:focus  {
+    color: #9c9e9f;
+    border: 2px solid #d9dadb;
+    background-color: #f0f1f1;
+  }
+}
+.btn-default, .btn-primary {
+  color: #FFF;
+  .btn-styles(@blue_clipit);
+  &:hover,
+  &:focus  {
+    color: #FFF;
+  }
+}
+.btn-success { .btn-styles(@green_clipit_2); }
+.btn-warning { .btn-styles(@orange_clipit); }
+.btn-danger  { .btn-styles(@red_clipit); }
+.btn-info    { .btn-styles(@yellow_clipit); }
+
+//
+// Forms
+// --------------------------------------------------
+.form-control{
+  @shadow_input: inset 0 1px 4px 0 rgba(0, 0, 0, 0.25), 0 0 0 4px rgba(225, 235, 240, 0.5);
+    .box-shadow(@shadow_input);
+  border-radius: 0;
+  border: 0px;
+//  height: 45px;
+//  font-size: 18px;
+  height: 35px;
+  font-size: 15px;
+  padding: 10px 16px;
+  line-height: 1.33;
+  &:focus  {
+    .box-shadow(@shadow_input);
+    border-color: none;
+  }
+}
+select.form-control{
+  @shadow_input:  0 0 0 4px rgba(225, 235, 240, 0.5);
+  .box-shadow(@shadow_input) !important;
+}
+
+//
+// Tables
+// --------------------------------------------------
+.table{
+  font-size: 13px;
+  color: #797979;
+}
+.table-advance .label{
+  padding: 0.5em 0.8em;
+}
+.table-advance button{
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 3px;
+  padding: 1px 5px;
+}
+//
+// Labels
+// --------------------------------------------------
+.label{
+  background-color: #FFF;
+}
+.label-danger{
+  color: @red_clipit;
+  border: 1px solid @red_clipit;
+}
+.label-success{
+  color: @green_clipit_2;
+  border: 1px solid @green_clipit_2;
+}
+.label-warning{
+  color: @orange_clipit;
+  border: 1px solid @orange_clipit;
+}
+.label-info{
+  color: @yellow_clipit;
+  border: 1px solid @yellow_clipit;
+}
+.label-primary{
+  color: @blue_clipit;
+  border: 1px solid @blue_clipit;
+}
+
+//
+// Pagination
+// --------------------------------------------------
+.pagination {
+  > li > a{
+    border: 1px solid @grey_border;
+    color: #9c9e9f;
+    font-family: @font-family-futurabold;
+  }
+  > .active > a{
+    background-color: @blue_clipit;
+    &:hover,
+    &:focus{
+      color: #9c9e9f;
+      background-color: #d6f0f9;
+      border-color: #9c9e9f;
+    }
+  }
+}
+//
+// Pagination
+// --------------------------------------------------
+.thumbnail{
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  &:hover,
+  &:focus{
+    border-color: transparent;
+  }
+}
+//
+// Heading
+// --------------------------------------------------
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6{
+  font-family: @font-family-futura;
+}
+//
+// Dropdown
+// --------------------------------------------------
+.dropdown{
+  [role=button]{
+    border-radius: 0;
+  }
+  > a{
+    font-family: @font-family-futurabold;
+    font-size: 17px;
+    color: @blue_clipit;
+    .transition(all .5s);
+    &:hover,
+    &:focus{
+      color: darken(@blue_clipit, 12%);
+    }
+    b.caret{
+      border-top: 8px solid;
+      border-right: 8px solid transparent;
+      border-left: 8px solid transparent;
+    }
+  }
+}
+// Dropdown menu <ul>
+.dropdown-menu {
+//  @shadow_input: 0px -2px 12px 0px rgba(0, 0, 0, 0.2), 0px 6px 12px 0px rgba(0, 0, 0, 0.2);
+  @shadow_input: 0 6px 12px rgba(0, 0, 0, 0.2);
+  .box-shadow(@shadow_input);
+  border-radius: 0;
+
+  > li > a{
+    font-family: @font-family-futura;
+    font-size: 17px;
+    .transition(all .25s);
+    letter-spacing: 1px;
+    &:hover,
+    &:focus{
+      background-color: @blue_clipit;
+      color: #FFF;
+    }
+  }
+}
+
+//
+// Tabs
+// --------------------------------------------------
+.nav-tabs {
+  margin-bottom: 5px;
+  > li {
+    &.active > a{
+      color: @blue_clipit;
+      &:hover,
+      &:focus{
+        color: darken(@blue_clipit, 12%);;
+      }
+    }
+    > a {
+      font-family: @font-family-futura;
+      font-size: 15px;
+      letter-spacing: 1px;
+      color: @grey_text;
+      text-transform: none !important;
+      &:hover,
+      &:focus{
+        color: darken(@grey_text, 12%);;
+      }
+      > .badge{
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border-radius: 10px;
+        vertical-align: text-bottom;
+        color: #FFF;
+        border: 2px solid #FFF;
+      }
+    }
+  }
+}
+//
+// Tooltip
+// --------------------------------------------------
+.tooltip-inner{
+  background-color: #eceded;
+  color: #000;
+//  @shadow_input: 0 3px 6px rgba(0, 0, 0, 0.2);
+//  .box-shadow(@shadow_input);
+  border: 1px solid @blue_clipit;
+}
+//
+// Badges Stacked
+// --------------------------------------------------
+.nav-stacked {
+  a{
+    color: @blue_clipit;
+    font-family: @font-family-futura;
+    letter-spacing: 1px;
+    font-size: 15px;
+    > .badge{
+      border: 2px solid #FFF !important;
+    }
+  }
+  > .active > a  {
+    background-color: @blue_clipit !important;
+    > .badge {
+      color: #FFF !important;
+      border: 2px solid #FFF !important;
+      background-color: transparent;
+    }
+  }
+}
+// Con actividad relacionada
+.nav-stacked-activities .badge{
+  width: 20px;
+  height: 20px;
+}
