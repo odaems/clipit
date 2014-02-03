@@ -48,8 +48,8 @@ class UBUser extends UBItem{
     public $password = "";
     public $email = "";
     public $role = self::DEFAULT_ROLE;
+    public $language = "";
     public $time_created = -1;
-
     private $password_hash = "";
 
     /**
@@ -70,6 +70,7 @@ class UBUser extends UBItem{
         $this->password = (string)$elgg_user->password;
         $this->password_hash = (string)$elgg_user->salt;
         $this->role = (string)$elgg_user->role;
+        $this->language = (string)$elgg_user->language;
         $this->time_created = (int)$elgg_user->time_created;
         return true;
     }
@@ -92,8 +93,16 @@ class UBUser extends UBItem{
         $elgg_user->password = $this->password;
         $elgg_user->salt = $this->password_hash;
         $elgg_user->role = $this->role;
-        $elgg_user->owner_guid = 0;
-        $elgg_user->container_guid = 0;
+        if($this->language = ""){
+            $elgg_user->language = get_language();
+        } else{
+            $elgg_user->language = $this->language;
+        }
+        if(!elgg_get_logged_in_user_guid()){
+            $elgg_user->owner_guid = 0;
+            $elgg_user->container_guid = 0;
+            $elgg_user->access_id = ACCESS_PUBLIC;
+        }
         $elgg_user->save();
         $this->time_created = $elgg_user->time_created;
         return $this->id = $elgg_user->guid;
