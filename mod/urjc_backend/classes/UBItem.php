@@ -213,7 +213,7 @@ class UBItem{
     /**
      * Lists the properties contained in this object
      *
-     * @return array Array of properties whith type and default value
+     * @return array Array of properties with type and default value
      */
     static function list_properties(){
         return get_class_vars(get_called_class());
