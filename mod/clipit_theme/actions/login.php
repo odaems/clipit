@@ -9,7 +9,6 @@
 // set forward url
 if (!empty($_SESSION['last_forward_from'])) {
     $forward_url = $_SESSION['last_forward_from'];
-    unset($_SESSION['last_forward_from']);
 } elseif (get_input('returntoreferer')) {
     $forward_url = REFERER;
 } else {
@@ -22,8 +21,29 @@ $password = get_input('password', null, false);
 $persistent = (bool) get_input("persistent");
 $result = false;
 
+if (empty($username) || empty($password)) {
+    register_error(elgg_echo('login:empty'));
+    forward();
+}
+
+// check if logging in with email address
+if (strpos($username, '@') !== false && ($users = get_user_by_email($username))) {
+    $username = $users[0]->username;
+}
+
+$result = elgg_authenticate($username, $password);
+if ($result !== true) {
+    register_error($result);
+    forward(REFERER);
+}
+
+$user = get_user_by_username($username);
+if (!$user) {
+    register_error(elgg_echo('login:baduser'));
+    forward(REFERER);
+}
 try {
-    \clipit\ClipitUser::login($username, $password, $persistent);
+    ClipitUser::login($username, $password, $persistent);
 } catch (LoginException $e) {
     register_error($e->getMessage());
     forward(REFERER);

@@ -26,9 +26,14 @@ if (elgg_get_config('allow_registration')) {
         if (strcmp($password, $password2) != 0) {
             throw new RegistrationException(elgg_echo('RegistrationException:PasswordMismatch'));
         }
-
-        $guid = register_user($username, $password, $name, $email, false, $friend_guid, $invitecode);
-
+        // Clipit create user
+        $guid = ClipitUser::create(array(
+            'login'     => $username,
+            'password'  => $password,
+            'name'      => $name,
+            'email'     => $email,
+            'role'      => 'student'
+        ));
         if ($guid) {
             $new_user = get_entity($guid);
 

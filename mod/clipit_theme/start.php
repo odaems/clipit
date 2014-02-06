@@ -3,16 +3,16 @@
 /**
  * Project Name:            ClipIt Theme
  * Project Description:     Theme for Elgg 1.8
- * 
- * PHP version >= 5.2 
- * 
+ *
+ * PHP version >= 5.2
+ *
  * Creation date:   2013-06-19
- * 
+ *
  * @category    theme
  * @package     clipit
  * @license    GNU Affero General Public License v3
  * http://www.gnu.org/licenses/agpl-3.0.txt
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
  * published by the Free Software Foundation, version 3. *
@@ -28,7 +28,8 @@ elgg_register_event_handler('init', 'system', 'clipit_final_init');
 
 function clipit_final_init() {
     global $CONFIG;
-
+    $CONFIG->user = new ClipitUser(elgg_get_logged_in_user_guid());
+    $role = $CONFIG->user->role;
 	/*
      * Set Dashboard tab on default site tab-bar
      */
@@ -128,6 +129,26 @@ function clipit_final_init() {
             'section' => 'help',
         )
     );
+    ///
+    // Register & load libs
+    elgg_register_library('clipit:functions', elgg_get_plugins_path() . 'clipit_theme/lib/functions.php');
+    elgg_load_library('clipit:functions');
+    // Landing modules by role
+    switch($role){
+        case "student":
+            // add tools
+            add_landing_tool_option('pending', "Pending", "landing/student/pending_module", true);
+//            elgg_extend_view('landing/tools', 'landing/student/pending_module');
+            add_landing_tool_option('events', "Events", "landing/student/events_module", true);
+//            elgg_extend_view('landing/tools', 'landing/student/events_module');
+
+            break;
+        case "teacher":
+            break;
+        case "admin":
+            break;
+    }
+
 
 
     elgg_register_admin_menu_item('administer', 'clipit_theme', 'clipit_plugins');
@@ -145,6 +166,7 @@ function clipit_final_init() {
         return $return_value;
     }
 
+    elgg_register_page_handler('activity', 'user_landing_page');
     elgg_register_page_handler('forgotpassword', 'home_user_account_page_handler');
     elgg_register_page_handler('resetpassword', 'home_user_account_page_handler');
     elgg_register_page_handler('register', 'home_user_account_page_handler');
@@ -162,25 +184,31 @@ function clipit_final_init() {
         elgg_unregister_js("twitter-bootstrap");
     } else {
         elgg_register_css("twitter-bootstrap", $CONFIG->url . "mod/clipit/vendors/bootstrap/css/bootstrap.css");
-        elgg_register_css("ui-lightness", $CONFIG->url . "mod/clipit/vendors/jquery-ui-1.10.2.custom/css/ui-lightness/jquery-ui-1.10.2.custom.min.css");
+        elgg_register_css("ui-lightness", $CONFIG->url . "mod/clipit_theme/vendors/jquery-ui-1.10.2.custom/css/ui-lightness/jquery-ui-1.10.2.custom.min.css");
         elgg_register_css("clipit", $CONFIG->url . "mod/clipit/css/clipit.css");
         elgg_register_css("bubblegum", "http://fonts.googleapis.com/css?family=Bubblegum+Sans");
         elgg_register_css("righteous", "http://fonts.googleapis.com/css?family=Righteous");
         elgg_register_css("ubuntu", "http://fonts.googleapis.com/css?family=Ubuntu:400,300,300italic,400italic,500,500italic,700,700italic");
-        elgg_register_js("clipit", $CONFIG->url . "mod/clipit/js/clipit.js");
-        elgg_register_js("jquery", $CONFIG->url . "mod/clipit/vendors/jquery/jquery-1.9.1.min.js", "head", 0);
-        elgg_register_js("jquery-migrate", $CONFIG->url . "mod/clipit/vendors/jquery/jquery-migrate-1.1.1.js", "head", 1);
-        elgg_register_js("jquery-ui", $CONFIG->url . "mod/clipit/vendors/jquery-ui-1.10.2.custom/js/jquery-ui-1.10.2.custom.min.js", "head", 2);
+        elgg_register_css("fontawesome", "//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css");
+        elgg_register_js("jquery", $CONFIG->url . "mod/clipit_theme/vendors/jquery/jquery-1.9.1.min.js", "head", 0);
+        elgg_register_js("jquery-migrate", $CONFIG->url . "mod/clipit_theme/vendors/jquery/jquery-migrate-1.1.1.js", "head", 1);
+        elgg_register_js("jquery-ui", $CONFIG->url . "mod/clipit_theme/vendors/jquery-ui-1.10.2.custom/js/jquery-ui-1.10.2.custom.min.js", "head", 2);
+        elgg_register_js("clipit", $CONFIG->url . "mod/clipit_theme/js/clipit.js");
+
+        elgg_load_js("jquery");
+        elgg_load_js("jquery-ui");
+        elgg_load_js("jquery-migrate");
+        elgg_load_js("clipit");
         elgg_load_css("ui-lightness");
         elgg_load_css("twitter-bootstrap");
-        elgg_load_js("jquery-migrate");
         elgg_unregister_js("twitter-bootstrap");
-        elgg_unregister_js("forceAddFile");
         elgg_unregister_css("righteous");
+        elgg_load_css("fontawesome");
         elgg_load_css("ubuntu");
         elgg_load_css("bubblegum");
         elgg_unregister_css("twitter-bootstrap");
         elgg_unregister_css("clipit");
+        elgg_unregister_css("elgg");
         ///////////////////////////////////////
         elgg_register_js("less_dev", $CONFIG->url . "mod/clipit_theme/bootstrap/js/less_dev.js");
         elgg_load_js("less_dev");
@@ -188,30 +216,12 @@ function clipit_final_init() {
         elgg_load_js("clipit_theme_less");
         elgg_register_js("clipit_theme_bootstrap", $CONFIG->url . "mod/clipit_theme/bootstrap/dist/js/bootstrap.js");
         elgg_load_js("clipit_theme_bootstrap");
+
+
+
+
     }
-/*<?php echo '
-    <link rel="stylesheet/less" href="'.$CONFIG->url.'mod/clipit_home/bootstrap/less/theme_clipit.less" />
-    <script>var less=less||{};less.env=\'development\';</script>
-    <script src="'.$CONFIG->url.'mod/clipit_home/bootstrap/js/less.js" ></script>
-    <script src="'.$CONFIG->url.'mod/clipit_home/bootstrap/dist/js/bootstrap.js" ></script>
-    ';
-?>*/
-    
 }
-//elgg_register_plugin_hook_handler('index', 'system', 'elgg_walled_garden_index_clipit', 1);
-/*if (!elgg_is_logged_in()) {
-    // hook into the index system call at the highest priority
-    elgg_trigger_plugin_hook('index', 'system', 'elgg_walled_garden_index_clipit', 1);
-}
-function elgg_walled_garden_index_clipit($hook, $type, $value, $params) {
-
-    echo $hook;
-    die();
-
-    // return true to prevent other plugins from adding a front page
-    return true;
-}
-*/
 
 function home_user_account_page_handler($page_elements, $handler) {
 
@@ -235,4 +245,30 @@ function home_user_account_page_handler($page_elements, $handler) {
     }
     return true;
 }
+
+
+
+// STUDENT LANDING PAGE
+function user_landing_page($page) {
+    global $CONFIG;
+    // Activity page cambiado a Dashboard
+
+    // Ensure that only logged-in users can see this page
+    gatekeeper();
+    $role = $CONFIG->user->role;
+    // Set context
+    elgg_set_context($role.'_landing');
+    elgg_set_page_owner_guid(elgg_get_logged_in_user_guid());
+
+    $content = elgg_view('landing/widgets', array('role' => $role));
+    $params = array(
+        'content' => $content,
+        'title' => '',
+        'filter' => '',
+    );
+    $body = elgg_view_layout('content', $params);
+
+    echo elgg_view_page($role." Landing", $body);
+}
+
 

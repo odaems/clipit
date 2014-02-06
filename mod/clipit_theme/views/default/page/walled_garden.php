@@ -26,7 +26,8 @@ $footer = elgg_view('page/elements/footer', $vars);
 <head>
 <?php echo elgg_view('page/elements/head', $vars); ?>
 <?php echo '
-    <link rel="stylesheet/less" href="'.$CONFIG->url.'mod/clipit_theme/bootstrap/less/theme_clipit.less" />
+    <!--<link rel="stylesheet/less" href="<?php echo $CONFIG->wwwroot; ?>mod/clipit_theme/bootstrap/less/components_clipit.less" />-->
+    <link rel="stylesheet/less" href="<?php echo $CONFIG->wwwroot; ?>mod/clipit_theme/bootstrap/less/clipit_base.less" />
     <script>var less=less||{};less.env=\'development\';</script>
     <script src="'.$CONFIG->url.'mod/clipit_theme/bootstrap/js/less.js" ></script>
     <script src="'.$CONFIG->url.'mod/clipit_theme/bootstrap/dist/js/bootstrap.js" ></script>

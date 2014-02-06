@@ -37,7 +37,7 @@ $form.= '
 <label>Imagen de fondo (subir imagen con desenfoque)</label>
 <a style="float: right;width: 340px;height: 70px;overflow: hidden;position: relative;">
     <label style="display: block;position: absolute;padding: 5px;right: 0;color: #FFF;">Imagen de fondo</label>
-    <img src="http://192.168.218.128/clipit_bootstrap/img/imagen_desenfoque.jpg" style="max-width: 100%;min-height: 100%;">
+    <img src="'.$CONFIG->wwwroot."mod/clipit_theme/graphics/icons/".$plugin->bg_img.'" style="max-width: 100%;min-height: 100%;">
 </a>
 ';
 $form.= "<p>";
