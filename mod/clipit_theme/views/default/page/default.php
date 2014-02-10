@@ -43,7 +43,8 @@ $lang = get_current_language();
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $lang; ?>" lang="<?php echo $lang; ?>">
 <head>
-    <link rel="stylesheet/less" href="<?php echo $CONFIG->wwwroot; ?>mod/clipit_theme/bootstrap/less/components_clipit.less" />
+    <!--<link rel="stylesheet/less" href="<?php echo $CONFIG->wwwroot; ?>mod/clipit_theme/bootstrap/less/components_clipit.less" />-->
+    <link rel="stylesheet" href="<?php echo $CONFIG->wwwroot; ?>mod/clipit_theme/bootstrap/less/clipit/clipit_base.css" type="text/css">
     <?php echo elgg_view('page/elements/head', $vars); ?>
 </head>
 <body>

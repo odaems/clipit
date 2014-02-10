@@ -1,14 +1,41 @@
 //
 // Load core variables and mixins
 // --------------------------------------------------
-@import "bootstrap.less";
-@import "variables_clipit.less";
-@import "theme_clipit.less";
+@import "../bootstrap";
+@import "variables_clipit";
+@import "mixins";
+@import "clipit_elgg_mod";
+@import "widgets";
+@import "header";
+@import "footer";
 //@import "elgg_mod.less";
 //
+
 body{
-  font-family: Verdana;
+  overflow-y: scroll;
+  background: #f1f2f7;
 }
+ul, ol {
+  list-style: none;
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+.text-truncate{
+  display: block;
+  .text-truncate();
+}
+small, .small{
+  font-size: 75%;
+  color: @gray-light;
+}
+// fontawesome
+.fa:hover{
+  opacity: .7;
+  text-decoration: none;
+}
+
+
+
 // Custom Font
 // --------------------------------------------------
 @font-face {
@@ -80,11 +107,11 @@ body{
 // --------------------------------------------------
 .form-control{
   @shadow_input: inset 0 1px 4px 0 rgba(0, 0, 0, 0.25), 0 0 0 4px rgba(225, 235, 240, 0.5);
-    .box-shadow(@shadow_input);
+  .box-shadow(@shadow_input);
   border-radius: 0;
   border: 0px;
-//  height: 45px;
-//  font-size: 18px;
+  //  height: 45px;
+  //  font-size: 18px;
   height: 35px;
   font-size: 15px;
   padding: 10px 16px;
@@ -174,10 +201,13 @@ select.form-control{
   }
 }
 //
-// Heading
+// Headings
 // --------------------------------------------------
-h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6{
-  font-family: @font-family-futura;
+h1, h2 {
+  font-family: @font-family-futurabold;
+}
+h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6{
+  font-family: @font-family-helvetica;
 }
 //
 // Dropdown
@@ -204,13 +234,13 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6{
 }
 // Dropdown menu <ul>
 .dropdown-menu {
-//  @shadow_input: 0px -2px 12px 0px rgba(0, 0, 0, 0.2), 0px 6px 12px 0px rgba(0, 0, 0, 0.2);
+  //  @shadow_input: 0px -2px 12px 0px rgba(0, 0, 0, 0.2), 0px 6px 12px 0px rgba(0, 0, 0, 0.2);
   @shadow_input: 0 6px 12px rgba(0, 0, 0, 0.2);
   .box-shadow(@shadow_input);
   border-radius: 0;
 
   > li > a{
-    font-family: @font-family-futura;
+    font-family: @font-family-helvetica;
     font-size: 17px;
     .transition(all .25s);
     letter-spacing: 1px;
@@ -226,7 +256,6 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6{
 // Tabs
 // --------------------------------------------------
 .nav-tabs {
-  margin-bottom: 5px;
   > li {
     &.active > a{
       color: @blue_clipit;
@@ -236,11 +265,10 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6{
       }
     }
     > a {
-      font-family: @font-family-futura;
+      font-family: @font-family-helvetica;
       font-size: 15px;
       letter-spacing: 1px;
       color: @grey_text;
-      text-transform: none !important;
       &:hover,
       &:focus{
         color: darken(@grey_text, 12%);;
@@ -263,8 +291,8 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6{
 .tooltip-inner{
   background-color: #eceded;
   color: #000;
-//  @shadow_input: 0 3px 6px rgba(0, 0, 0, 0.2);
-//  .box-shadow(@shadow_input);
+  //  @shadow_input: 0 3px 6px rgba(0, 0, 0, 0.2);
+  //  .box-shadow(@shadow_input);
   border: 1px solid @blue_clipit;
 }
 //
@@ -273,7 +301,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6{
 .nav-stacked {
   a{
     color: @blue_clipit;
-    font-family: @font-family-futura;
+    font-family: @font-family-helvetica;
     letter-spacing: 1px;
     font-size: 15px;
     > .badge{
@@ -294,3 +322,4 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6{
   width: 20px;
   height: 20px;
 }
+
