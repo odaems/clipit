@@ -189,7 +189,7 @@ function expose_auth_functions(){
             "token" => array(
                 "type" => "string",
                 "required" => true)),
-        "Remove a user authentication token from the system",
+        "Remove an API user authentication token from the system",
         'POST', false, true);
 }
 

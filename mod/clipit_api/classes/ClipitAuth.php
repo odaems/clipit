@@ -21,6 +21,4 @@ class ClipitAuth {
     function remove_token($token){
         return remove_user_token($token, null);
     }
-
-
-} 
+}
