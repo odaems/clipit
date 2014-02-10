@@ -50,6 +50,7 @@ function expose_clipit_api(){
     }
     expose_activity_functions();
     expose_comment_functions();
+    expose_event_functions();
     expose_file_functions();
     expose_group_functions();
     expose_palette_functions();
@@ -65,6 +66,16 @@ function expose_clipit_api(){
     expose_taxonomy_tc_functions();
     expose_user_functions();
     expose_video_functions();
+}
+
+function clipit_gettoken($username, $password, $timeout = 60) {
+    if (true === elgg_authenticate($username, $password)) {
+        $token = create_user_token($username, $timeout);
+        if ($token) {
+            return $token;
+        }
+    }
+    throw new SecurityException(elgg_echo('SecurityException:authenticationfailed'));
 }
 
 function expose_gettoken(){
@@ -84,16 +95,6 @@ function expose_gettoken(){
                  "required" => false)),
         "Obtain a user authentication token which can be used for authenticating future API calls. Pass it as the parameter auth_token",
         'POST', false, false);
-}
-
-function clipit_gettoken($username, $password, $timeout = 60) {
-    if (true === elgg_authenticate($username, $password)) {
-        $token = create_user_token($username, $timeout);
-        if ($token) {
-            return $token;
-        }
-    }
-    throw new SecurityException(elgg_echo('SecurityException:authenticationfailed'));
 }
 
 function expose_common_functions($api_suffix, $class_suffix){
@@ -180,6 +181,44 @@ function expose_comment_functions(){
                  "type" => "array",
                  "required" => true)),
         "Get all Comments by Author Id",
+        'GET', false, true);
+}
+
+function expose_event_functions(){
+    $api_suffix = "clipit.event.";
+    $class_suffix = "ClipitEvent::";
+    expose_function(
+        $api_suffix."list_properties",
+        $class_suffix."list_properties",
+        null,
+        "Get class properties",
+        'GET', false, true);
+    expose_function(
+        $api_suffix."get_all",
+        $class_suffix."get_all",
+        array(
+            "limit" => array(
+                "type" => "int",
+                "required" => false)),
+        "Get all instances",
+        'GET', false, true);
+    expose_function(
+        $api_suffix."get_by_id",
+        $class_suffix."get_by_id",
+        array(
+            "id_array" => array(
+                "type" => "array",
+                "required" => true)),
+        "Get instances by Id",
+        'GET', false, true);
+    expose_function(
+        $api_suffix."get_by_user",
+        $class_suffix."get_by_user",
+        array(
+            "user_array" => array(
+                "type" => "array",
+                "required" => true)),
+        "Get instances by Id",
         'GET', false, true);
 }
 

@@ -230,10 +230,10 @@ class UBItem{
         $elgg_object_array = elgg_get_entities(array('type' => $called_class::TYPE,
                                                      'subtype' => $called_class::SUBTYPE,
                                                      'limit' => $limit));
-        if(!$elgg_object_array){
-            return null;
-        }
         $object_array = array();
+        if(empty($elgg_object_array)){
+            return $object_array;
+        }
         foreach($elgg_object_array as $elgg_object){
             $object_array[] = new $called_class((int)$elgg_object->guid);
         }
