@@ -32,6 +32,9 @@ class UBFile extends UBItem{
      * @const string Elgg entity SUBTYPE for this class
      */
     const SUBTYPE = "file";
+    /**
+     * @const string Delimiter for timestamp string
+     */
     const TIMESTAMP_DELIMITER = "#";
     /**
      * @var string File data in byte string format
@@ -46,7 +49,7 @@ class UBFile extends UBItem{
      * Loads an instance from the system.
      *
      * @param int $id Id of the instance to load from the system.
-     * @return UBFile|bool Returns instance, or false if error.
+     * @return UBFile|null Returns instance, or null if error.
      */
     protected function _load($id){
         if(!($elgg_file = new ElggFile((int)$id))){

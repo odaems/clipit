@@ -66,7 +66,7 @@ class UBItem{
      * Loads an instance from the system.
      *
      * @param int $id Id of the instance to load from the system.
-     * @return UBItem|bool Returns instance, or false if error.
+     * @return UBItem|null Returns instance, or null if error.
      */
     protected function _load($id){
         if(!($elgg_object = new ElggObject((int)$id))){
