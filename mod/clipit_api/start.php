@@ -32,8 +32,43 @@ elgg_register_event_handler('init', 'system', 'clipit_api_init');
  */
 function clipit_api_init(){
     loadFiles(elgg_get_plugins_path()."clipit_api/libraries/");
-    expose_clipit_api();
-    //elgg_register_plugin_hook_handler('unit_test', 'system', 'clipit_api_tests');
+    clipit_expose_api();
+    clipit_register_subtypes();
+}
+
+function clipit_register_subtypes(){
+    $subtype_class_array = array(
+        "clipit_activity" => "ClipitActivity",
+        "clipit_comment" => "ClipitComment",
+        "clipit_file" => "ClipitFile",
+        "clipit_group" => "ClipitGroup",
+        "clipit_palette" => "ClipitPalette",
+        "clipit_quiz" => "ClipitQuiz",
+        "clipit_quiz_question" => "ClipitQuizQuestion",
+        "clipit_quiz_result" => "ClipitQuizResult",
+        "clipit_site" => "ClipitQuizSite",
+        "clipit_sta" => "ClipitSTA",
+        "clipit_storyboard" => "ClipitStoryboard",
+        "clipit_taxonomy" => "ClipitTaxonomy",
+        "clipit_taxonomy_sb" => "ClipitTaxonomySB",
+        "clipit_taxonomy_tag" => "ClipitTaxonomyTag",
+        "clipit_taxonomy_tc" => "ClipitTaxonomyTC",
+        "clipit_video" => "ClipitVideo");
+    foreach($subtype_class_array as $subtype => $class){
+        if (get_subtype_id('object',$subtype)) {
+            update_subtype('object', $subtype, $class);
+        } else {
+            add_subtype('object', $subtype, $class);
+        }
+    }
+
+    if(get_subtype_id('clipit_user', '')){
+        update_subtype('clipit_user', '', "ClipitUser");
+    } else {
+        add_subtype("clipit_user", "", "ClipitUser");
+    }
+
+
 }
 
 ///**

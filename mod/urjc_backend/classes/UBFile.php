@@ -56,6 +56,8 @@ class UBFile extends UBItem{
             return null;
         }
         $this->id = (int)$elgg_file->guid;
+        $this->type = (string)$elgg_file->type;
+        $this->subtype = (string)get_subtype_from_id($elgg_file->subtype);
         $temp_name = explode($this::TIMESTAMP_DELIMITER, (string)$elgg_file->getFilename());
         if(empty($temp_name[1])){
             // no timestamp found
@@ -77,6 +79,7 @@ class UBFile extends UBItem{
     function save(){
         if($this->id == -1){
             $elgg_file = new ElggFile();
+            $elgg_file->subtype = (string)$this::SUBTYPE;
         } elseif(!$elgg_file = new ElggFile((int)$this->id)){
             return false;
         }

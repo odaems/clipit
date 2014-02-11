@@ -25,7 +25,7 @@
 /**
  * Expose all functions for the ClipIt REST API
  */
-function expose_clipit_api(){
+function clipit_expose_api(){
     $suffix_list = array(
         "clipit.activity." => "ClipitActivity::",
         "clipit.comment." => "ClipitComment::",

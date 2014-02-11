@@ -30,12 +30,8 @@
 class ClipitPalette{
 
     // Class properties
-    public $activity = ClipitActivity;
     public $id = int;
     public $items = array();
-    public $name = string;
-    public $taxonomy = ClipitTaxonomy;
-    public $type = string;
 
 
 }

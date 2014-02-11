@@ -29,9 +29,13 @@
  */
 class ClipitFile extends UBFile{
     /**
-     * @var string File type (STA, Group, Attachment)
+     * @const string Elgg entity subtype for this class
      */
-    public $type = "";
+    const SUBTYPE = "clipit_file";
+    /**
+     * @var string File scope (STA, Group, Attachment)
+     */
+    public $scope = "";
     /**
      * @var int Id of linked object (Activity, Group, Video...)
      */
@@ -58,7 +62,7 @@ class ClipitFile extends UBFile{
         $this->description = (string)$elgg_file->description;
         $this->data = $elgg_file->grabFile();
         $this->time_created = (int)$elgg_file->time_created;
-        $this->type = (string)$elgg_file->type;
+        $this->scope = (string)$elgg_file->scope;
         $this->linked_to = (int)$elgg_file->linked_to;
         return $this;
     }
@@ -77,7 +81,7 @@ class ClipitFile extends UBFile{
         $date_obj = new DateTime();
         $elgg_file->setFilename((string)$date_obj->getTimestamp().$this::TIMESTAMP_DELIMITER.(string)$this->name);
         $elgg_file->description = (string)$this->description;
-        $elgg_file->type = (string)$this->type;
+        $elgg_file->scope = (string)$this->scope;
         $elgg_file->linked_to = (int)$this->linked_to;
         $elgg_file->open("write");
         $elgg_file->write($this->data);

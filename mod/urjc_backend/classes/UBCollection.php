@@ -33,9 +33,17 @@ abstract class UBCollection extends UBItem{
      */
     const SUBTYPE = "collection";
     /**
-     * @var array Array of item Ids contained in this Collection
+     * @var array Array of Item ids contained in this Collection
      */
-    public $id_array = array();
+    public $item_array = array();
+    /**
+     * @var string Type of the contained Items in this Collection
+     */
+    public $item_type = "object";
+    /**
+     * @var string Subtype of the contained Items in this Collection
+     */
+    public $item_subtype = "item";
 
     /**
      * Loads an instance from the system.
@@ -55,7 +63,9 @@ abstract class UBCollection extends UBItem{
         $this->id = (int)$elgg_object->guid;
         $this->description = (string)$elgg_object->description;
         $this->name = (string)$elgg_object->name;
-        $this->id_array = (array)$elgg_object->id_array;
+        $this->item_array = (array)$elgg_object->item_array;
+        $this->item_type = (string)$elgg_object->item_type;
+        $this->item_subtype = (string)$elgg_object->item_subtype;
         return $this;
     }
 
@@ -73,16 +83,18 @@ abstract class UBCollection extends UBItem{
         }
         $elgg_object->name = (string)$this->name;
         $elgg_object->description = (string)$this->description;
-        $elgg_object->id_array = (array)$this->id_array;
+        $elgg_object->item_array = (array)$this->item_array;
+        $elgg_object->item_type = (string)$this->item_type;
+        $elgg_object->item_subtype = (string)$this->item_subtype;
         $elgg_object->save();
         return $this->id = $elgg_object->guid;
     }
 
-    function addItems($id_array){
-        if(!$this->id_array){
-            $this->id_array = $id_array;
+    function addItems($item_array){
+        if(!$this->item_array){
+            $this->item_array = $item_array;
         } else{
-            $this->id_array = array_merge($this->id_array, $id_array);
+            $this->item_array = array_merge($this->item_array, $item_array);
         }
         if(!$this->save()){
             return false;
@@ -90,14 +102,14 @@ abstract class UBCollection extends UBItem{
         return true;
     }
 
-    function removeItems($id_array){
-        if(!$this->id_array){
+    function removeItems($item_array){
+        if(!$this->item_array){
             return false;
         }
-        foreach($id_array as $item){
-            $key = array_search($item, $this->id_array);
+        foreach($item_array as $item){
+            $key = array_search($item, $this->item_array);
             if(isset($key)){
-                unset($this->id_array[$key]);
+                unset($this->item_array[$key]);
             } else{
                 return false;
             }
@@ -108,62 +120,34 @@ abstract class UBCollection extends UBItem{
         return true;
     }
 
-    function getItems($item_class){
-        $item_array = array();
-        foreach($this->id_array as $id){
-            if(!$item = new $item_class($id)){
-                $item_array[] = null;
-            } else{
-                $item_array[] = $item;
-            }
-        }
-        return $item_array;
-    }
-
-
     /**
      * Adds Items to a Collection.
      *
      * @param int $id Id from Collection to add Items to
-     * @param array $id_array Array of Items to add
+     * @param array $item_array Array of Items to add
      * @return bool Returns true if success, false if error
      */
-    static function add_items($id, $id_array){
+    static function add_items($id, $item_array){
         $called_class = get_called_class();
         if(!$collection = new $called_class($id)){
             return false;
         }
-        return $collection->addItems($id_array);
+        return $collection->addItems($item_array);
     }
 
     /**
      * Remove Items from a Collection.
      *
      * @param int $id Id from Collection to remove Items from
-     * @param array $id_array Array of Items to remove
+     * @param array $item_array Array of Items to remove
      * @return bool Returns true if success, false if error
      */
-    static function remove_items($id, $id_array){
+    static function remove_items($id, $item_array){
         $called_class = get_called_class();
         if(!$collection = new $called_class($id)){
             return false;
         }
-        return $collection->removeItems($id_array);
-    }
-
-    /**
-     * Get an array of Items included in a Collection.
-     *
-     * @param int $id The Id of the Collection to get Items
-     * @param string $item_class Name of the class from the items to get
-     * @return array|bool Returns an array of Items, or false if error
-     */
-    static function get_items($id, $item_class){
-        $called_class = get_called_class();
-        if(!$collection = new $called_class($id)){
-            return false;
-        }
-        return $collection->getItems($item_class);
+        return $collection->removeItems($item_array);
     }
 
 }
