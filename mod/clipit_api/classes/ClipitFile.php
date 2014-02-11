@@ -40,7 +40,6 @@ class ClipitFile extends UBFile{
      * @var int Id of linked object (Activity, Group, Video...)
      */
     public $linked_to = -1;
-
     /**
      * Loads an instance from the system.
      *
@@ -75,6 +74,7 @@ class ClipitFile extends UBFile{
     function save(){
         if($this->id == -1){
             $elgg_file = new ElggFile();
+            //$elgg_file->subtype = (string)$this::SUBTYPE;
         } elseif(!$elgg_file = new ElggFile((int)$this->id)){
             return false;
         }

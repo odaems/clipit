@@ -83,6 +83,7 @@ class UBUser extends UBItem{
     function save(){
         if($this->id == -1){
             $elgg_user = new ElggUser();
+            $elgg_user->subtype = (string)$this::SUBTYPE;
         } elseif(!$elgg_user = new ElggUser($this->id)){
             return false;
         }
@@ -98,11 +99,9 @@ class UBUser extends UBItem{
         } else{
             $elgg_user->language = $this->language;
         }
-        if(!elgg_get_logged_in_user_guid()){
-            $elgg_user->owner_guid = 0;
-            $elgg_user->container_guid = 0;
-            $elgg_user->access_id = ACCESS_PUBLIC;
-        }
+        $elgg_user->owner_guid = 0;
+        $elgg_user->container_guid = 0;
+        $elgg_user->access_id = ACCESS_PUBLIC;
         $elgg_user->save();
         $this->time_created = $elgg_user->time_created;
         return $this->id = $elgg_user->guid;
