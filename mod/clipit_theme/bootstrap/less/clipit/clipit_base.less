@@ -6,6 +6,7 @@
 @import "mixins";
 @import "clipit_elgg_mod";
 @import "walled_garden";
+@import "content";
 @import "widgets";
 @import "header";
 @import "footer";
@@ -260,12 +261,20 @@ h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6{
 // Tabs
 // --------------------------------------------------
 .nav-tabs {
+  border-bottom: 0;
   > li {
-    &.active > a{
+    &.active > a,
+    &.elgg-state-selected > a{
       color: @blue_clipit;
+      border: 0;
+      border-bottom: 1px solid #FFF;
+      background-color: #FFF;
+      cursor: default;
       &:hover,
       &:focus{
-        color: darken(@blue_clipit, 12%);;
+        color: darken(@blue_clipit, 12%);
+        border: 0;
+        border-bottom: 1px solid #FFF;
       }
     }
     > a {
@@ -275,7 +284,8 @@ h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6{
       color: @grey_text;
       &:hover,
       &:focus{
-        color: darken(@grey_text, 12%);;
+        color: darken(@grey_text, 12%);
+        border-bottom: 1px solid #FFF;
       }
       > .badge{
         display: inline-block;
