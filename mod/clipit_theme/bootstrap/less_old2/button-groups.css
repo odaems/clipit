@@ -1,0 +1,5 @@
+NameError: .clearfix is undefined in D:\ubuntu_compartido\clipit_befe\mod\clipit_theme\bootstrap\less_old2\button-groups.less on line 40, column 3:
+39 .btn-toolbar {
+40   .clearfix();
+41 
+

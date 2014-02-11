@@ -1,0 +1,5 @@
+NameError: variable @caret-width-base is undefined in D:\ubuntu_compartido\clipit_befe\mod\clipit_theme\bootstrap\less_old1\dropdowns.less on line 13, column 17:
+12   vertical-align: middle;
+13   border-top:   @caret-width-base solid @dropdown-caret-color;
+14   border-right: @caret-width-base solid transparent;
+

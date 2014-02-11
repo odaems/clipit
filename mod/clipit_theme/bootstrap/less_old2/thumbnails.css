@@ -1,0 +1,5 @@
+NameError: .transition is undefined in D:\ubuntu_compartido\clipit_befe\mod\clipit_theme\bootstrap\less_old2\thumbnails.less on line 15, column 3:
+14   border-radius: @thumbnail-border-radius;
+15   .transition(all .2s ease-in-out);
+16 
+

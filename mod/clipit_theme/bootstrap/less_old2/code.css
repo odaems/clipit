@@ -1,0 +1,5 @@
+NameError: variable @font-family-monospace is undefined in D:\ubuntu_compartido\clipit_befe\mod\clipit_theme\bootstrap\less_old2\code.less on line 11, column 16:
+10 samp {
+11   font-family: @font-family-monospace;
+12 }
+

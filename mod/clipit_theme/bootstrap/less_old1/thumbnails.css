@@ -1,0 +1,5 @@
+NameError: .img-thumbnail is undefined in D:\ubuntu_compartido\clipit_befe\mod\clipit_theme\bootstrap\less_old1\thumbnails.less on line 8, column 3:
+7 .thumbnail {
+8   .img-thumbnail();
+9   display: block; // Override the inline-block from `.img-thumbnail`
+

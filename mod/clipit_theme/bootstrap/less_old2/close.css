@@ -1,0 +1,5 @@
+NameError: .opacity is undefined in D:\ubuntu_compartido\clipit_befe\mod\clipit_theme\bootstrap\less_old2\close.less on line 13, column 3:
+12   text-shadow: @close-text-shadow;
+13   .opacity(.2);
+14 
+

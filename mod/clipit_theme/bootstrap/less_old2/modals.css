@@ -1,0 +1,5 @@
+NameError: variable @zindex-modal-background is undefined in D:\ubuntu_compartido\clipit_befe\mod\clipit_theme\bootstrap\less_old2\modals.less on line 25, column 12:
+24   left: 0;
+25   z-index: @zindex-modal-background;
+26 
+

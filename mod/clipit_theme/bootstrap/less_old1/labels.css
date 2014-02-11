@@ -1,0 +1,5 @@
+NameError: variable @label-color is undefined in D:\ubuntu_compartido\clipit_befe\mod\clipit_theme\bootstrap\less_old1\labels.less on line 11, column 10:
+10   line-height: 1;
+11   color: @label-color;
+12   text-align: center;
+
