@@ -10,7 +10,7 @@
         height: 200px;
     }
     #chart_bar svg .nvd3 .nv-axis line{
-        stroke: #CCC;
+        stroke: #EBEBEB;
     }
     #chart_bar svg text {
         font: normal 12px Helvetica;
