@@ -1,5 +1,0 @@
-NameError: .responsive-invisibility is undefined in D:\ubuntu_compartido\clipit_befe\mod\clipit_theme\bootstrap\less_old1\responsive-utilities.less on line 28, column 3:
-27 .visible-xs {
-28   .responsive-invisibility();
-29   @media (max-width: @screen-xs-max) {
-

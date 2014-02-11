@@ -171,8 +171,8 @@ function clipit_final_init() {
         elgg_unregister_js("twitter-bootstrap");
     } else {
         elgg_register_css("twitter-bootstrap", $CONFIG->url . "mod/clipit/vendors/bootstrap/css/bootstrap.css");
-        elgg_register_css("ui-lightness", $CONFIG->url . "mod/clipit_theme/vendors/jquery-ui-1.10.2.custom/css/ui-lightness/jquery-ui-1.10.2.custom.min.css");
-        elgg_register_css("clipit", $CONFIG->url . "mod/clipit/css/clipit.css");
+        elgg_register_css("ui-lightness", $CONFIG->url . "mod/clipit_theme/1.10.2.custom/css/ui-lightness/jquery-ui-1.10.2.custom.min.css");
+        elgg_register_css("clipit", $CONFIG->url . "mod/clipit_theme/bootstrap/less/clipit/clipit_base.css");
         elgg_register_css("bubblegum", "http://fonts.googleapis.com/css?family=Bubblegum+Sans");
         elgg_register_css("righteous", "http://fonts.googleapis.com/css?family=Righteous");
         elgg_register_css("ubuntu", "http://fonts.googleapis.com/css?family=Ubuntu:400,300,300italic,400italic,500,500italic,700,700italic");
@@ -192,10 +192,11 @@ function clipit_final_init() {
         elgg_unregister_css("righteous");
         elgg_load_css("fontawesome");
         elgg_load_css("ubuntu");
+        elgg_load_css("clipit");
         elgg_load_css("bubblegum");
         elgg_unregister_css("twitter-bootstrap");
-        elgg_unregister_css("clipit");
         elgg_unregister_css("elgg");
+        elgg_unregister_css("elgg.walled_garden");
         ///////////////////////////////////////
         elgg_register_js("less_dev", $CONFIG->url . "mod/clipit_theme/bootstrap/js/less_dev.js");
         elgg_load_js("less_dev");

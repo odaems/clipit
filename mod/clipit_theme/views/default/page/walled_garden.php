@@ -20,19 +20,13 @@ $vars_plugin['logo_img'] = $vars_plugin['img_path']."icons/".$vars_plugin['logo_
 $vars = array_merge($vars_plugin, $vars);
 
 $footer = elgg_view('page/elements/footer', $vars);
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <?php echo elgg_view('page/elements/head', $vars); ?>
-<?php echo '
-    <!--<link rel="stylesheet/less" href="<?php echo $CONFIG->wwwroot; ?>mod/clipit_theme/bootstrap/less/components_clipit.less" />-->
-    <link rel="stylesheet/less" href="<?php echo $CONFIG->wwwroot; ?>mod/clipit_theme/bootstrap/less/clipit_base.less" />
-    <script>var less=less||{};less.env=\'development\';</script>
-    <script src="'.$CONFIG->url.'mod/clipit_theme/bootstrap/js/less.js" ></script>
-    <script src="'.$CONFIG->url.'mod/clipit_theme/bootstrap/dist/js/bootstrap.js" ></script>
-    ';
-?>
+
 </head>
 <body>
 <div class="elgg-page elgg-page-walledgarden">

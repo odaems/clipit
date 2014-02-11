@@ -1,5 +1,0 @@
-RuntimeError: No matching definition was found for `.clearfix()` in D:\ubuntu_compartido\clipit_befe\mod\clipit_theme\bootstrap\less_old2\utilities.less on line 10, column 3:
-9 .clearfix {
-10   .clearfix();
-11 }
-
