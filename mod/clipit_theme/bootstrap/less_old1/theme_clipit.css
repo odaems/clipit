@@ -5151,52 +5151,52 @@ button.close {
   left: 50%;
   margin-left: -5px;
   border-width: 5px 5px 0;
-  border-top-color: #000000;
+  border-top-color: #32b4e5;
 }
 .tooltip.top-left .tooltip-arrow {
   bottom: 0;
   left: 5px;
   border-width: 5px 5px 0;
-  border-top-color: #000000;
+  border-top-color: #32b4e5;
 }
 .tooltip.top-right .tooltip-arrow {
   bottom: 0;
   right: 5px;
   border-width: 5px 5px 0;
-  border-top-color: #000000;
+  border-top-color: #32b4e5;
 }
 .tooltip.right .tooltip-arrow {
   top: 50%;
   left: 0;
   margin-top: -5px;
   border-width: 5px 5px 5px 0;
-  border-right-color: #000000;
+  border-right-color: #32b4e5;
 }
 .tooltip.left .tooltip-arrow {
   top: 50%;
   right: 0;
   margin-top: -5px;
   border-width: 5px 0 5px 5px;
-  border-left-color: #000000;
+  border-left-color: #32b4e5;
 }
 .tooltip.bottom .tooltip-arrow {
   top: 0;
   left: 50%;
   margin-left: -5px;
   border-width: 0 5px 5px;
-  border-bottom-color: #000000;
+  border-bottom-color: #32b4e5;
 }
 .tooltip.bottom-left .tooltip-arrow {
   top: 0;
   left: 5px;
   border-width: 0 5px 5px;
-  border-bottom-color: #000000;
+  border-bottom-color: #32b4e5;
 }
 .tooltip.bottom-right .tooltip-arrow {
   top: 0;
   right: 5px;
   border-width: 0 5px 5px;
-  border-bottom-color: #000000;
+  border-bottom-color: #32b4e5;
 }
 .popover {
   position: absolute;
@@ -5956,6 +5956,65 @@ td.visible-print {
     display: none !important;
   }
 }
+/*.elgg-menu-filter .elgg-state-selected a, .elgg-menu-filter .elgg-state-selected a:hover, .elgg-menu-filter .elgg-state-selected a:focus{
+  background: @blue_clipit !important;
+  color: #fff;
+}*/
+.elgg-state-success {
+  background-color: #bae6f6;
+}
+.elgg-layout-one-sidebar {
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+}
+.elgg-main {
+  padding: 0 !important;
+}
+.elgg-heading-main {
+  font-family: FuturaBoldRegular, Impact, 'Impact Bold', Helvetica, Arial, sans, sans-serif;
+  color: #32b4e5;
+}
+.elgg-list {
+  margin: 15px 0;
+}
+.elgg-list > li {
+  border-top: 1px solid #eeeeee;
+  padding-top: 10px;
+}
+.elgg-list > li:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+li.elgg-menu-item-access > span {
+  margin-right: 10px;
+  color: #9c9e9f;
+  font-family: FuturaBoldRegular, Impact, 'Impact Bold', Helvetica, Arial, sans, sans-serif;
+}
+.elgg-button {
+  color: #FFF;
+  background-image: -webkit-gradient(linear, left 0%, left 100%, from(#32b4e5), to(#1993c1));
+  background-image: -webkit-linear-gradient(top, #32b4e5 0%, #1993c1 100%);
+  background-image: -moz-linear-gradient(top, #32b4e5 0%, #1993c1 100%);
+  background-image: linear-gradient(to bottom, #32b4e5 0%, #1993c1 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff32b4e5', endColorstr='#ff1993c1', GradientType=0);
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  background-repeat: repeat-x;
+  border-color: #178cb8;
+}
+.elgg-button:hover,
+.elgg-button:focus {
+  background-color: #1993c1;
+  background-position: 0 -15px;
+}
+.elgg-button:active,
+.elgg-button.active {
+  background-color: #1993c1;
+  border-color: #178cb8;
+}
+.elgg-button:hover,
+.elgg-button:focus {
+  color: #FFF;
+}
 @font-face {
   font-family: 'Futura';
   src: url('../fonts/futuralt.eot');
@@ -5967,13 +6026,13 @@ td.visible-print {
   src: url('../fonts/futuralt-bold.eot') format('embedded-opentype'), url('../fonts/futuralt-bold.woff') format('woff'), url('../fonts/futuralt-bold.ttf') format('truetype'), url('../fonts/futuralt-bold.svg#FuturaLTBold') format('svg');
 }
 .bg-red {
-  background-color: #ff3300;
+  background-color: #ff4343;
 }
 .bg-blue {
-  background-color: #119bcd;
+  background-color: #32b4e5;
 }
 .bg-yellow {
-  background-color: #e1c800;
+  background-color: #d8ba05;
 }
 .btn-default,
 .btn-primary,
@@ -6169,8 +6228,9 @@ body {
 }
 #footer {
   height: auto;
-  background-color: #119bcd;
+  background-color: #32b4e5;
   padding: 20px;
+  margin-top: 30px;
   /*background-image: url('../img/sponsors.png');
   background-repeat: no-repeat;
   background-position: bottom right;
@@ -6200,18 +6260,26 @@ body {
   list-style: none;
   padding: 0px;
   font-size: 18px;
-  color: #82d6f5;
   font-family: Futura, Impact, 'Impact Bold', Helvetica, Arial, sans, sans-serif;
 }
 #footer .site-map ul > li {
   margin: 10px 0px;
   letter-spacing: 1px;
 }
+#footer .site-map ul > li > a {
+  color: #bae6f6;
+}
+#footer .site-map ul > li > a:hover,
+#footer .site-map ul > li > a:focus {
+  opacity: 0.5;
+  text-decoration: none;
+}
 .navbar-text {
-  margin: 5px 0px;
+  margin: 7px 0px;
+  margin-right: 15px;
 }
 .navbar-text > a {
-  color: #82d6f5;
+  color: #bae6f6;
   text-shadow: 1px 1px 0px #0084B4;
   font-size: 14px;
   font-family: FuturaBoldRegular, Impact, 'Impact Bold', Helvetica, Arial, sans, sans-serif;
@@ -6224,7 +6292,7 @@ body {
   color: #FFFFFF;
 }
 .navbar-text > span.divider {
-  color: #82d6f5;
+  color: #bae6f6;
   margin: 0px 5px;
   font-family: Verdana;
 }
@@ -6236,16 +6304,16 @@ body {
 }
 .navbar-default .navbar-nav li > a {
   text-transform: uppercase;
-  color: #119bcd;
+  color: #32b4e5;
   font-family: Futura, Impact, 'Impact Bold', Helvetica, Arial, sans, sans-serif;
   font-size: 20px;
 }
 .navbar-default .navbar-nav li > a:hover,
 .navbar-default .navbar-nav li > a:focus {
-  color: #82d6f5;
+  color: #bae6f6;
 }
 .navbar-default .navbar-nav > .active > a {
-  background: #82d6f5;
+  background: #bae6f6;
   color: #FFFFFF;
   -webkit-box-shadow: inset 0 3px 9px rgba(0, 0, 0, 0.075);
   box-shadow: inset 0 3px 9px rgba(0, 0, 0, 0.075);
@@ -6255,19 +6323,22 @@ body {
   line-height: 47px;
 }
 .navbar-brand img {
-  max-height: 37px;
+  max-height: 45px;
+  vertical-align: middle;
 }
 .navbar-blue {
-  background: #119bcd;
+  background: #32b4e5;
   margin-bottom: 0px;
   min-height: 33px;
 }
+.navbar-blue .pull-right {
+  padding: 0;
+}
 .navbar-blue .navbar-form {
-  padding: 0px 15px;
+  padding: 0;
   margin: 3px 0px;
-  border-top: 0px;
-  border-bottom: 0px;
-  padding-right: 0px;
+  border-top: 0;
+  border-bottom: 0;
 }
 .navbar-blue .navbar-form .form-control {
   height: 25px;
@@ -6324,6 +6395,27 @@ body {
 .navbar-fixed-bottom {
   border-radius: 0;
 }
+ul.top-account .avatar-user {
+  padding: 0;
+  padding-top: 3px;
+}
+ul.top-account .avatar-user img {
+  vertical-align: middle;
+  margin: 3px;
+}
+ul.top-account > li.separator {
+  color: #bae6f6;
+  font-family: Futura, Impact, 'Impact Bold', Helvetica, Arial, sans, sans-serif;
+  font-size: 20px;
+  padding-top: 18px;
+}
+ul.top-account > li > a {
+  font-family: FuturaBoldRegular, Impact, 'Impact Bold', Helvetica, Arial, sans, sans-serif !important;
+  text-transform: none !important;
+  font-size: 17px !important;
+  padding-right: 5px;
+  padding-left: 5px;
+}
 .jumbotron {
   width: 100%;
   height: 100%;
@@ -6358,7 +6450,7 @@ body {
 }
 .jumbotron .btn-primary {
   padding: 10px 40px;
-  background: #119bcd;
+  background: #32b4e5;
   border: none;
   font-family: FuturaBoldRegular, Impact, 'Impact Bold', Helvetica, Arial, sans, sans-serif;
   border-radius: 60px;
@@ -6393,7 +6485,7 @@ body {
 }
 .social-connect h2 {
   font-family: FuturaBoldRegular, Impact, 'Impact Bold', Helvetica, Arial, sans, sans-serif;
-  color: #119bcd;
+  color: #32b4e5;
   font-size: 45px;
   margin: 0 0 20px 0;
 }
@@ -6408,7 +6500,7 @@ body {
 }
 #modal-login .modal-header h2 {
   font-family: FuturaBoldRegular, Impact, 'Impact Bold', Helvetica, Arial, sans, sans-serif;
-  color: #119bcd;
+  color: #32b4e5;
   font-size: 45px;
   margin-top: -15px;
 }
@@ -6427,7 +6519,7 @@ body {
 }
 #modal-login .modal-body form .btn-primary {
   padding: 10px 20px;
-  background: #119bcd;
+  background: #32b4e5;
   border: none;
   font-family: FuturaBoldRegular, Impact, 'Impact Bold', Helvetica, Arial, sans, sans-serif;
   text-transform: uppercase;
@@ -6437,7 +6529,7 @@ body {
   border-radius: 60px;
 }
 #modal-login .modal-body form p.link {
-  color: #82d6f5;
+  color: #bae6f6;
   margin-top: 15px;
   margin-bottom: 0px;
 }
@@ -6450,7 +6542,7 @@ body {
 }
 #modal-login .modal-footer .btn-primary {
   padding: 10px 20px;
-  background: #119bcd;
+  background: #32b4e5;
   border: none;
   font-family: FuturaBoldRegular, Impact, 'Impact Bold', Helvetica, Arial, sans, sans-serif;
   text-transform: uppercase;
@@ -6460,9 +6552,62 @@ body {
   border-radius: 60px;
 }
 #modal-login .modal-footer p {
-  color: #82d6f5;
+  color: #bae6f6;
   margin-top: 15px;
   margin-bottom: 0px;
+}
+.bg-grey {
+  background: #F2F2F2;
+}
+.clipit-home h2 {
+  color: #32b4e5;
+  font-size: 45px;
+  font-family: FuturaBoldRegular, Impact, 'Impact Bold', Helvetica, Arial, sans, sans-serif;
+}
+.clipit-home form.clipit-home-form p.text-info {
+  font-size: 16px;
+  margin: 20px 0;
+  color: #32b4e5;
+}
+.clipit-home form.clipit-home-form p.text-info > img {
+  width: 25px;
+  height: 25px;
+  vertical-align: middle;
+}
+.clipit-home form.clipit-home-form label {
+  display: block;
+  margin: 25px 0px 10px;
+  font-size: 14px;
+  font-weight: bold;
+}
+.clipit-home form.clipit-home-form label > span.error {
+  float: right;
+  color: #ff4343;
+  font-weight: bold;
+}
+.clipit-home form.clipit-home-form input.error {
+  -webkit-box-shadow: inset 0 1px 4px #ff4343 !important;
+  box-shadow: inset 0 1px 4px #ff4343 !important;
+}
+.clipit-home form.clipit-home-form input.input-lg {
+  -webkit-box-shadow: inset 0 1px 4px 0 rgba(0, 0, 0, 0.25), 0 0 0 4px rgba(225, 235, 240, 0.5);
+  box-shadow: inset 0 1px 4px 0 rgba(0, 0, 0, 0.25), 0 0 0 4px rgba(225, 235, 240, 0.5);
+  border-radius: 0;
+  border: 0px;
+}
+.clipit-home form.clipit-home-form input.btn-primary {
+  float: none;
+  margin-left: 0px;
+  margin-top: 30px;
+  font-family: FuturaBoldRegular, Impact, 'Impact Bold', Helvetica, Arial, sans, sans-serif;
+  background: #32b4e5;
+  border-radius: 60px;
+  letter-spacing: 1px;
+  padding: 10px 20px;
+}
+.clipit-home form.clipit-home-form input.btn-primary:hover,
+.clipit-home form.clipit-home-form input.btn-primary:focus {
+  color: #bae6f6;
 }
 .alert {
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);

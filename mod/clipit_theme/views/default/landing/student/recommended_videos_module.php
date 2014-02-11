@@ -13,6 +13,39 @@ $content = '
     <div class="text">
         <h5 class="text-truncate">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</h5>
         <small>12:00H, NOV 18, 2013</small>
+        <div class="sbs">
+            <p style="color: #00a99d;border-color: #00a99d;"><a>SB</a></p>
+            <p style="color: #00a99d;border-color: #00a99d;"><a>Lorem ipsum</a></p>
+            <a style="color: #00a99d;" class="more-sbs fa fa-plus"></a>
+        </div>
+    </div>
+</div>
+<!-- endforeach-->
+<!-- foreach-->
+<div class="wrapper separator">
+    <img src="http://b.vimeocdn.com/ts/432/509/432509421_640.jpg" class="pull-left">
+    <div class="text">
+        <h5 class="text-truncate">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</h5>
+        <small>12:00H, NOV 18, 2013</small>
+        <div class="sbs">
+            <p style="color: #ed1e79;border-color: #ed1e79;"><a>SB</a></p>
+            <p style="color: #ed1e79;border-color: #ed1e79;"><a>Lorem ipsum</a></p>
+            <a style="color: #ed1e79;" class="more-sbs fa fa-plus"></a>
+        </div>
+    </div>
+</div>
+<!-- endforeach-->
+<!-- foreach-->
+<div class="wrapper separator">
+    <img src="http://b.vimeocdn.com/ts/457/585/457585184_640.jpg" class="pull-left">
+    <div class="text">
+        <h5 class="text-truncate">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</h5>
+        <small>12:00H, NOV 18, 2013</small>
+        <div class="sbs">
+            <p style="color: #00a99d;border-color: #00a99d;"><a>SB</a></p>
+            <p style="color: #00a99d;border-color: #00a99d;"><a>Lorem ipsum</a></p>
+            <a style="color: #00a99d;" class="more-sbs fa fa-plus"></a>
+        </div>
     </div>
 </div>
 <!-- endforeach-->';

@@ -9,7 +9,7 @@
  */
 
 echo'
-<div class="col-sm-6">
+<div class="col-sm-2 col-xs-4">
     <div class="contact">
         <h2>Hola!</h2>
         <img src="'.$CONFIG->wwwroot.'mod/clipit_theme/graphics/mail.png">
@@ -17,5 +17,4 @@ echo'
 </div>
 ';
 
-echo elgg_view_menu('footer_clipit', array('sort_by' => 'priority', 'class' => 'site-map col-sm-6'));
-
+echo elgg_view_menu('footer_clipit', array('sort_by' => 'priority', 'class' => 'pull-right site-map col-sm-9 col-xs-12 col-md-7 col-lg-6'));

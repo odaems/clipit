@@ -134,20 +134,7 @@ function clipit_final_init() {
     elgg_register_library('clipit:functions', elgg_get_plugins_path() . 'clipit_theme/lib/functions.php');
     elgg_load_library('clipit:functions');
     // Landing modules by role
-    switch($role){
-        case "student":
-            // add tools
-            add_landing_tool_option('pending', "Pending", "landing/student/pending_module", true);
-//            elgg_extend_view('landing/tools', 'landing/student/pending_module');
-            add_landing_tool_option('events', "Events", "landing/student/events_module", true);
-//            elgg_extend_view('landing/tools', 'landing/student/events_module');
 
-            break;
-        case "teacher":
-            break;
-        case "admin":
-            break;
-    }
 
 
 
@@ -263,8 +250,9 @@ function user_landing_page($page) {
     $content = elgg_view('landing/widgets', array('role' => $role));
     $params = array(
         'content' => $content,
-        'title' => '',
-        'filter' => '',
+        'title'     => '',
+        'filter'    => '',
+        'class'     => 'landing row'
     );
     $body = elgg_view_layout('content', $params);
 
