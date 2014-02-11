@@ -5964,6 +5964,208 @@ td.visible-print {
 .elgg-system-messages li {
   margin-top: 10px;
 }
+.elgg-page-walledgarden .bg-red {
+  background-color: #ff4343;
+}
+.elgg-page-walledgarden .bg-blue {
+  background-color: #32b4e5;
+}
+.elgg-page-walledgarden .bg-yellow {
+  background-color: #d8ba05;
+}
+.elgg-page-walledgarden .jumbotron {
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background-size: cover;
+  padding-top: 20px;
+  margin-top: -20px;
+  margin-bottom: 0;
+  border-radius: 0px;
+}
+.elgg-page-walledgarden .jumbotron h1 {
+  font-size: 54px;
+  color: #FFFFFF;
+  letter-spacing: 1px;
+  font-family: FuturaBoldRegular, Impact, 'Impact Bold', Helvetica, Arial, sans, sans-serif;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.43);
+}
+.elgg-page-walledgarden .jumbotron p {
+  color: #FFFFFF;
+  font-weight: bold;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.43);
+  font-size: 22px;
+}
+.elgg-page-walledgarden .jumbotron p.slogan {
+  margin: 20px auto;
+  width: 100%;
+}
+@media (min-width: 768px) {
+  .elgg-page-walledgarden .jumbotron p.slogan {
+    width: 490px;
+  }
+}
+.elgg-page-walledgarden .jumbotron .btn-primary {
+  padding: 10px 40px;
+  background: #32b4e5;
+  border: none;
+  font-family: FuturaBoldRegular, Impact, 'Impact Bold', Helvetica, Arial, sans, sans-serif;
+  border-radius: 60px;
+  text-shadow: none;
+  -webkit-box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.43);
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.43);
+  text-transform: uppercase;
+  margin: 10px;
+  margin-right: 50px;
+}
+.elgg-page-walledgarden .block {
+  padding: 30px;
+}
+.elgg-page-walledgarden .block img {
+  width: 175px;
+  height: 175px;
+}
+.elgg-page-walledgarden .block h2 {
+  font-family: FuturaBoldRegular, Impact, 'Impact Bold', Helvetica, Arial, sans, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 30px;
+  color: #FFFFFF;
+}
+.elgg-page-walledgarden .block p {
+  font-size: 20px;
+  color: #FFFFFF;
+  margin: 0px auto;
+}
+.elgg-page-walledgarden .social-connect {
+  padding: 50px;
+}
+.elgg-page-walledgarden .social-connect h2 {
+  font-family: FuturaBoldRegular, Impact, 'Impact Bold', Helvetica, Arial, sans, sans-serif;
+  color: #32b4e5;
+  font-size: 45px;
+  margin: 0 0 20px 0;
+}
+.elgg-page-walledgarden .social-connect img {
+  width: 80px;
+  height: 80px;
+  margin: 20px;
+}
+.elgg-page-walledgarden #modal-login .modal-header {
+  border-bottom: 0px;
+  padding-bottom: 0px;
+}
+.elgg-page-walledgarden #modal-login .modal-header h2 {
+  font-family: FuturaBoldRegular, Impact, 'Impact Bold', Helvetica, Arial, sans, sans-serif;
+  color: #32b4e5;
+  font-size: 45px;
+  margin-top: -15px;
+}
+.elgg-page-walledgarden #modal-login .modal-body {
+  padding-left: 65px;
+  padding-right: 100px;
+}
+.elgg-page-walledgarden #modal-login .modal-body form input:not([type="submit"]) {
+  background: #CFEBF5;
+  border: 0px;
+  border-radius: 0px;
+  height: 50px;
+}
+.elgg-page-walledgarden #modal-login .modal-body form input[type="checkbox"] {
+  height: auto;
+}
+.elgg-page-walledgarden #modal-login .modal-body form .btn-primary {
+  padding: 10px 20px;
+  background: #32b4e5;
+  border: none;
+  font-family: FuturaBoldRegular, Impact, 'Impact Bold', Helvetica, Arial, sans, sans-serif;
+  text-transform: uppercase;
+  text-shadow: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  border-radius: 60px;
+}
+.elgg-page-walledgarden #modal-login .modal-body form p.link {
+  color: #bae6f6;
+  margin-top: 15px;
+  margin-bottom: 0px;
+}
+.elgg-page-walledgarden #modal-login .modal-footer {
+  text-align: left;
+  border-top: 0px;
+  margin-top: 0px;
+  padding-left: 65px;
+  padding-top: 0px;
+}
+.elgg-page-walledgarden #modal-login .modal-footer .btn-primary {
+  padding: 10px 20px;
+  background: #32b4e5;
+  border: none;
+  font-family: FuturaBoldRegular, Impact, 'Impact Bold', Helvetica, Arial, sans, sans-serif;
+  text-transform: uppercase;
+  text-shadow: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  border-radius: 60px;
+}
+.elgg-page-walledgarden #modal-login .modal-footer p {
+  color: #bae6f6;
+  margin-top: 15px;
+  margin-bottom: 0px;
+}
+.bg-grey {
+  background: #F2F2F2;
+}
+.clipit-home h2 {
+  color: #32b4e5;
+  font-size: 45px;
+  font-family: FuturaBoldRegular, Impact, 'Impact Bold', Helvetica, Arial, sans, sans-serif;
+}
+.clipit-home form.clipit-home-form p.text-info {
+  font-size: 16px;
+  margin: 20px 0;
+  color: #32b4e5;
+}
+.clipit-home form.clipit-home-form p.text-info > img {
+  width: 25px;
+  height: 25px;
+  vertical-align: middle;
+}
+.clipit-home form.clipit-home-form label {
+  display: block;
+  margin: 25px 0px 10px;
+  font-size: 14px;
+  font-weight: bold;
+}
+.clipit-home form.clipit-home-form label > span.error {
+  float: right;
+  color: #ff4343;
+  font-weight: bold;
+}
+.clipit-home form.clipit-home-form input.error {
+  -webkit-box-shadow: inset 0 1px 4px #ff4343 !important;
+  box-shadow: inset 0 1px 4px #ff4343 !important;
+}
+.clipit-home form.clipit-home-form input.input-lg {
+  -webkit-box-shadow: inset 0 1px 4px 0 rgba(0, 0, 0, 0.25), 0 0 0 4px rgba(225, 235, 240, 0.5);
+  box-shadow: inset 0 1px 4px 0 rgba(0, 0, 0, 0.25), 0 0 0 4px rgba(225, 235, 240, 0.5);
+  border-radius: 0;
+  border: 0px;
+}
+.clipit-home form.clipit-home-form input.btn-primary {
+  float: none;
+  margin-left: 0px;
+  margin-top: 30px;
+  font-family: FuturaBoldRegular, Impact, 'Impact Bold', Helvetica, Arial, sans, sans-serif;
+  background: #32b4e5;
+  border-radius: 60px;
+  letter-spacing: 1px;
+  padding: 10px 20px;
+}
+.clipit-home form.clipit-home-form input.btn-primary:hover,
+.clipit-home form.clipit-home-form input.btn-primary:focus {
+  color: #bae6f6;
+}
 .landing h2.elgg-heading-main {
   display: none;
 }
