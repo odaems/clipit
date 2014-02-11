@@ -1,5 +1,0 @@
-NameError: .transition is undefined in D:\ubuntu_compartido\clipit_befe\mod\clipit_theme\bootstrap\less_old1\component-animations.less on line 12, column 3:
-11   opacity: 0;
-12   .transition(opacity .15s linear);
-13   &.in {
-
