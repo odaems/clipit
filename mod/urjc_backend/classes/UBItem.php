@@ -66,7 +66,7 @@ class UBItem{
      * Loads an instance from the system.
      *
      * @param int $id Id of the instance to load from the system.
-     * @return UBItem|bool Returns instance, or false if error.
+     * @return UBItem|null Returns instance, or null if error.
      */
     protected function _load($id){
         if(!($elgg_object = new ElggObject((int)$id))){
@@ -230,10 +230,10 @@ class UBItem{
         $elgg_object_array = elgg_get_entities(array('type' => $called_class::TYPE,
                                                      'subtype' => $called_class::SUBTYPE,
                                                      'limit' => $limit));
-        if(!$elgg_object_array){
-            return null;
-        }
         $object_array = array();
+        if(empty($elgg_object_array)){
+            return $object_array;
+        }
         foreach($elgg_object_array as $elgg_object){
             $object_array[] = new $called_class((int)$elgg_object->guid);
         }

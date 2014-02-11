@@ -25,8 +25,7 @@
 /**
  * Expose all functions for the ClipIt REST API
  */
-function expose_clipit_api(){
-    expose_gettoken();
+function clipit_expose_api(){
     $suffix_list = array(
         "clipit.activity." => "ClipitActivity::",
         "clipit.comment." => "ClipitComment::",
@@ -48,8 +47,11 @@ function expose_clipit_api(){
     foreach($suffix_list as $api_suffix => $class_suffix){
         expose_common_functions($api_suffix, $class_suffix);
     }
+    expose_general_functions();
     expose_activity_functions();
+    expose_auth_functions();
     expose_comment_functions();
+    expose_event_functions();
     expose_file_functions();
     expose_group_functions();
     expose_palette_functions();
@@ -67,33 +69,13 @@ function expose_clipit_api(){
     expose_video_functions();
 }
 
-function expose_gettoken(){
-    unexpose_function("auth.gettoken");
-    expose_function(
-        "auth.gettoken",
-        "clipit_gettoken",
-        array(
-             "login" => array(
-                 "type" => "string",
-                 "required" => true),
-             "password" => array(
-                 "type" => "string",
-                 "required" => true),
-             "timeout" => array(
-                 "type" => "int",
-                 "required" => false)),
-        "Obtain a user authentication token which can be used for authenticating future API calls. Pass it as the parameter auth_token",
-        'POST', false, false);
-}
-
-function clipit_gettoken($username, $password, $timeout = 60) {
-    if (true === elgg_authenticate($username, $password)) {
-        $token = create_user_token($username, $timeout);
-        if ($token) {
-            return $token;
-        }
-    }
-    throw new SecurityException(elgg_echo('SecurityException:authenticationfailed'));
+function what_is($id){
+    $elgg_object = new ElggObject((int)$id);
+    $object['type'] = (string)$elgg_object->type;
+    $object['subtype'] = (string)get_subtype_from_id($elgg_object->subtype);
+    $object['name'] = (string)$elgg_object->name;
+    $object['description'] = (string)$elgg_object->description;
+    return $object;
 }
 
 function expose_common_functions($api_suffix, $class_suffix){
@@ -166,7 +148,49 @@ function expose_common_functions($api_suffix, $class_suffix){
         'GET', false, true);
 }
 
+function expose_general_functions(){
+    expose_function(
+        "clipit.what_is",
+        "what_is",
+        array(
+            "id" => array(
+                "type" => "int",
+                "required" => true)),
+        "Returns basic information about an unknown object based on its id",
+        'GET', false, true);
+}
+
 function expose_activity_functions(){
+}
+
+function expose_auth_functions(){
+    $api_suffix = "clipit.auth.";
+    $class_suffix = "ClipitAuth::";
+    unexpose_function("auth.gettoken");
+    expose_function(
+        $api_suffix."get_token",
+        $class_suffix."get_token",
+        array(
+            "login" => array(
+                "type" => "string",
+                "required" => true),
+            "password" => array(
+                "type" => "string",
+                "required" => true),
+            "timeout" => array(
+                "type" => "int",
+                "required" => false)),
+        "Obtain a user authentication token which can be used for authenticating future API calls passing it as the parameter \"auth_token\"",
+        'POST', false, false);
+    expose_function(
+        $api_suffix."remove_token",
+        $class_suffix."remove_token",
+        array(
+            "token" => array(
+                "type" => "string",
+                "required" => true)),
+        "Remove an API user authentication token from the system",
+        'POST', false, true);
 }
 
 function expose_comment_functions(){
@@ -180,6 +204,44 @@ function expose_comment_functions(){
                  "type" => "array",
                  "required" => true)),
         "Get all Comments by Author Id",
+        'GET', false, true);
+}
+
+function expose_event_functions(){
+    $api_suffix = "clipit.event.";
+    $class_suffix = "ClipitEvent::";
+    expose_function(
+        $api_suffix."list_properties",
+        $class_suffix."list_properties",
+        null,
+        "Get class properties",
+        'GET', false, true);
+    expose_function(
+        $api_suffix."get_all",
+        $class_suffix."get_all",
+        array(
+            "limit" => array(
+                "type" => "int",
+                "required" => false)),
+        "Get all instances",
+        'GET', false, true);
+    expose_function(
+        $api_suffix."get_by_id",
+        $class_suffix."get_by_id",
+        array(
+            "id_array" => array(
+                "type" => "array",
+                "required" => true)),
+        "Get instances by Id",
+        'GET', false, true);
+    expose_function(
+        $api_suffix."get_by_user",
+        $class_suffix."get_by_user",
+        array(
+            "user_array" => array(
+                "type" => "array",
+                "required" => true)),
+        "Get instances by Id",
         'GET', false, true);
 }
 

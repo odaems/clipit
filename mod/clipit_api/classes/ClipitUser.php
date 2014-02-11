@@ -28,7 +28,9 @@
  * @package clipit
  */
 class ClipitUser extends UBUser{
-
-
+    /**
+     * @const string Elgg entity subtype for this class
+     */
+    const SUBTYPE = "clipit_user";
 
 }

@@ -28,6 +28,10 @@
  * @package clipit
  */
 class ClipitActivity extends UBItem{
+    /**
+     * @const string Elgg entity subtype for this class
+     */
+    const SUBTYPE = "clipit_activity";
 
     // Class properties
     public $description;

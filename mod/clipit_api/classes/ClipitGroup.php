@@ -28,14 +28,12 @@
  * @package clipit
  */
 class ClipitGroup extends UBCollection{
+    /**
+     * @const string Elgg entity subtype for this class
+     */
+    const SUBTYPE = "clipit_group";
 
-    // Class properties
-    public $activity_array = array(ClipitActivity);
-    public $description = string;
-    public $id = int;
-    public $name = string;
-    public $user_array = array(ClipitUser);
-    public $creation_date = DateTime;
-
+    public $item_type = "user";
+    public $item_subtype = "";
 
 }
