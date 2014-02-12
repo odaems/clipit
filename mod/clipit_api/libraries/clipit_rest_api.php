@@ -26,6 +26,7 @@
  * Expose all functions for the ClipIt REST API
  */
 function clipit_expose_api(){
+    // We don't add classes like ClipitEvent or ClipIt Site which don't extend ClipitItem
     $suffix_list = array(
         "clipit.activity." => "ClipitActivity::",
         "clipit.comment." => "ClipitComment::",
@@ -35,7 +36,6 @@ function clipit_expose_api(){
         "clipit.quiz." => "ClipitQuiz::",
         "clipit.quiz.question." => "ClipitQuizQuestion::",
         "clipit.quiz.result." => "ClipitQuizResult::",
-        "clipit.site." => "ClipitQuizSite::",
         "clipit.sta." => "ClipitSTA::",
         "clipit.storyboard." => "ClipitStoryboard::",
         "clipit.taxonomy." => "ClipitTaxonomy::",
@@ -47,9 +47,7 @@ function clipit_expose_api(){
     foreach($suffix_list as $api_suffix => $class_suffix){
         expose_common_functions($api_suffix, $class_suffix);
     }
-    expose_general_functions();
     expose_activity_functions();
-    expose_auth_functions();
     expose_comment_functions();
     expose_event_functions();
     expose_file_functions();
@@ -69,14 +67,7 @@ function clipit_expose_api(){
     expose_video_functions();
 }
 
-function what_is($id){
-    $elgg_object = new ElggObject((int)$id);
-    $object['type'] = (string)$elgg_object->type;
-    $object['subtype'] = (string)get_subtype_from_id($elgg_object->subtype);
-    $object['name'] = (string)$elgg_object->name;
-    $object['description'] = (string)$elgg_object->description;
-    return $object;
-}
+
 
 function expose_common_functions($api_suffix, $class_suffix){
     expose_function(
@@ -118,7 +109,6 @@ function expose_common_functions($api_suffix, $class_suffix){
                  "required" => true)),
         "Create a new instance, set property=>value array and save into the system",
         'POST', false, true);
-
     expose_function(
         $api_suffix."delete_by_id",
         $class_suffix."delete_by_id",
@@ -148,49 +138,7 @@ function expose_common_functions($api_suffix, $class_suffix){
         'GET', false, true);
 }
 
-function expose_general_functions(){
-    expose_function(
-        "clipit.what_is",
-        "what_is",
-        array(
-            "id" => array(
-                "type" => "int",
-                "required" => true)),
-        "Returns basic information about an unknown object based on its id",
-        'GET', false, true);
-}
-
 function expose_activity_functions(){
-}
-
-function expose_auth_functions(){
-    $api_suffix = "clipit.auth.";
-    $class_suffix = "ClipitAuth::";
-    unexpose_function("auth.gettoken");
-    expose_function(
-        $api_suffix."get_token",
-        $class_suffix."get_token",
-        array(
-            "login" => array(
-                "type" => "string",
-                "required" => true),
-            "password" => array(
-                "type" => "string",
-                "required" => true),
-            "timeout" => array(
-                "type" => "int",
-                "required" => false)),
-        "Obtain a user authentication token which can be used for authenticating future API calls passing it as the parameter \"auth_token\"",
-        'POST', false, false);
-    expose_function(
-        $api_suffix."remove_token",
-        $class_suffix."remove_token",
-        array(
-            "token" => array(
-                "type" => "string",
-                "required" => true)),
-        "Remove an API user authentication token from the system",
-        'POST', false, true);
 }
 
 function expose_comment_functions(){
@@ -249,6 +197,41 @@ function expose_file_functions(){
 }
 
 function expose_group_functions(){
+    $api_suffix = "clipit.group.";
+    $class_suffix = "ClipitGroup::";
+    expose_function(
+        $api_suffix."add_users",
+        $class_suffix."add_users",
+        array(
+            "id" => array(
+                "type" => "int",
+                "required" => true),
+            "user_array" => array(
+                "type" => "array",
+                "required" => true)),
+        "Add Users by Id to a Group",
+        "POST", false, true);
+    expose_function(
+        $api_suffix."remove_users",
+        $class_suffix."remove_users",
+        array(
+            "id" => array(
+                "type" => "int",
+                "required" => true),
+            "user_array" => array(
+                "type" => "array",
+                "required" => true)),
+        "Removes Users by Id from a Group",
+        "POST", false, true);
+    expose_function(
+        $api_suffix."get_users",
+        $class_suffix."get_users",
+        array(
+            "id" => array(
+                "type" => "int",
+                "required" => true)),
+        "Gets Users inside a Group",
+        "GET", false, true);
 }
 
 function expose_palette_functions(){
@@ -354,6 +337,49 @@ function expose_quiz_result_functions(){
 }
 
 function expose_site_functions(){
+    $api_suffix = "clipit.site.";
+    $class_suffix = "ClipitSite::";
+    unexpose_function("system.api.list");
+    expose_function(
+        $api_suffix."api_list",
+        $class_suffix."api_list",
+        null,
+        "Return the API method list, including description and required parameters.",
+        'GET', false, false);
+    unexpose_function("auth.gettoken");
+    expose_function(
+        $api_suffix."get_token",
+        $class_suffix."get_token",
+        array(
+            "login" => array(
+                "type" => "string",
+                "required" => true),
+            "password" => array(
+                "type" => "string",
+                "required" => true),
+            "timeout" => array(
+                "type" => "int",
+                "required" => false)),
+        "Obtain a user authentication token which can be used for authenticating future API calls passing it as the parameter \"auth_token\"",
+        'POST', false, false);
+    expose_function(
+        $api_suffix."remove_token",
+        $class_suffix."remove_token",
+        array(
+            "token" => array(
+                "type" => "string",
+                "required" => true)),
+        "Remove an API user authentication token from the system",
+        'POST', false, true);
+    expose_function(
+        $api_suffix."lookup",
+        $class_suffix."lookup",
+        array(
+            "id" => array(
+                "type" => "int",
+                "required" => true)),
+        "Returns basic information about an unknown object based on its id",
+        'GET', false, true);
 }
 
 function expose_sta_functions(){

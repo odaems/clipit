@@ -28,17 +28,6 @@
  *
  * @package clipit
  */
-class ClipitSite{
-    // Class properties
-    public $description = string;
-    public $id = int;
-    public $name = string;
-    public $quiz_array = array(ClipitQuiz);
-    public $sta_array = array(ClipitSTA);
-    public $storyboard_array = array(ClipitStoryboard);
-    public $taxonomy_array = array(ClipitTaxonomy);
-    public $user_array = array(ClipitUser);
-    public $video_array = array(ClipitVideo);
-
+class ClipitSite extends UBSite{
 
 }
