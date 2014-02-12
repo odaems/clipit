@@ -32,10 +32,12 @@ if (is_array($breadcrumbs) && count($breadcrumbs) > 0) {
 				'text' => $breadcrumb['title'],
 				'is_trusted' => true,
 			));
+            $class_active = "";
 		} else {
 			$crumb = $breadcrumb['title'];
+            $class_active = 'class="active"';
 		}
-		echo "<li>$crumb</li>";
+		echo "<li $class_active>$crumb</li>";
 	}
 	echo '</ol>';
 }
