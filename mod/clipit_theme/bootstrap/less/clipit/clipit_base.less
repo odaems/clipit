@@ -7,6 +7,7 @@
 @import "clipit_elgg_mod";
 @import "walled_garden";
 @import "content";
+@import "forms";
 @import "widgets";
 @import "header";
 @import "footer";
@@ -315,9 +316,13 @@ h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6{
 .nav-stacked {
   a{
     color: @blue_clipit;
-    font-family: @font-family-helvetica;
-    letter-spacing: 1px;
+    letter-spacing: 0px;
+    font-weight: bold;
     font-size: 15px;
+    &:hover,
+    &:focus{
+      background-color: #FFF;
+    }
     > .badge{
       border: 2px solid #FFF !important;
     }

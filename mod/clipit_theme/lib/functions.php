@@ -12,7 +12,7 @@ function activity_color(){
 }
 
 // Inutilizado
-function add_landing_tool_option($name, $label, $view, $default_on = true) {
+function OLD_add_landing_tool_option($name, $label, $view, $default_on = true) {
     global $CONFIG;
 
     if (!isset($CONFIG->landing_tool_options)) {
@@ -27,4 +27,15 @@ function add_landing_tool_option($name, $label, $view, $default_on = true) {
     $landing_tool_option->default_on = $default_on;
 
     $CONFIG->landing_tool_options[] = $landing_tool_option;
+}
+
+
+function add_landing_tool_option($context, array $options) {
+    global $CONFIG;
+
+    if (!isset($CONFIG->landing_tool_options)) {
+        $CONFIG->landing_tool_options = array();
+    }
+
+    $CONFIG->landing_tool_options[$context][] = $options;
 }

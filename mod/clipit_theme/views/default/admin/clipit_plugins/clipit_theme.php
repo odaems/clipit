@@ -1,6 +1,5 @@
 <?php
 $plugin = elgg_get_plugin_from_id('clipit_theme');
-$entity = get_entity(99);
 
 
 $form.= "<p><label>Mensaje principal</label>";
