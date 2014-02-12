@@ -13,10 +13,63 @@
 
 
 //
-// Elgg one layout
+// Elgg one layout with sidebar
 // --------------------------------------------------
 .elgg-layout-one-sidebar{
   .make-row();
+
+  // Elgg main
+  .elgg-main{
+    .make-md-column(9);
+    // Head
+    h2{
+      color: @blue_clipit;
+    }
+    .elgg-head{
+      h2.elgg-heading-main{
+        color: @blue_clipit;
+        margin-top: 0;
+        .pull-left();
+      }
+      ul.elgg-menu{
+        margin: 0;
+        .pull-right();
+        // Button
+        li.elgg-menu-item-add{
+          .text-right();
+          a{
+            .btn();
+            .btn-default();
+          }
+        }
+      }
+    }
+    // Tabs
+    .elgg-htabs{
+      .nav();
+      .nav-tabs();
+    }
+
+    // Body content
+    .elgg-content,
+    ul.elgg-list-entity{
+      background: #FFF;
+      clear: both;
+      padding: 15px;
+
+      > li.elgg-item{
+        h3{
+          font-size: 1.2em;
+          margin: 0;
+        }
+        .elgg-image{
+          .pull-left();
+          margin-right: 5px;
+        }
+      }
+    }
+
+  }
 }
 
 //
@@ -48,54 +101,4 @@
   }
 }
 
-//
-// Elgg main
-// --------------------------------------------------
-.elgg-main{
-  .make-md-column(9);
-  // Head
-  .elgg-head{
-    h2.elgg-heading-main{
-      color: @blue_clipit;
-      margin-top: 0;
-      .pull-left();
-    }
-    ul.elgg-menu{
-      margin: 0;
-      .pull-right();
-      // Button
-      li.elgg-menu-item-add{
-        .text-right();
-        a{
-          .btn();
-          .btn-default();
-        }
-      }
-    }
-  }
-  // Tabs
-  .elgg-htabs{
-    .nav();
-    .nav-tabs();
-  }
 
-  // Body content
-  .elgg-content,
-  ul.elgg-list-entity{
-    background: #FFF;
-    clear: both;
-    padding: 15px;
-
-    > li.elgg-item{
-        h3{
-          font-size: 1.2em;
-          margin: 0;
-        }
-        .elgg-image{
-          .pull-left();
-          margin-right: 5px;
-        }
-    }
-  }
-
-}

@@ -18,9 +18,10 @@ $class = elgg_extract('class', $vars, false);
 }
 */
 $viewer = elgg_get_logged_in_user_entity();
+$context = elgg_get_context();
 ?>
 <ul class="<?php echo $class; ?>">
-    <li>
+    <li <?php if ($context == "settings") echo "class='open'"; ?>>
         <a title="<?php echo $viewer->name; ?>" class="avatar-user text-truncate" href="<?php echo $CONFIG->wwwroot; ?>profile/<?php echo $viewer->username; ?>">
         <?php echo elgg_view('output/img', array(
             'src' => $viewer->getIconURL('small'),
@@ -34,7 +35,7 @@ $viewer = elgg_get_logged_in_user_entity();
     <li class="separator">|</li>
     <li><a href="<?php echo $CONFIG->wwwroot; ?>profile/<?php echo $viewer->username; ?>">My activities</a></li>
     <li class="separator">|</li>
-    <li <?php if ($context == "settings") echo "class='active'"; ?>><a href="<?php echo $url; ?>explore"><?=elgg_echo("Explore");?></a></li>
+    <li><a href="<?php echo $url; ?>explore"><?=elgg_echo("Explore");?></a></li>
     <li>
         <a id="notifications" role="button" data-toggle="dropdown" href="javascript:;">
             <span class="badge">10</span>
