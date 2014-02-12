@@ -130,6 +130,15 @@ abstract class UBCollection extends UBItem{
     }
 
     /**
+     * Returns items from this collection.
+     *
+     * @return array Array of items in this Collection.
+     */
+    function getItems(){
+        return $this->item_array;
+    }
+
+    /**
      * Adds Items to a Collection.
      *
      * @param int $id Id from Collection to add Items to
@@ -147,9 +156,9 @@ abstract class UBCollection extends UBItem{
     /**
      * Remove Items from a Collection.
      *
-     * @param int $id Id from Collection to remove Items from
-     * @param array $item_array Array of Items to remove
-     * @return bool Returns true if success, false if error
+     * @param int $id Id from Collection to remove Items from.
+     * @param array $item_array Array of Items to remove.
+     * @return bool Returns true if success, false if error.
      */
     static function remove_items($id, $item_array){
         $called_class = get_called_class();
@@ -160,26 +169,17 @@ abstract class UBCollection extends UBItem{
     }
 
     /**
-     * Get all Objects of this TYPE/SUBTYPE from the system.
+     * Get Items from a Collection.
      *
-     * @param int $limit Number of results to show, default= 0 [no limit] (optional)
-     * @return array Returns an array of Objects
+     * @param int $id Id from Collection to get Items from.
+     * @return array|bool Returns an array of Item IDs, or false if error.
      */
-    static function get_all($limit = 0){
+    static function get_items($id){
         $called_class = get_called_class();
-        $elgg_object_array = elgg_get_entities(
-            array(
-                'type' => $called_class::TYPE,
-                'subtype' => $called_class::SUBTYPE,
-                'limit' => $limit));
-        $object_array = array();
-        if(empty($elgg_object_array)){
-            return $object_array;
+        if(!$collection = new $called_class($id)){
+            return false;
         }
-        foreach($elgg_object_array as $elgg_object){
-            $object_array[] = new $called_class((int)$elgg_object->guid);
-        }
-        return $object_array;
+        return $collection->getItems();
     }
 
 }

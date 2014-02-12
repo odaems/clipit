@@ -36,4 +36,24 @@ class ClipitGroup extends UBCollection{
     public $item_type = "user";
     public $item_subtype = "";
 
+    static function add_users($id, $user_array){
+        if(!$group = new ClipitGroup($id)){
+            return false;
+        }
+        return $group->addItems($user_array);
+    }
+
+    static function remove_users($id, $user_array){
+        if(!$group = new ClipitGroup($id)){
+            return false;
+        }
+        return $group->removeItems($user_array);
+    }
+
+    static function get_users($id){
+        if(!$group = new ClipitGroup($id)){
+            return false;
+        }
+        return $group->getItems();
+    }
 }
