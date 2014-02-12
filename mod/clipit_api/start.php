@@ -33,7 +33,7 @@ elgg_register_event_handler('init', 'system', 'clipit_api_init');
 function clipit_api_init(){
     loadFiles(elgg_get_plugins_path()."clipit_api/libraries/");
     clipit_expose_api();
-    clipit_register_subtypes();
+    //clipit_register_subtypes();
 }
 
 function clipit_register_subtypes(){

@@ -227,9 +227,11 @@ class UBItem{
      */
     static function get_all($limit = 0){
         $called_class = get_called_class();
-        $elgg_object_array = elgg_get_entities(array('type' => $called_class::TYPE,
-                                                     'subtype' => $called_class::SUBTYPE,
-                                                     'limit' => $limit));
+        $elgg_object_array = elgg_get_entities(
+            array(
+                'type' => $called_class::TYPE,
+                'subtype' => $called_class::SUBTYPE,
+                'limit' => $limit));
         $object_array = array();
         if(empty($elgg_object_array)){
             return $object_array;
