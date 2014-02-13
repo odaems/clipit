@@ -1,3 +1,11 @@
+<script>
+$(function(){
+    // Auto focus, username input
+    $('#modal-login').on('shown.bs.modal', function () {
+        $('#inputUsername').focus();
+    });
+});
+</script>
 <!-- Jumbotron -->
 <div class="jumbotron" style="background-image: url(<?php echo $vars['bg_img'];?>)">
     <div class="text-center">

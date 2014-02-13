@@ -28,6 +28,41 @@ if ($user) {
 	$password2 = "<p>$password2</p>";
 
 	$content = $admin . $password . $password2;
-
+    // Current password
+    $input_name_current = 'current_password';
+    $input_current = elgg_view('input/password', array(
+        'class' => 'form-control',
+        'name'  => $input_name_current,
+        'id'    => $input_name_current,
+    ));
+    $content = elgg_view("input/form_group", array(
+        'label' => elgg_echo('user:current_password:label').':',
+        'name'  => $input_name_current,
+        'input' => $input_current
+    ));
+    // new password
+    $input_name_pw1 = 'password';
+    $input_pw1 = elgg_view('input/password', array(
+        'class' => 'form-control',
+        'name'  => $input_name_pw1,
+        'id'    => $input_name_pw1,
+    ));
+    $content .= elgg_view("input/form_group", array(
+        'label' => elgg_echo('user:password:label').':',
+        'name'  => $input_name_pw1,
+        'input' => $input_pw1
+    ));
+    // repeat new password
+    $input_name_pw2 = 'password2';
+    $input_pw2 = elgg_view('input/password', array(
+        'class' => 'form-control',
+        'name'  => $input_name_pw2,
+        'id'    => $input_name_pw2,
+    ));
+    $content .= elgg_view("input/form_group", array(
+        'label' => elgg_echo('user:password2:label').':',
+        'name'  => $input_name_pw2,
+        'input' => $input_pw2
+    ));
 	echo elgg_view_module('info', $title, $content);
 }

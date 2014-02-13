@@ -6175,6 +6175,20 @@ td.visible-print {
   height: 25px;
   display: block;
 }
+.breadcrumb {
+  padding: 2px 0;
+  margin-bottom: 0;
+  margin-top: -15px;
+  background: transparent;
+  border-radius: 0;
+  font-size: 85%;
+}
+.breadcrumb li:first-child:before {
+  content: "\f054";
+  padding: 0 5px;
+  font-family: FontAwesome;
+  color: #32b4e5;
+}
 .elgg-layout-one-sidebar {
   margin-left: -15px;
   margin-right: -15px;
@@ -6210,19 +6224,23 @@ td.visible-print {
 .elgg-layout-one-sidebar .elgg-main h2 {
   color: #32b4e5;
 }
-.elgg-layout-one-sidebar .elgg-main .elgg-head h2.elgg-heading-main {
+.elgg-layout-one-sidebar .elgg-main .content {
+  background: #FFF;
+  padding: 15px;
+}
+.elgg-layout-one-sidebar .elgg-main .content .elgg-head h2.elgg-heading-main {
   color: #32b4e5;
   margin-top: 0;
   float: left !important;
 }
-.elgg-layout-one-sidebar .elgg-main .elgg-head ul.elgg-menu {
+.elgg-layout-one-sidebar .elgg-main .content .elgg-head ul.elgg-menu {
   margin: 0;
   float: right !important;
 }
-.elgg-layout-one-sidebar .elgg-main .elgg-head ul.elgg-menu li.elgg-menu-item-add {
+.elgg-layout-one-sidebar .elgg-main .content .elgg-head ul.elgg-menu li.elgg-menu-item-add {
   text-align: right;
 }
-.elgg-layout-one-sidebar .elgg-main .elgg-head ul.elgg-menu li.elgg-menu-item-add a {
+.elgg-layout-one-sidebar .elgg-main .content .elgg-head ul.elgg-menu li.elgg-menu-item-add a {
   display: inline-block;
   margin-bottom: 0;
   font-weight: normal;
@@ -6254,26 +6272,26 @@ td.visible-print {
   border-radius: 7px;
   letter-spacing: 1px;
 }
-.elgg-layout-one-sidebar .elgg-main .elgg-head ul.elgg-menu li.elgg-menu-item-add a:focus {
+.elgg-layout-one-sidebar .elgg-main .content .elgg-head ul.elgg-menu li.elgg-menu-item-add a:focus {
   outline: thin dotted;
   outline: 5px auto -webkit-focus-ring-color;
   outline-offset: -2px;
 }
-.elgg-layout-one-sidebar .elgg-main .elgg-head ul.elgg-menu li.elgg-menu-item-add a:hover,
-.elgg-layout-one-sidebar .elgg-main .elgg-head ul.elgg-menu li.elgg-menu-item-add a:focus {
+.elgg-layout-one-sidebar .elgg-main .content .elgg-head ul.elgg-menu li.elgg-menu-item-add a:hover,
+.elgg-layout-one-sidebar .elgg-main .content .elgg-head ul.elgg-menu li.elgg-menu-item-add a:focus {
   color: #333333;
   text-decoration: none;
 }
-.elgg-layout-one-sidebar .elgg-main .elgg-head ul.elgg-menu li.elgg-menu-item-add a:active,
-.elgg-layout-one-sidebar .elgg-main .elgg-head ul.elgg-menu li.elgg-menu-item-add a.active {
+.elgg-layout-one-sidebar .elgg-main .content .elgg-head ul.elgg-menu li.elgg-menu-item-add a:active,
+.elgg-layout-one-sidebar .elgg-main .content .elgg-head ul.elgg-menu li.elgg-menu-item-add a.active {
   outline: 0;
   background-image: none;
   -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
   box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
 }
-.elgg-layout-one-sidebar .elgg-main .elgg-head ul.elgg-menu li.elgg-menu-item-add a.disabled,
-.elgg-layout-one-sidebar .elgg-main .elgg-head ul.elgg-menu li.elgg-menu-item-add a[disabled],
-fieldset[disabled] .elgg-layout-one-sidebar .elgg-main .elgg-head ul.elgg-menu li.elgg-menu-item-add a {
+.elgg-layout-one-sidebar .elgg-main .content .elgg-head ul.elgg-menu li.elgg-menu-item-add a.disabled,
+.elgg-layout-one-sidebar .elgg-main .content .elgg-head ul.elgg-menu li.elgg-menu-item-add a[disabled],
+fieldset[disabled] .elgg-layout-one-sidebar .elgg-main .content .elgg-head ul.elgg-menu li.elgg-menu-item-add a {
   cursor: not-allowed;
   pointer-events: none;
   opacity: 0.65;
@@ -6281,53 +6299,53 @@ fieldset[disabled] .elgg-layout-one-sidebar .elgg-main .elgg-head ul.elgg-menu l
   -webkit-box-shadow: none;
   box-shadow: none;
 }
-.elgg-layout-one-sidebar .elgg-main .elgg-head ul.elgg-menu li.elgg-menu-item-add a:hover,
-.elgg-layout-one-sidebar .elgg-main .elgg-head ul.elgg-menu li.elgg-menu-item-add a:focus,
-.elgg-layout-one-sidebar .elgg-main .elgg-head ul.elgg-menu li.elgg-menu-item-add a:active,
-.elgg-layout-one-sidebar .elgg-main .elgg-head ul.elgg-menu li.elgg-menu-item-add a.active,
-.open .dropdown-toggle.elgg-layout-one-sidebar .elgg-main .elgg-head ul.elgg-menu li.elgg-menu-item-add a {
+.elgg-layout-one-sidebar .elgg-main .content .elgg-head ul.elgg-menu li.elgg-menu-item-add a:hover,
+.elgg-layout-one-sidebar .elgg-main .content .elgg-head ul.elgg-menu li.elgg-menu-item-add a:focus,
+.elgg-layout-one-sidebar .elgg-main .content .elgg-head ul.elgg-menu li.elgg-menu-item-add a:active,
+.elgg-layout-one-sidebar .elgg-main .content .elgg-head ul.elgg-menu li.elgg-menu-item-add a.active,
+.open .dropdown-toggle.elgg-layout-one-sidebar .elgg-main .content .elgg-head ul.elgg-menu li.elgg-menu-item-add a {
   color: #333333;
   background-color: #ebebeb;
   border-color: #adadad;
 }
-.elgg-layout-one-sidebar .elgg-main .elgg-head ul.elgg-menu li.elgg-menu-item-add a:active,
-.elgg-layout-one-sidebar .elgg-main .elgg-head ul.elgg-menu li.elgg-menu-item-add a.active,
-.open .dropdown-toggle.elgg-layout-one-sidebar .elgg-main .elgg-head ul.elgg-menu li.elgg-menu-item-add a {
+.elgg-layout-one-sidebar .elgg-main .content .elgg-head ul.elgg-menu li.elgg-menu-item-add a:active,
+.elgg-layout-one-sidebar .elgg-main .content .elgg-head ul.elgg-menu li.elgg-menu-item-add a.active,
+.open .dropdown-toggle.elgg-layout-one-sidebar .elgg-main .content .elgg-head ul.elgg-menu li.elgg-menu-item-add a {
   background-image: none;
 }
-.elgg-layout-one-sidebar .elgg-main .elgg-head ul.elgg-menu li.elgg-menu-item-add a.disabled,
-.elgg-layout-one-sidebar .elgg-main .elgg-head ul.elgg-menu li.elgg-menu-item-add a[disabled],
-fieldset[disabled] .elgg-layout-one-sidebar .elgg-main .elgg-head ul.elgg-menu li.elgg-menu-item-add a,
-.elgg-layout-one-sidebar .elgg-main .elgg-head ul.elgg-menu li.elgg-menu-item-add a.disabled:hover,
-.elgg-layout-one-sidebar .elgg-main .elgg-head ul.elgg-menu li.elgg-menu-item-add a[disabled]:hover,
-fieldset[disabled] .elgg-layout-one-sidebar .elgg-main .elgg-head ul.elgg-menu li.elgg-menu-item-add a:hover,
-.elgg-layout-one-sidebar .elgg-main .elgg-head ul.elgg-menu li.elgg-menu-item-add a.disabled:focus,
-.elgg-layout-one-sidebar .elgg-main .elgg-head ul.elgg-menu li.elgg-menu-item-add a[disabled]:focus,
-fieldset[disabled] .elgg-layout-one-sidebar .elgg-main .elgg-head ul.elgg-menu li.elgg-menu-item-add a:focus,
-.elgg-layout-one-sidebar .elgg-main .elgg-head ul.elgg-menu li.elgg-menu-item-add a.disabled:active,
-.elgg-layout-one-sidebar .elgg-main .elgg-head ul.elgg-menu li.elgg-menu-item-add a[disabled]:active,
-fieldset[disabled] .elgg-layout-one-sidebar .elgg-main .elgg-head ul.elgg-menu li.elgg-menu-item-add a:active,
-.elgg-layout-one-sidebar .elgg-main .elgg-head ul.elgg-menu li.elgg-menu-item-add a.disabled.active,
-.elgg-layout-one-sidebar .elgg-main .elgg-head ul.elgg-menu li.elgg-menu-item-add a[disabled].active,
-fieldset[disabled] .elgg-layout-one-sidebar .elgg-main .elgg-head ul.elgg-menu li.elgg-menu-item-add a.active {
+.elgg-layout-one-sidebar .elgg-main .content .elgg-head ul.elgg-menu li.elgg-menu-item-add a.disabled,
+.elgg-layout-one-sidebar .elgg-main .content .elgg-head ul.elgg-menu li.elgg-menu-item-add a[disabled],
+fieldset[disabled] .elgg-layout-one-sidebar .elgg-main .content .elgg-head ul.elgg-menu li.elgg-menu-item-add a,
+.elgg-layout-one-sidebar .elgg-main .content .elgg-head ul.elgg-menu li.elgg-menu-item-add a.disabled:hover,
+.elgg-layout-one-sidebar .elgg-main .content .elgg-head ul.elgg-menu li.elgg-menu-item-add a[disabled]:hover,
+fieldset[disabled] .elgg-layout-one-sidebar .elgg-main .content .elgg-head ul.elgg-menu li.elgg-menu-item-add a:hover,
+.elgg-layout-one-sidebar .elgg-main .content .elgg-head ul.elgg-menu li.elgg-menu-item-add a.disabled:focus,
+.elgg-layout-one-sidebar .elgg-main .content .elgg-head ul.elgg-menu li.elgg-menu-item-add a[disabled]:focus,
+fieldset[disabled] .elgg-layout-one-sidebar .elgg-main .content .elgg-head ul.elgg-menu li.elgg-menu-item-add a:focus,
+.elgg-layout-one-sidebar .elgg-main .content .elgg-head ul.elgg-menu li.elgg-menu-item-add a.disabled:active,
+.elgg-layout-one-sidebar .elgg-main .content .elgg-head ul.elgg-menu li.elgg-menu-item-add a[disabled]:active,
+fieldset[disabled] .elgg-layout-one-sidebar .elgg-main .content .elgg-head ul.elgg-menu li.elgg-menu-item-add a:active,
+.elgg-layout-one-sidebar .elgg-main .content .elgg-head ul.elgg-menu li.elgg-menu-item-add a.disabled.active,
+.elgg-layout-one-sidebar .elgg-main .content .elgg-head ul.elgg-menu li.elgg-menu-item-add a[disabled].active,
+fieldset[disabled] .elgg-layout-one-sidebar .elgg-main .content .elgg-head ul.elgg-menu li.elgg-menu-item-add a.active {
   background-color: #ffffff;
   border-color: #cccccc;
 }
-.elgg-layout-one-sidebar .elgg-main .elgg-head ul.elgg-menu li.elgg-menu-item-add a .badge {
+.elgg-layout-one-sidebar .elgg-main .content .elgg-head ul.elgg-menu li.elgg-menu-item-add a .badge {
   color: #ffffff;
   background-color: #fff;
 }
-.elgg-layout-one-sidebar .elgg-main .elgg-head ul.elgg-menu li.elgg-menu-item-add a:hover,
-.elgg-layout-one-sidebar .elgg-main .elgg-head ul.elgg-menu li.elgg-menu-item-add a:focus {
+.elgg-layout-one-sidebar .elgg-main .content .elgg-head ul.elgg-menu li.elgg-menu-item-add a:hover,
+.elgg-layout-one-sidebar .elgg-main .content .elgg-head ul.elgg-menu li.elgg-menu-item-add a:focus {
   background-color: #1ba1d3;
   background-position: 0 -15px;
 }
-.elgg-layout-one-sidebar .elgg-main .elgg-head ul.elgg-menu li.elgg-menu-item-add a:active,
-.elgg-layout-one-sidebar .elgg-main .elgg-head ul.elgg-menu li.elgg-menu-item-add a.active {
+.elgg-layout-one-sidebar .elgg-main .content .elgg-head ul.elgg-menu li.elgg-menu-item-add a:active,
+.elgg-layout-one-sidebar .elgg-main .content .elgg-head ul.elgg-menu li.elgg-menu-item-add a.active {
   background-color: #1993c1;
 }
-.elgg-layout-one-sidebar .elgg-main .elgg-head ul.elgg-menu li.elgg-menu-item-add a:hover,
-.elgg-layout-one-sidebar .elgg-main .elgg-head ul.elgg-menu li.elgg-menu-item-add a:focus {
+.elgg-layout-one-sidebar .elgg-main .content .elgg-head ul.elgg-menu li.elgg-menu-item-add a:hover,
+.elgg-layout-one-sidebar .elgg-main .content .elgg-head ul.elgg-menu li.elgg-menu-item-add a:focus {
   color: #FFF;
 }
 .elgg-layout-one-sidebar .elgg-main .elgg-htabs {
@@ -6515,7 +6533,7 @@ fieldset[disabled] .elgg-layout-one-sidebar .elgg-main .elgg-head ul.elgg-menu l
   min-height: 1px;
   padding-left: 15px;
   padding-right: 15px;
-  float: right !important;
+  margin-top: 20px;
 }
 @media (min-width: 992px) {
   .elgg-sidebar {
@@ -6646,20 +6664,21 @@ fieldset[disabled] .elgg-sidebar input.elgg-button-submit.active {
   border: 0;
 }
 form.form-horizontal label {
-  text-align: right;
-  padding-top: 0;
-  margin: 0;
-  position: relative;
-  min-height: 1px;
-  padding-left: 15px;
-  padding-right: 15px;
   color: #797979;
 }
-@media (min-width: 992px) {
-  form.form-horizontal label {
-    float: left;
-    width: 25%;
-  }
+form.form-horizontal select {
+  height: 30px;
+  padding: 5px 16px;
+}
+form .elgg-module {
+  background: #FFF;
+  margin-bottom: 10px;
+  border-radius: 3px;
+  overflow: hidden;
+}
+form .elgg-module h3 {
+  margin-top: 0;
+  color: #32b4e5;
 }
 .landing h2.elgg-heading-main {
   display: none;
@@ -7464,10 +7483,12 @@ h6,
   letter-spacing: 0px;
   font-weight: bold;
   font-size: 15px;
+  background: #FFF;
+  margin-bottom: 5px;
 }
 .nav-stacked a:hover,
 .nav-stacked a:focus {
-  background-color: #FFF;
+  background-color: #bae6f6 !important;
 }
 .nav-stacked a > .badge {
   border: 2px solid #FFF !important;
