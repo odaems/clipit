@@ -92,6 +92,9 @@ class ClipitQuizQuestion extends UBItem{
         $elgg_object->tag_array = (array) $this->tag_array;
         $elgg_object->option_type = (string) $this->option_type;
         $elgg_object->video = (int) $this->video;
+        $elgg_object->owner_guid = 0;
+        $elgg_object->container_guid = 0;
+        $elgg_object->access_id = ACCESS_PUBLIC;
         $elgg_object->save();
         return $this->id = $elgg_object->guid;
     }

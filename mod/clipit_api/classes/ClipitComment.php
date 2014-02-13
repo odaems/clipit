@@ -98,6 +98,9 @@ class ClipitComment extends UBItem{
         $elgg_object->author = (int)$this->author;
         $elgg_object->overall = (bool)$this->overall;
         $elgg_object->rating_array = (array)$this->rating_array;
+        $elgg_object->owner_guid = 0;
+        $elgg_object->container_guid = 0;
+        $elgg_object->access_id = ACCESS_PUBLIC;
         $elgg_object->save();
         return $this->id = $elgg_object->guid;
     }

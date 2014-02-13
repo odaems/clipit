@@ -32,24 +32,43 @@ class ClipitGroup extends UBCollection{
      * @const string Elgg entity subtype for this class
      */
     const SUBTYPE = "clipit_group";
+    /**
+     * @const string Details name for collection relationships.
+     */
+    const DEFAULT_RELATIONSHIP = "group_contains";
 
-    public $item_type = "user";
-    public $item_subtype = "";
-
+    /**
+     * Add Users to a Group.
+     *
+     * @param int $id Id of the Group to add Users to.
+     * @param array $user_array Array of User Ids to add to the Group.
+     * @return bool Returns true if added correctly, or false if error.
+     */
     static function add_users($id, $user_array){
         if(!$group = new ClipitGroup($id)){
             return false;
         }
         return $group->addItems($user_array);
     }
-
+    /**
+     * Remove Users from a Group.
+     *
+     * @param int $id Id of the Group to remove Users from.
+     * @param array $user_array Array of User Ids to remove from the Group.
+     * @return bool Returns true if removed correctly, or false if error.
+     */
     static function remove_users($id, $user_array){
         if(!$group = new ClipitGroup($id)){
             return false;
         }
         return $group->removeItems($user_array);
     }
-
+    /**
+     * Get User Ids from a Group.
+     *
+     * @param int $id Id of the Group to get Users from.
+     * @return bool Returns array of User Ids, or false if error.
+     */
     static function get_users($id){
         if(!$group = new ClipitGroup($id)){
             return false;

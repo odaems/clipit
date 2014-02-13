@@ -430,6 +430,15 @@ function expose_user_functions(){
                  "required" => true)),
         "Get all instances by role. The result is a nested array, with an array of users per role.",
         'GET', false, true);
+    expose_function(
+        $api_suffix."get_groups",
+        $class_suffix."get_groups",
+        array(
+            "id" => array(
+                "type" => "int",
+                "required" => true)),
+        "Get all Group Ids in which this user is a member of.",
+        'GET', false, true);
 }
 
 function expose_video_functions(){

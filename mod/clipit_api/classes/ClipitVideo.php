@@ -91,6 +91,9 @@ class ClipitVideo extends UBItem{
         $elgg_object->link = (int)$this->link;
         $elgg_object->comment_array = (array)$this->comment_array;
         $elgg_object->taxonomy_tag_array = (array)$this->taxonomy_tag_array;
+        $elgg_object->owner_guid = 0;
+        $elgg_object->container_guid = 0;
+        $elgg_object->access_id = ACCESS_PUBLIC;
         $elgg_object->save();
         return $this->id = $elgg_object->guid;
     }

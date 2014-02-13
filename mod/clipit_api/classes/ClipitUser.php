@@ -29,4 +29,21 @@
  */
 class ClipitUser extends UBUser{
 
+    /**
+     * Get all Group Ids in which a user is member of.
+     *
+     * @param int $id Id of the user to get groups from.
+     * @return array Returns an array of Group Ids the user is member of.
+     */
+    static function get_groups($id){
+        $rel_array = get_entity_relationships($id, true);
+        $group_ids = array();
+        foreach($rel_array as $rel){
+            if($rel->relationship == "group_contains"){
+                $group_ids[] = (int) $rel->guid_one;
+            }
+        }
+        return $group_ids;
+    }
+
 }

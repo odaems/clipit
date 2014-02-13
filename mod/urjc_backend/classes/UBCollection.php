@@ -33,17 +33,9 @@ abstract class UBCollection extends UBItem{
      */
     const SUBTYPE = "collection";
     /**
-     * @var array Array of Item ids contained in this Collection
+     * @const string Details name for collection relationships.
      */
-    public $item_array = array();
-    /**
-     * @var string Type of the contained Items in this Collection
-     */
-    public $item_type = "object";
-    /**
-     * @var string Subtype of the contained Items in this Collection
-     */
-    public $item_subtype = "item";
+    const DEFAULT_RELATIONSHIP = "collection_contains";
     /**
      * Loads an instance from the system.
      *
@@ -62,9 +54,6 @@ abstract class UBCollection extends UBItem{
         $this->id = (int)$elgg_object->guid;
         $this->description = (string)$elgg_object->description;
         $this->name = (string)$elgg_object->name;
-        $this->item_array = (array)$elgg_object->item_array;
-        $this->item_type = (string)$elgg_object->item_type;
-        $this->item_subtype = (string)$elgg_object->item_subtype;
         return $this;
     }
     /**
@@ -81,26 +70,25 @@ abstract class UBCollection extends UBItem{
         }
         $elgg_object->name = (string)$this->name;
         $elgg_object->description = (string)$this->description;
-        $elgg_object->item_array = (array)$this->item_array;
-        $elgg_object->item_type = (string)$this->item_type;
-        $elgg_object->item_subtype = (string)$this->item_subtype;
+        $elgg_object->owner_guid = 0;
+        $elgg_object->container_guid = 0;
+        $elgg_object->access_id = ACCESS_PUBLIC;
         $elgg_object->save();
         return $this->id = $elgg_object->guid;
     }
     /**
      * Adds items to this collection.
      *
-     * @param array $item_array Array of item ids to add to the collection.
+     * @param array $item_array Array of item ids to add to this collection.
+     * @param string $rel_name Name of the relationship for added items.
      * @return bool Returns true if added correctly, or false in case of error.
      */
-    function addItems($item_array){
-        if(!$this->item_array){
-            $this->item_array = $item_array;
-        } else{
-            $this->item_array = array_merge($this->item_array, $item_array);
+    function addItems($item_array, $rel_name = null){
+        if(!$rel_name){
+            $rel_name = $this::DEFAULT_RELATIONSHIP;
         }
-        if(!$this->save()){
-            return false;
+        foreach($item_array as $item_id){
+            add_entity_relationship($this->id, $rel_name, $item_id);
         }
         return true;
     }
@@ -108,23 +96,16 @@ abstract class UBCollection extends UBItem{
     /**
      * Removes items from this collection.
      *
-     * @param $item_array
-     * @return bool
+     * @param array $item_array Array of Item Ids to remove from this collection.
+     * @param string $rel_name Name of the relationship to remove items from.
+     * @return bool Returns true if removed correctly, false if error.
      */
-    function removeItems($item_array){
-        if(!$this->item_array){
-            return false;
+    function removeItems($item_array, $rel_name = null){
+        if(!$rel_name){
+            $rel_name = $this::DEFAULT_RELATIONSHIP;
         }
-        foreach($item_array as $item){
-            $key = array_search($item, $this->item_array);
-            if(isset($key)){
-                unset($this->item_array[$key]);
-            } else{
-                return false;
-            }
-        }
-        if(!$this->save()){
-            return false;
+        foreach($item_array as $item_id){
+            remove_entity_relationship($this->id, $rel_name, $item_id);
         }
         return true;
     }
@@ -132,17 +113,28 @@ abstract class UBCollection extends UBItem{
     /**
      * Returns items from this collection.
      *
+     * @param string $rel_name Name of the relationship to get items from.
      * @return array Array of items in this Collection.
      */
-    function getItems(){
-        return $this->item_array;
+    function getItems($rel_name = null){
+        if(!$rel_name){
+            $rel_name = $this::DEFAULT_RELATIONSHIP;
+        }
+        $rel_array = get_entity_relationships($this->id);
+        $item_ids = array();
+        foreach($rel_array as $rel){
+            if($rel->relationship == $rel_name){
+                $item_ids[] = (int) $rel->guid_two;
+            }
+        }
+        return $item_ids;
     }
 
     /**
      * Adds Items to a Collection.
      *
      * @param int $id Id from Collection to add Items to
-     * @param array $item_array Array of Items to add
+     * @param array $item_array Array of Item Ids to add
      * @return bool Returns true if success, false if error
      */
     static function add_items($id, $item_array){
@@ -157,7 +149,7 @@ abstract class UBCollection extends UBItem{
      * Remove Items from a Collection.
      *
      * @param int $id Id from Collection to remove Items from.
-     * @param array $item_array Array of Items to remove.
+     * @param array $item_array Array of Item Ids to remove.
      * @return bool Returns true if success, false if error.
      */
     static function remove_items($id, $item_array){

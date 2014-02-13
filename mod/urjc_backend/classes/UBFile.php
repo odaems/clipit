@@ -90,6 +90,9 @@ class UBFile extends UBItem{
         $elgg_file->write($this->data);
         $elgg_file->close();
         $elgg_file->save();
+        $elgg_file->owner_guid = 0;
+        $elgg_file->container_guid = 0;
+        $elgg_file->access_id = ACCESS_PUBLIC;
         $this->time_created = $elgg_file->time_created;
         return $this->id = $elgg_file->guid;
     }

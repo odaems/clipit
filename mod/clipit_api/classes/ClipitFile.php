@@ -51,6 +51,8 @@ class ClipitFile extends UBFile{
             return null;
         }
         $this->id = (int)$elgg_file->guid;
+        $this->type = (string)$elgg_file->type;
+        $this->subtype = (string)get_subtype_from_id($elgg_file->subtype);
         $temp_name = explode($this::TIMESTAMP_DELIMITER, (string)$elgg_file->getFilename());
         if(empty($temp_name[1])){
             // no timestamp found
@@ -74,7 +76,7 @@ class ClipitFile extends UBFile{
     function save(){
         if($this->id == -1){
             $elgg_file = new ElggFile();
-            //$elgg_file->subtype = (string)$this::SUBTYPE;
+            $elgg_file->subtype = (string)$this::SUBTYPE;
         } elseif(!$elgg_file = new ElggFile((int)$this->id)){
             return false;
         }
@@ -88,6 +90,9 @@ class ClipitFile extends UBFile{
         $elgg_file->close();
         $elgg_file->save();
         $this->time_created = $elgg_file->time_created;
+        $elgg_file->owner_guid = 0;
+        $elgg_file->container_guid = 0;
+        $elgg_file->access_id = ACCESS_PUBLIC;
         return $this->id = $elgg_file->guid;
     }
 

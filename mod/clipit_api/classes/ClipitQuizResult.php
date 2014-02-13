@@ -97,6 +97,9 @@ class ClipitQuizResult extends UBItem{
         $elgg_object->correct = (bool) $this->correct;
         $elgg_object->quiz_question = (int) $this->quiz_question;
         $elgg_object->user = (int) $this->user;
+        $elgg_object->owner_guid = 0;
+        $elgg_object->container_guid = 0;
+        $elgg_object->access_id = ACCESS_PUBLIC;
         $elgg_object->save();
         return $this->id = $elgg_object->guid;
     }

@@ -50,15 +50,18 @@ class UBItem{
     public $description = "";
 
     /* Instance Functions */
-
     /**
      * Constructor
      *
      * @param int|null $id If $id is null, create new instance; else load instance with id = $id.
+     * @throws APIException
      */
     function __construct($id = null){
         if($id){
-            $this->_load((int)$id);
+            if(!$this->_load((int)$id)){
+                $called_class = get_called_class();
+                throw new APIException("ERROR: Id '".$id."' does not correspond to a ".$called_class." object.");
+            }
         }
     }
 
@@ -97,6 +100,9 @@ class UBItem{
         }
         $elgg_object->name = (string)$this->name;
         $elgg_object->description = (string)$this->description;
+        $elgg_object->owner_guid = 0;
+        $elgg_object->container_guid = 0;
+        $elgg_object->access_id = ACCESS_PUBLIC;
         $elgg_object->save();
         return $this->id = $elgg_object->guid;
     }
