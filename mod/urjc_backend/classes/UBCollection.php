@@ -35,7 +35,7 @@ abstract class UBCollection extends UBItem{
     /**
      * @const string Details name for collection relationships.
      */
-    const DEFAULT_RELATIONSHIP = "collection_contains";
+    const DEFAULT_RELATIONSHIP = "contains";
     /**
      * Loads an instance from the system.
      *
