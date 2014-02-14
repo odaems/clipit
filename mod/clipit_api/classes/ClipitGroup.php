@@ -33,9 +33,20 @@ class ClipitGroup extends UBCollection{
      */
     const SUBTYPE = "clipit_group";
 
-    const ACTIVITY_REL = "activity_group";
-    const USER_REL = "group_user";
-    const FILE_REL = "group_file";
+    const ACTIVITY_REL = "activity-group";
+    const USER_REL = "group-user";
+    const FILE_REL = "group-file";
+
+
+    static function get_from_user_activity($user_id, $activity_id){
+        $user_groups = array_flip(ClipitUser::get_groups($user_id));
+        $activity_groups = array_flip(ClipitActivity::get_groups($activity_id));
+        $intersection = array_flip(array_intersect_key($user_groups, $activity_groups));
+        if(empty($intersection) || count($intersection) != 1){
+            return false;
+        }
+        return array_pop($intersection);
+    }
 
     /**
      * Gets the Activity Id in which a Group takes part in.
@@ -48,7 +59,7 @@ class ClipitGroup extends UBCollection{
         if(count($rel_array) != 1){
             return false;
         }
-        return $rel_array[0]->guid_one;
+        return array_pop($rel_array)->guid_one;
     }
 
     /**

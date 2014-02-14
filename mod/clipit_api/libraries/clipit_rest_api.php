@@ -235,6 +235,18 @@ function expose_group_functions(){
     $api_suffix = "clipit.group.";
     $class_suffix = "ClipitGroup::";
     expose_function(
+        $api_suffix."get_from_user_activity",
+        $class_suffix."get_from_user_activity",
+        array(
+            "user_id" => array(
+                "type" => "int",
+                "required" => true),
+            "activity_id" => array(
+                "type" => "int",
+                "required" => true)),
+        "Gets the Group in which a User is performing an Activity",
+        "GET", false, true);
+    expose_function(
         $api_suffix."get_activity",
         $class_suffix."get_activity",
         array(

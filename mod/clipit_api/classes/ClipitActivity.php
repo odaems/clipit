@@ -33,7 +33,9 @@ class ClipitActivity extends UBCollection{
      */
     const SUBTYPE = "clipit_activity";
 
-    const GROUP_REL = "activity_group";
+    const USER_REL = "activity-user";
+    const GROUP_REL = "activity-group";
+    const VIDEO_REL = "activity-video";
 
     static function add_groups($id, $group_array){
         if(!$activity = new ClipitActivity($id)){
@@ -54,6 +56,27 @@ class ClipitActivity extends UBCollection{
             return false;
         }
         return $activity->getItems(self::GROUP_REL);
+    }
+
+    static function add_videos($id, $group_array){
+        if(!$activity = new ClipitActivity($id)){
+            return false;
+        }
+        return $activity->addItems($group_array, self::VIDEO_REL);
+    }
+
+    static function remove_videos($id, $group_array){
+        if(!$activity = new ClipitActivity($id)){
+            return false;
+        }
+        return $activity->removeItems($group_array, self::VIDEO_REL);
+    }
+
+    static function get_videos($id){
+        if(!$activity = new ClipitActivity($id)){
+            return false;
+        }
+        return $activity->getItems(self::VIDEO_REL);
     }
 
 }

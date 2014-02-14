@@ -73,6 +73,12 @@ class UBEvent {
         return get_class_vars(get_called_class());
     }
 
+    /**
+     * Returns all the Events.
+     *
+     * @param int $limit Number of Events to return at most.
+     * @return int[]|null List of Event IDs or null if there are none.
+     */
     static function get_all($limit = 20){
         $called_class = get_called_class();
         $event_array = array();
@@ -87,6 +93,12 @@ class UBEvent {
         return $event_array;
     }
 
+    /**
+     * Get Events by Id
+     *
+     * @param int[] $id_array List of Event IDs.
+     * @return ClipitEvent[] Returns an array of ClipitEvent objects.
+     */
     static function get_by_id($id_array){
         $called_class = get_called_class();
         $event_array = array();
@@ -101,6 +113,12 @@ class UBEvent {
         return $event_array;
     }
 
+    /**
+     * Get Events by User Id.
+     *
+     * @param int[] $user_array Array of User Ids.
+     * @return ClipitEvent[] Returns an array of ClipitEvent objects.
+     */
     static function get_by_user($user_array){
         $called_class = get_called_class();
         $event_array = array();
