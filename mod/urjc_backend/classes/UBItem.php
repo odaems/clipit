@@ -229,7 +229,7 @@ class UBItem{
      * Get all Objects of this TYPE/SUBTYPE from the system.
      *
      * @param int $limit Number of results to show, default= 0 [no limit] (optional)
-     * @return array Returns an array of Objects
+     * @return UBItem[] Returns an array of Objects
      */
     static function get_all($limit = 0){
         $called_class = get_called_class();
@@ -238,9 +238,8 @@ class UBItem{
                 'type' => $called_class::TYPE,
                 'subtype' => $called_class::SUBTYPE,
                 'limit' => $limit));
-        $object_array = array();
         if(empty($elgg_object_array)){
-            return $object_array;
+            return null;
         }
         foreach($elgg_object_array as $elgg_object){
             $object_array[] = new $called_class((int)$elgg_object->guid);
@@ -252,11 +251,10 @@ class UBItem{
      * Get Objects with id contained in a given list.
      *
      * @param array $id_array Array of Object Ids
-     * @return array Returns an array of Objects
+     * @return UBItem[] Returns an array of Objects
      */
     static function get_by_id($id_array){
         $called_class = get_called_class();
-        $object_array = array();
         foreach($id_array as $id){
             if(elgg_entity_exists($id)){
                 $object_array[] = new $called_class((int)$id);

@@ -29,6 +29,8 @@
  */
 class ClipitUser extends UBUser{
 
+    const GROUP_REL = "group-user";
+
     /**
      * Get all Group Ids in which a user is member of.
      *
@@ -39,7 +41,7 @@ class ClipitUser extends UBUser{
         $rel_array = get_entity_relationships($id, true);
         $group_ids = array();
         foreach($rel_array as $rel){
-            if($rel->relationship == "group_contains"){
+            if($rel->relationship == self::GROUP_REL){
                 $group_ids[] = (int) $rel->guid_one;
             }
         }

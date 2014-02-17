@@ -139,6 +139,41 @@ function expose_common_functions($api_suffix, $class_suffix){
 }
 
 function expose_activity_functions(){
+    $api_suffix = "clipit.activity.";
+    $class_suffix = "ClipitActivity::";
+    expose_function(
+        $api_suffix."add_groups",
+        $class_suffix."add_groups",
+        array(
+            "id" => array(
+                "type" => "int",
+                "required" => true),
+            "group_array" => array(
+                "type" => "array",
+                "required" => true)),
+        "Add Group by Id to an Activity",
+        "POST", false, true);
+    expose_function(
+        $api_suffix."remove_groups",
+        $class_suffix."remove_groups",
+        array(
+            "id" => array(
+                "type" => "int",
+                "required" => true),
+            "group_array" => array(
+                "type" => "array",
+                "required" => true)),
+        "Removes Groups by Id from an Activity",
+        "POST", false, true);
+    expose_function(
+        $api_suffix."get_groups",
+        $class_suffix."get_groups",
+        array(
+            "id" => array(
+                "type" => "int",
+                "required" => true)),
+        "Gets Groups from an Activity",
+        "GET", false, true);
 }
 
 function expose_comment_functions(){
@@ -200,6 +235,27 @@ function expose_group_functions(){
     $api_suffix = "clipit.group.";
     $class_suffix = "ClipitGroup::";
     expose_function(
+        $api_suffix."get_from_user_activity",
+        $class_suffix."get_from_user_activity",
+        array(
+            "user_id" => array(
+                "type" => "int",
+                "required" => true),
+            "activity_id" => array(
+                "type" => "int",
+                "required" => true)),
+        "Gets the Group in which a User is performing an Activity",
+        "GET", false, true);
+    expose_function(
+        $api_suffix."get_activity",
+        $class_suffix."get_activity",
+        array(
+            "id" => array(
+                "type" => "int",
+                "required" => true)),
+        "Gets the Activity this group is taking part in",
+        "GET", false, true);
+    expose_function(
         $api_suffix."add_users",
         $class_suffix."add_users",
         array(
@@ -230,7 +286,40 @@ function expose_group_functions(){
             "id" => array(
                 "type" => "int",
                 "required" => true)),
-        "Gets Users inside a Group",
+        "Gets Users from a Group",
+        "GET", false, true);
+    expose_function(
+        $api_suffix."add_files",
+        $class_suffix."add_files",
+        array(
+            "id" => array(
+                "type" => "int",
+                "required" => true),
+            "file_array" => array(
+                "type" => "array",
+                "required" => true)),
+        "Add Files by Id to a Group",
+        "POST", false, true);
+    expose_function(
+        $api_suffix."remove_files",
+        $class_suffix."remove_files",
+        array(
+            "id" => array(
+                "type" => "int",
+                "required" => true),
+            "file_array" => array(
+                "type" => "array",
+                "required" => true)),
+        "Removes Files by Id from a Group",
+        "POST", false, true);
+    expose_function(
+        $api_suffix."get_files",
+        $class_suffix."get_files",
+        array(
+            "id" => array(
+                "type" => "int",
+                "required" => true)),
+        "Gets Files from a Group",
         "GET", false, true);
 }
 

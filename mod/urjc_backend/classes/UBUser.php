@@ -175,7 +175,7 @@ class UBUser extends UBItem{
      * Get users with login contained in a given list of logins.
      *
      * @param array $login_array Array of user logins
-     * @return array Returns an array of User objects
+     * @return UBUser[] Returns an array of User objects
      */
     static function get_by_login($login_array){
         $called_class = get_called_class();
@@ -197,7 +197,7 @@ class UBUser extends UBItem{
      * array.
      *
      * @param array $email_array Array of user emails
-     * @return array Returns an array of arrays of User objects
+     * @return UBUser[] Returns an array of arrays of User objects
      */
     static function get_by_email($email_array){
         $called_class = get_called_class();
@@ -221,7 +221,7 @@ class UBUser extends UBItem{
      * Get users with role contained in a given list of roles.
      *
      * @param array $role_array Array of user roles
-     * @return array Returns an array of arrays of User objects
+     * @return UBUser[] Returns an array of arrays of User objects
      */
     static function get_by_role($role_array){
         $called_class = get_called_class();

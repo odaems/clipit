@@ -35,7 +35,7 @@ abstract class UBCollection extends UBItem{
     /**
      * @const string Details name for collection relationships.
      */
-    const DEFAULT_RELATIONSHIP = "collection_contains";
+    const DEFAULT_REL = "collection-item";
     /**
      * Loads an instance from the system.
      *
@@ -85,7 +85,7 @@ abstract class UBCollection extends UBItem{
      */
     function addItems($item_array, $rel_name = null){
         if(!$rel_name){
-            $rel_name = $this::DEFAULT_RELATIONSHIP;
+            $rel_name = $this::DEFAULT_REL;
         }
         foreach($item_array as $item_id){
             add_entity_relationship($this->id, $rel_name, $item_id);
@@ -102,7 +102,7 @@ abstract class UBCollection extends UBItem{
      */
     function removeItems($item_array, $rel_name = null){
         if(!$rel_name){
-            $rel_name = $this::DEFAULT_RELATIONSHIP;
+            $rel_name = $this::DEFAULT_REL;
         }
         foreach($item_array as $item_id){
             remove_entity_relationship($this->id, $rel_name, $item_id);
@@ -114,11 +114,11 @@ abstract class UBCollection extends UBItem{
      * Returns items from this collection.
      *
      * @param string $rel_name Name of the relationship to get items from.
-     * @return array Array of items in this Collection.
+     * @return int[] Array of items in this Collection.
      */
     function getItems($rel_name = null){
         if(!$rel_name){
-            $rel_name = $this::DEFAULT_RELATIONSHIP;
+            $rel_name = $this::DEFAULT_REL;
         }
         $rel_array = get_entity_relationships($this->id);
         $item_ids = array();
@@ -164,7 +164,7 @@ abstract class UBCollection extends UBItem{
      * Get Items from a Collection.
      *
      * @param int $id Id from Collection to get Items from.
-     * @return array|bool Returns an array of Item IDs, or false if error.
+     * @return int[]|bool Returns an array of Item IDs, or false if error.
      */
     static function get_items($id){
         $called_class = get_called_class();

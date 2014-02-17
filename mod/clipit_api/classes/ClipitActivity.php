@@ -27,22 +27,56 @@
  *
  * @package clipit
  */
-class ClipitActivity extends UBItem{
+class ClipitActivity extends UBCollection{
     /**
      * @const string Elgg entity subtype for this class
      */
     const SUBTYPE = "clipit_activity";
 
-    // Class properties
-    public $description;
-    public $id;
-    public $name;
-    public $group_array;
-    public $palette_array;
-    public $quiz_array;
-    public $sta_array;
-    public $storyboard_array;
-    public $video_array;
-    public $creation_date;
+    const USER_REL = "activity-user";
+    const GROUP_REL = "activity-group";
+    const VIDEO_REL = "activity-video";
+
+    static function add_groups($id, $group_array){
+        if(!$activity = new ClipitActivity($id)){
+            return false;
+        }
+        return $activity->addItems($group_array, self::GROUP_REL);
+    }
+
+    static function remove_groups($id, $group_array){
+        if(!$activity = new ClipitActivity($id)){
+            return false;
+        }
+        return $activity->removeItems($group_array, self::GROUP_REL);
+    }
+
+    static function get_groups($id){
+        if(!$activity = new ClipitActivity($id)){
+            return false;
+        }
+        return $activity->getItems(self::GROUP_REL);
+    }
+
+    static function add_videos($id, $group_array){
+        if(!$activity = new ClipitActivity($id)){
+            return false;
+        }
+        return $activity->addItems($group_array, self::VIDEO_REL);
+    }
+
+    static function remove_videos($id, $group_array){
+        if(!$activity = new ClipitActivity($id)){
+            return false;
+        }
+        return $activity->removeItems($group_array, self::VIDEO_REL);
+    }
+
+    static function get_videos($id){
+        if(!$activity = new ClipitActivity($id)){
+            return false;
+        }
+        return $activity->getItems(self::VIDEO_REL);
+    }
 
 }
