@@ -9,6 +9,7 @@
 
 $role = elgg_extract("role", $vars);
 $landing_dir = "landing/".$role;
+
 ?>
 <div class="col-md-4 events-list">
     <?php echo elgg_view($landing_dir."/pending_module"); ?>

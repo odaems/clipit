@@ -9,9 +9,9 @@
 $content = '
 <!-- foreach-->
 <div class="wrapper separator">
-    <img src="http://img.youtube.com/vi/bQVoAWSP7k4/2.jpg" class="pull-left">
+    <a href=""><img src="http://img.youtube.com/vi/bQVoAWSP7k4/2.jpg" class="pull-left"></a>
     <div class="text">
-        <h5 class="text-truncate">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</h5>
+        <h5 class="text-truncate"><a>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</a></h5>
         <small>12:00H, NOV 18, 2013</small>
         <div class="sbs">
             <p style="color: #00a99d;border-color: #00a99d;"><a>SB</a></p>
@@ -23,9 +23,9 @@ $content = '
 <!-- endforeach-->
 <!-- foreach-->
 <div class="wrapper separator">
-    <img src="http://b.vimeocdn.com/ts/432/509/432509421_640.jpg" class="pull-left">
+    <a href=""><img src="http://b.vimeocdn.com/ts/432/509/432509421_640.jpg" class="pull-left"></a>
     <div class="text">
-        <h5 class="text-truncate">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</h5>
+        <h5 class="text-truncate"><a>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</a></h5>
         <small>12:00H, NOV 18, 2013</small>
         <div class="sbs">
             <p style="color: #ed1e79;border-color: #ed1e79;"><a>SB</a></p>
@@ -37,9 +37,9 @@ $content = '
 <!-- endforeach-->
 <!-- foreach-->
 <div class="wrapper separator">
-    <img src="http://b.vimeocdn.com/ts/457/585/457585184_640.jpg" class="pull-left">
+    <a href=""><img src="http://b.vimeocdn.com/ts/457/585/457585184_640.jpg" class="pull-left"></a>
     <div class="text">
-        <h5 class="text-truncate">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</h5>
+        <h5 class="text-truncate"><a>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</a></h5>
         <small>12:00H, NOV 18, 2013</small>
         <div class="sbs">
             <p style="color: #00a99d;border-color: #00a99d;"><a>SB</a></p>
