@@ -28,9 +28,6 @@
  * @package clipit
  */
 class ClipitEvent extends UBEvent {
-    /**
-     * @const string Elgg entity subtype for this class
-     */
-    const SUBTYPE = "clipit_event";
+
 
 } 

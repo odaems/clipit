@@ -142,6 +142,48 @@ function expose_activity_functions(){
     $api_suffix = "clipit.activity.";
     $class_suffix = "ClipitActivity::";
     expose_function(
+        $api_suffix."get_from_user",
+        $class_suffix."get_from_user",
+        array(
+            "user_id" => array(
+                "type" => "int",
+                "required" => true)),
+        "Get an array of Activity Ids in which a User is involved",
+        "GET", false, true);
+    expose_function(
+        $api_suffix."add_called_users",
+        $class_suffix."add_called_users",
+        array(
+            "id" => array(
+                "type" => "int",
+                "required" => true),
+            "user_array" => array(
+                "type" => "array",
+                "required" => true)),
+        "Add Called Users by Id to an Activity",
+        "POST", false, true);
+    expose_function(
+        $api_suffix."remove_called_users",
+        $class_suffix."remove_called_users",
+        array(
+            "id" => array(
+                "type" => "int",
+                "required" => true),
+            "user_array" => array(
+                "type" => "array",
+                "required" => true)),
+        "Removes Called Users by Id from an Activity",
+        "POST", false, true);
+    expose_function(
+        $api_suffix."get_called_users",
+        $class_suffix."get_called_users",
+        array(
+            "id" => array(
+                "type" => "int",
+                "required" => true)),
+        "Gets Called Users from an Activity",
+        "GET", false, true);
+    expose_function(
         $api_suffix."add_groups",
         $class_suffix."add_groups",
         array(
@@ -174,6 +216,39 @@ function expose_activity_functions(){
                 "required" => true)),
         "Gets Groups from an Activity",
         "GET", false, true);
+    expose_function(
+        $api_suffix."add_videos",
+        $class_suffix."add_videos",
+        array(
+            "id" => array(
+                "type" => "int",
+                "required" => true),
+            "video_array" => array(
+                "type" => "array",
+                "required" => true)),
+        "Add Videos by Id to an Activity",
+        "POST", false, true);
+    expose_function(
+        $api_suffix."remove_videos",
+        $class_suffix."remove_videos",
+        array(
+            "id" => array(
+                "type" => "int",
+                "required" => true),
+            "video_array" => array(
+                "type" => "array",
+                "required" => true)),
+        "Removes Videos by Id from an Activity",
+        "POST", false, true);
+    expose_function(
+        $api_suffix."get_videos",
+        $class_suffix."get_videos",
+        array(
+            "id" => array(
+                "type" => "int",
+                "required" => true)),
+        "Gets Videos from an Activity",
+        "GET", false, true);
 }
 
 function expose_comment_functions(){
@@ -194,10 +269,10 @@ function expose_event_functions(){
     $api_suffix = "clipit.event.";
     $class_suffix = "ClipitEvent::";
     expose_function(
-        $api_suffix."list_properties",
-        $class_suffix."list_properties",
+        $api_suffix."list_filters",
+        $class_suffix."list_filters",
         null,
-        "Get class properties",
+        "Get filters which can be applied to the get_filtered method",
         'GET', false, true);
     expose_function(
         $api_suffix."get_all",
@@ -209,6 +284,33 @@ function expose_event_functions(){
         "Get all instances",
         'GET', false, true);
     expose_function(
+        $api_suffix."get_filtered",
+        $class_suffix."get_filtered",
+        array(
+            "event_type" => array(
+                "type" => "string",
+                "required" => false),
+            "user_id" => array(
+                "type" => "int",
+                "required" => false),
+            "object_id" => array(
+                "type" => "int",
+                "required" => false),
+            "object_type" => array(
+                "type" => "string",
+                "required" => false),
+            "begin_date" => array(
+                "type" => "int",
+                "required" => false),
+            "end_date" => array(
+                "type" => "int",
+                "required" => false),
+            "limit" => array(
+                "type" => "int",
+                "required" => false)),
+        "Get instances filtered",
+        'GET', false, true);
+    expose_function(
         $api_suffix."get_by_id",
         $class_suffix."get_by_id",
         array(
@@ -218,13 +320,31 @@ function expose_event_functions(){
         "Get instances by Id",
         'GET', false, true);
     expose_function(
-        $api_suffix."get_by_user",
-        $class_suffix."get_by_user",
+        $api_suffix."get_from_user",
+        $class_suffix."get_from_user",
         array(
-            "user_array" => array(
-                "type" => "array",
+            "user_id" => array(
+                "type" => "int",
                 "required" => true)),
-        "Get instances by Id",
+        "Get instances from a User Id",
+        'GET', false, true);
+    expose_function(
+        $api_suffix."get_from_object",
+        $class_suffix."get_from_object",
+        array(
+            "object_id" => array(
+                "type" => "int",
+                "required" => true)),
+        "Get instances from an Object Id",
+        'GET', false, true);
+    expose_function(
+        $api_suffix."get_from_object_type",
+        $class_suffix."get_from_object_type",
+        array(
+            "object_type" => array(
+                "type" => "string",
+                "required" => true)),
+        "Get instances from an Object Type",
         'GET', false, true);
 }
 

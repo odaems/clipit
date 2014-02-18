@@ -156,15 +156,12 @@ class UBItem{
     /* Static Functions */
 
     /**
-     * Create a new instance of this class, and assign values to its properties.
+     * Lists the properties contained in this object
      *
-     * @param array $prop_value_array Array of [property]=>value pairs to set into the new instance
-     * @return int|bool Returns instance Id if correct, or false if error
+     * @return array Array of properties with type and default value
      */
-    static function create($prop_value_array){
-        $called_class = get_called_class();
-        $item = new $called_class();
-        return $item->setProperties($prop_value_array);
+    static function list_properties(){
+        return get_class_vars(get_called_class());
     }
 
     /**
@@ -190,10 +187,25 @@ class UBItem{
      * @return int|bool Returns Id of Item if correct, or false if error
      */
     static function set_properties($id, $prop_value_array){
+        if(!is_integer($id)){
+            return false;
+        }
         $called_class = get_called_class();
         if(!$item = new $called_class($id)){
             return false;
         }
+        return $item->setProperties($prop_value_array);
+    }
+
+    /**
+     * Create a new instance of this class, and assign values to its properties.
+     *
+     * @param array $prop_value_array Array of [property]=>value pairs to set into the new instance
+     * @return int|bool Returns instance Id if correct, or false if error
+     */
+    static function create($prop_value_array){
+        $called_class = get_called_class();
+        $item = new $called_class();
         return $item->setProperties($prop_value_array);
     }
 
@@ -214,15 +226,6 @@ class UBItem{
             }
         }
         return true;
-    }
-
-    /**
-     * Lists the properties contained in this object
-     *
-     * @return array Array of properties with type and default value
-     */
-    static function list_properties(){
-        return get_class_vars(get_called_class());
     }
 
     /**

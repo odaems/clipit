@@ -22,115 +22,143 @@
  *                  http://www.gnu.org/licenses/agpl-3.0.txt.
  */
 
-class UBEvent {
-    public $id = -1;
-    public $event_type = "";
-    public $user_id = -1;
-    public $object_id = -1;
-    public $object_type = "";
-    public $object_subtype = "";
-    public $time_created = -1;
+class UBEvent{
 
-    /**
-     * Constructor
-     *
-     * @param int|null $id If $id is null, create new instance; else load instance with id = $id.
-     */
-    function __construct($id = null){
-        if($id){
-            $this->_load((int)$id);
-        }
+    static function list_filters(){
+        $filters["event_type"] = array("login", "create", "update", "delete", "logout");
+        $filters["user_id"] = -1;
+        $filters["object_id"] = -1;
+        $filters["object_type"] = array("clipit_activity", "clipit_comment", "clipit_file", "clipit_group",
+            "clipit_palette", "clipit_quiz", "clipit_quiz_question", "clipit_quiz_result", "clipit_sta",
+            "clipit_storyboard", "clipit_stumbling_block", "clipit_task", "clipit_tricky_topic", "clipit_user",
+            "clipit_video");
+        $filters["begin_date"] = -1;
+        $filters["end_date"] = -1;
+        $filters["limit"] = -1;
+        return $filters;
     }
 
-    /**
-     * Loads an instance from the system.
-     *
-     * @param int $id Id of the instance to load from the system.
-     * @return UBItem|bool Returns instance, or false if error.
-     */
-    protected function _load($id){
-        $options['ids'] = array($id);
-        $elgg_river_array = (array) elgg_get_river($options);
-        if(empty($elgg_river_array)){
-            return;
-        }
-        $elgg_river_item = array_pop($elgg_river_array);
-        $this->id = $elgg_river_item->id;
-        $this->event_type = $elgg_river_item->action_type;
-        $this->user_id = $elgg_river_item->subject_guid;
-        $this->object_id = $elgg_river_item->object_guid;
-        $this->object_type = $elgg_river_item->type;
-        $this->object_subtype = $elgg_river_item->subtype;
-        $this->time_created = $elgg_river_item->posted;
-    }
-
-    /**
-     * Lists the properties contained in this object
-     *
-     * @return array Array of properties with type and default value
-     */
-    static function list_properties(){
-        return get_class_vars(get_called_class());
-    }
-
-    /**
-     * Returns all the Events.
-     *
-     * @param int $limit Number of Events to return at most.
-     * @return int[]|null List of Event IDs or null if there are none.
-     */
     static function get_all($limit = 20){
-        $called_class = get_called_class();
-        $event_array = array();
-        $options['limit'] = $limit;
-        $elgg_river_array = elgg_get_river($options);
-        foreach($elgg_river_array as $elgg_river){
-            $event_array[] = new $called_class((int)$elgg_river->id);
-        }
-        if(empty($event_array)){
-            return null;
-        }
-        return $event_array;
+        return get_system_log(
+            null,           // $by_user = ""
+            null,           // $event = ""
+            null,           // $class = ""
+            null,           // $type = ""
+            null,           // $subtype = ""
+            $limit,         // $limit = 10
+            null,           // $offset = 0
+            null,           // $count = false
+            null,           // $timebefore = 0
+            null,           // $timeafter = 0
+            null,           // $object_id = 0
+            null);          // $ip_address = ""
     }
 
-    /**
-     * Get Events by Id
-     *
-     * @param int[] $id_array List of Event IDs.
-     * @return ClipitEvent[] Returns an array of ClipitEvent objects.
-     */
+    static function get_filtered(
+                        $event_type = "",
+                        $user_id = "",
+                        $object_id = 0,
+                        $object_type = "",
+                        $begin_date = 0,
+                        $end_date = 0,
+                        $limit = 20){
+        if($object_id != ""){
+            switch ($object_type){
+                case "clipit_user":
+                    $type = "user";
+                    $subtype = "";
+                    break;
+                default:
+                    $type = "object";
+                    $subtype = $object_type;
+                    break;
+            }
+        } else{
+            $type = "";
+            $subtype = "";
+        }
+        return get_system_log(
+            $user_id,       // $by_user = ""
+            $event_type,    // $event = ""
+            null,           // $class = ""
+            $type,          // $type = ""
+            $subtype,       // $subtype = ""
+            $limit,         // $limit = 10
+            null,           // $offset = 0
+            null,           // $count = false
+            $end_date,      // $timebefore = 0
+            $begin_date,    // $timeafter = 0
+            $object_id,     // $object_id = 0
+            null);          // $ip_address = ""
+    }
+
     static function get_by_id($id_array){
-        $called_class = get_called_class();
-        $event_array = array();
         foreach($id_array as $event_id){
-            $event = new $called_class((int) $event_id);
-            if($event->id == -1){
+            $log_event = get_log_entry($event_id);
+            if(empty($log_event)){
                 $event_array[] = null;
             } else{
-                $event_array[] = $event;
+                $event_array[] = $log_event;
             }
         }
         return $event_array;
     }
 
-    /**
-     * Get Events by User Id.
-     *
-     * @param int[] $user_array Array of User Ids.
-     * @return ClipitEvent[] Returns an array of ClipitEvent objects.
-     */
-    static function get_by_user($user_array){
-        $called_class = get_called_class();
-        $event_array = array();
-        foreach($user_array as $user_id){
-            $options['subject_guids'] = $user_id;
-            $elgg_river_array = elgg_get_river($options);
-            $temp_array = array();
-            foreach($elgg_river_array as $elgg_river){
-                $temp_array[] = new $called_class((int)$elgg_river->id);
-            }
-            $event_array[] = $temp_array;
+    static function get_from_user($user_id, $limit = 20){
+        return get_system_log(
+            $user_id,       // $by_user = ""
+            null,           // $event = ""
+            null,           // $class = ""
+            null,           // $type = ""
+            null,           // $subtype = ""
+            $limit,         // $limit = 10
+            null,           // $offset = 0
+            null,           // $count = false
+            null,           // $timebefore = 0
+            null,           // $timeafter = 0
+            null,           // $object_id = 0
+            null);          // $ip_address = ""
+    }
+
+    static function get_from_object($object_id, $limit = 20){
+        return get_system_log(
+            null,           // $by_user = ""
+            null,           // $event = ""
+            null,           // $class = ""
+            null,           // $type = ""
+            null,           // $subtype = ""
+            $limit,         // $limit = 10
+            null,           // $offset = 0
+            null,           // $count = false
+            null,           // $timebefore = 0
+            null,           // $timeafter = 0
+            $object_id,     // $object_id = 0
+            null);          // $ip_address = ""
+    }
+
+    static function get_from_object_type($object_type, $limit= 20){
+        switch ($object_type){
+            case "clipit_user":
+                $type = "user";
+                $subtype = "";
+                break;
+            default:
+                $type = "object";
+                $subtype = $object_type;
+                break;
         }
-        return $event_array;
+        return get_system_log(
+            null,           // $by_user = ""
+            null,           // $event = ""
+            null,           // $class = ""
+            $type,          // $type = ""
+            $subtype,       // $subtype = ""
+            $limit,         // $limit = 10
+            null,           // $offset = 0
+            null,           // $count = false
+            null,           // $timebefore = 0
+            null,           // $timeafter = 0
+            null,           // $object_id = 0
+            null);          // $ip_address = ""
     }
 }

@@ -37,6 +37,88 @@ class ClipitActivity extends UBCollection{
     const GROUP_REL = "activity-group";
     const VIDEO_REL = "activity-video";
 
+    public $color = "";
+
+    /**
+     * Loads an instance from the system.
+     *
+     * @param int $id Id of the instance to load from the system.
+     * @return UBItem|bool Returns instance, or false if error.
+     */
+    protected function _load($id){
+        if(!($elgg_object = new ElggObject((int)$id))){
+            return null;
+        }
+        $elgg_type = $elgg_object->type;
+        $elgg_subtype = get_subtype_from_id($elgg_object->subtype);
+        if(($elgg_type != $this::TYPE) || ($elgg_subtype != $this::SUBTYPE)){
+            return null;
+        }
+        $this->id = (int)$elgg_object->guid;
+        $this->description = (string)$elgg_object->description;
+        $this->name = (string)$elgg_object->name;
+        $this->color = (string) $elgg_object->color;
+        return $this;
+    }
+
+    /**
+     * Saves this instance to the system.
+     *
+     * @return bool|int Returns id of saved instance, or false if error.
+     */
+    function save(){
+        if($this->id == -1){
+            $elgg_object = new ElggObject();
+            $elgg_object->subtype = (string)$this::SUBTYPE;
+        } elseif(!$elgg_object = new ElggObject((int)$this->id)){
+            return false;
+        }
+        $elgg_object->name = (string)$this->name;
+        $elgg_object->description = (string)$this->description;
+        $elgg_object->color = (string)$this->color;
+        $elgg_object->owner_guid = 0;
+        $elgg_object->container_guid = 0;
+        $elgg_object->access_id = ACCESS_PUBLIC;
+        $elgg_object->save();
+        return $this->id = $elgg_object->guid;
+    }
+
+    static function get_from_user($user_id){
+        if(!$group_ids = ClipitUser::get_groups($user_id)){
+            return false;
+        }
+        foreach($group_ids as $group_id){
+            $activity_ids[] = ClipitGroup::get_activity($group_id);
+        }
+        if(!isset($activity_ids)){
+            return false;
+        }
+        return ClipitActivity::get_by_id($activity_ids);
+    }
+
+    // USERS
+    static function add_called_users($id, $user_array){
+        if(!$activity = new ClipitActivity($id)){
+            return false;
+        }
+        return $activity->addItems($user_array, self::USER_REL);
+    }
+
+    static function remove_called_users($id, $user_array){
+        if(!$activity = new ClipitActivity($id)){
+            return false;
+        }
+        return $activity->removeItems($user_array, self::USER_REL);
+    }
+
+    static function get_called_users($id){
+        if(!$activity = new ClipitActivity($id)){
+            return false;
+        }
+        return $activity->getItems(self::USER_REL);
+    }
+
+    // GROUPS
     static function add_groups($id, $group_array){
         if(!$activity = new ClipitActivity($id)){
             return false;
@@ -58,6 +140,7 @@ class ClipitActivity extends UBCollection{
         return $activity->getItems(self::GROUP_REL);
     }
 
+    // VIDEOS(
     static function add_videos($id, $group_array){
         if(!$activity = new ClipitActivity($id)){
             return false;
