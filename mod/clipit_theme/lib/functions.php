@@ -43,11 +43,6 @@ function group_events($subtype, $object_rel, $relationship){
     $user = new ElggUser($user->id);
     switch($subtype){
         case "group-user":
-            $items = array(
-                'item' => array_pop(ClipitGroup::get_by_id(array($object_rel->guid_one))),
-                'sub-item' => array_pop(ClipitUser::get_by_id(array($relationship->performed_by_guid))),
-            );
-
             $params =  array(
                 'title' => 'Nuevo miembro',
                 'href'  => 'profile/'.$items['sub-item']->login,
@@ -68,10 +63,6 @@ function group_events($subtype, $object_rel, $relationship){
             $content .= elgg_view("page/components/timeline_event", $params);
             break;
         case "group-file":
-            $items = array(
-                'item' => array_pop(ClipitFile::get_by_id(array($object_rel->guid_two))),
-                'sub-item' => array_pop(ClipitUser::get_by_id(array($relationship->performed_by_guid))),
-            );
             $file = array_pop(ClipitFile::get_by_id(array($object_rel->guid_two)));
             $params =  array(
                 'title' => 'Archivo subido',
