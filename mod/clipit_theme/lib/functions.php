@@ -65,15 +65,6 @@ function group_events($subtype, $object_rel, $relationship){
                     'sub-title' => 'En '.$group->name,
                 ),
             );
-
-//            $params =  array(
-//                'title' => 'Nuevo miembro',
-//                'icon' => 'user',
-//                'href'  => 'profile/'.$items['sub-item']->login,
-//                'color' => $activity->color,
-//                'content' => elgg_view("events/group_user", $items), // object user+group info
-//                'time'  => $relationship->time_created
-//            );
             $content .= elgg_view("page/components/timeline_event", $params);
             break;
         case "group-file":
@@ -95,14 +86,6 @@ function group_events($subtype, $object_rel, $relationship){
                     'description' => $file->description,
                 ),
             );
-//            $params =  array(
-//                'title' => 'Archivo subido',
-//                'icon' => 'file-text',
-//                'href'  => 'clipit_activity/'.$activity->id.'/file/'.$items['item']->id,
-//                'color' => $activity->color,
-//                'content' => elgg_view("events/group_file", $items), // object user+group info
-//                'time'  => $relationship->time_created
-//            );
             $content .= elgg_view("page/components/timeline_event", $params);
             break;
     }
