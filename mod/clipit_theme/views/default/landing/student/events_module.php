@@ -68,35 +68,59 @@ $content = '
     <!-- endforeach-->
 </ul>
 ';
+
 //////
-$db_prefix = elgg_get_config('dbprefix');
-$defaults = array(
-    'offset'     => (int) max(get_input('offset', 0), 0),
-    'limit'      => (int) max(get_input('limit', 20), 0),
-    'pagination' => TRUE,
-    'list_class' => 'elgg-list-river elgg-river', // @todo remove elgg-river in Elgg 1.9
+
+$items_allowed = array(
+
 );
+$user_id = elgg_get_logged_in_user_guid();
+$my_groups = ClipitUser::get_groups($user_id);
+$members_group_list = array();
+foreach($my_groups as $group){
+    $members_group_list = array_merge($members_group_list, ClipitGroup::get_users($group));
+}
+$members_group = array_unique($members_group_list);
 
-$options = array(
-    'joins' => array("JOIN {$db_prefix}entities e ON e.guid = rv.object_guid"),
-    'wheres' => array("e.container_guid = 137")
+$relationships = array();
+/*
+ * Users added to group
+ */
+$events_group = ClipitEvent::get_filtered(
+    $event_type = 'create',
+    $user_array = $members_group,
+    $object_id = 0,
+    $object_type = 'relationship',
+    $relation_type = 'group-user'
 );
-$options = array_merge($defaults, $options);
+foreach($events_group as $event_group){
+    $relationship = get_relationship($event_group->object_id);
+    $group = ClipitGroup::get_by_id(array($relationship->guid_one));
+    $relationships = array_merge($relationships, array($event_group));
+}
 
-$options['count'] = TRUE;
-$count = elgg_get_river($options);
+/*
+ * Files added to group
+ */
+$events_file = ClipitEvent::get_filtered(
+    $event_type = 'create',
+    $user_array = $members_group,
+    $object_id = 0,
+    $object_type = 'relationship',
+    $relation_type = 'group-file'
+);
+foreach($events_file as $event_file){
+    $relationship = get_relationship($event_file->object_id);
+    $file = ClipitFile::get_by_id(array($relationship->guid_two));
+    $relationships = array_merge($relationships, array($event_file));
+}
 
-$options['count'] = FALSE;
-$items = elgg_get_river($options);
-
-$options['count'] = $count;
-$options['items'] = $items;
-
-//$content = elgg_view('landing/student/events_list', $options);
-//$content = elgg_view('page/components/list', $options);
-//////
-$events = new ClipitEvent();
-//print_r($events->get_by_user(array($guid_user)));
+$timestamps = array();
+foreach ($relationships as $key => $value) {
+    $timestamps[$key] = $value->time_created;
+}
+array_multisort($timestamps, SORT_DESC, $info);
+print_r($relationships);
 
 
 
@@ -106,3 +130,4 @@ echo elgg_view('landing/module', array(
     'title'     => "Events",
     'content'   => $content,
 ));
+

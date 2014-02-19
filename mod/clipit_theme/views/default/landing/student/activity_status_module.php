@@ -16,10 +16,17 @@ foreach($my_groups_ids as $group_id){
 
 $my_activities = ClipitActivity::get_by_id($id_activities_array);
 $content = '<div class="wrapper separator">';
+
 if(is_array($my_activities)){
     foreach($my_activities as $activity){
-        $content .='<div class="bar" style="width:10%;background: #00a99d;">
-                        <h3>'.$activity->name.'</h3>
+        $activity->progress = mt_rand(1,100);
+        $activity_link = elgg_view('output/url', array(
+            'href' => "clipit_activity/{$activity->id}",
+            'text' => $activity->name,
+            'is_trusted' => true,
+        ));
+        $content .='<div class="bar" style="width:'.$activity->progress.'%;background: #'.$activity->color.';">
+                        <h3>'.$activity_link.'</a></h3>
                     </div>';
     }
 }
