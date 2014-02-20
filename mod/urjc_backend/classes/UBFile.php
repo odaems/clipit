@@ -40,10 +40,6 @@ class UBFile extends UBItem{
      * @var string File data in byte string format
      */
     public $data = null;
-    /**
-     * @var int Timestamp when the user uploaded this File
-     */
-    public $time_created = -1;
 
     /**
      * Loads an instance from the system.
@@ -66,6 +62,7 @@ class UBFile extends UBItem{
             $this->name = $temp_name[1];
         }
         $this->description = (string)$elgg_file->description;
+        $this->owner_id = (int)$elgg_file->owner_guid;
         $this->data = $elgg_file->grabFile();
         $this->time_created = (int)$elgg_file->time_created;
         return $this;
@@ -89,11 +86,10 @@ class UBFile extends UBItem{
         $elgg_file->open("write");
         $elgg_file->write($this->data);
         $elgg_file->close();
-        $elgg_file->save();
-        $elgg_file->owner_guid = 0;
-        $elgg_file->container_guid = 0;
         $elgg_file->access_id = ACCESS_PUBLIC;
-        $this->time_created = $elgg_file->time_created;
-        return $this->id = $elgg_file->guid;
+        $elgg_file->save();
+        $this->owner_id = (int)$elgg_file->owner_guid;
+        $this->time_created = (int) $elgg_file->time_created;
+        return $this->id = (int) $elgg_file->guid;
     }
 }

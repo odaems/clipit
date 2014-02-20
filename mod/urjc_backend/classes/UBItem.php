@@ -48,6 +48,14 @@ class UBItem{
      * @var string Description of this instance
      */
     public $description = "";
+    /**
+     * @var int Unique Id of the owner/creator of this instance
+     */
+    public $owner_id = -1;
+    /**
+     * @var int Timestamp when this Item was created
+     */
+    public $time_created = -1;
 
     /* Instance Functions */
     /**
@@ -83,6 +91,8 @@ class UBItem{
         $this->id = (int)$elgg_object->guid;
         $this->description = (string)$elgg_object->description;
         $this->name = (string)$elgg_object->name;
+        $this->owner_id = (int)$elgg_object->owner_guid;
+        $this->time_created = (int)$elgg_object->time_created;
         return $this;
     }
 
@@ -100,11 +110,11 @@ class UBItem{
         }
         $elgg_object->name = (string)$this->name;
         $elgg_object->description = (string)$this->description;
-        $elgg_object->owner_guid = 0;
-        $elgg_object->container_guid = 0;
         $elgg_object->access_id = ACCESS_PUBLIC;
         $elgg_object->save();
-        return $this->id = $elgg_object->guid;
+        $this->owner_id = (int) $elgg_object->owner_guid;
+        $this->time_created = (int)$elgg_object->time_created;
+        return $this->id = (int) $elgg_object->guid;
     }
 
     /**
@@ -266,5 +276,45 @@ class UBItem{
             }
         }
         return $object_array;
+    }
+
+    static function get_events($limit = 10){
+        $called_class = get_called_class();
+        return get_system_log(
+            null,                   // $by_user = ""
+            null,                   // $event = ""
+            null,                   // $class = ""
+            $called_class::TYPE,    // $type = ""
+            $called_class::SUBTYPE, // $subtype = ""
+            $limit,                 // $limit = 10
+            null,                   // $offset = 0
+            null,                   // $count = false
+            null,                   // $timebefore = 0
+            null,                   // $timeafter = 0
+            null,                   // $object_id = 0
+            null);                  // $ip_address = ""
+    }
+
+    static function get_from_owner($owner_id, $limit = 10){
+        $called_class = get_called_class();
+        $elgg_object_array = elgg_get_entities(
+            array(
+                'owner_guid' => $owner_id,
+                'type' => $called_class::TYPE,
+                'subtype' => $called_class::SUBTYPE,
+                'limit' => $limit));
+        if(empty($elgg_object_array)){
+            return null;
+        }
+        foreach($elgg_object_array as $elgg_object){
+            $object_array[] = new $called_class((int)$elgg_object->guid);
+        }
+        return $object_array;
+    }
+
+    static function get_owner($id){
+        $called_class = get_called_class();
+        $object = new $called_class($id);
+        return $object->owner_id;
     }
 }

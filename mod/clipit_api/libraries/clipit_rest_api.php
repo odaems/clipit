@@ -136,6 +136,15 @@ function expose_common_functions($api_suffix, $class_suffix){
                  "required" => true)),
         "Get instances by Id",
         'GET', false, true);
+    expose_function(
+        $api_suffix."get_events",
+        $class_suffix."get_events",
+        array(
+            "limit" => array(
+                "type" => "int",
+                "required" => false)),
+        "Get object-type associated events.",
+        "GET", false, true);
 }
 
 function expose_activity_functions(){
@@ -255,13 +264,13 @@ function expose_comment_functions(){
     $api_suffix = "clipit.comment.";
     $class_suffix = "ClipitComment::";
     expose_function(
-        $api_suffix."get_by_author",
-        $class_suffix."get_by_author",
+        $api_suffix."get_from_target",
+        $class_suffix."get_from_target",
         array(
-             "author_array" => array(
-                 "type" => "array",
+             "target_id" => array(
+                 "type" => "int",
                  "required" => true)),
-        "Get all Comments by Author Id",
+        "Get all Comments by Target object",
         'GET', false, true);
 }
 
@@ -289,26 +298,32 @@ function expose_event_functions(){
         array(
             "event_type" => array(
                 "type" => "string",
-                "required" => false),
-            "user_id" => array(
-                "type" => "int",
-                "required" => false),
+                "required" => true),
+            "user_array" => array(
+                "type" => "array",
+                "required" => true),
             "object_id" => array(
                 "type" => "int",
-                "required" => false),
+                "required" => true),
             "object_type" => array(
                 "type" => "string",
-                "required" => false),
+                "required" => true),
+            "relation_type" => array(
+                "type" => "string",
+                "required" => true),
             "begin_date" => array(
                 "type" => "int",
-                "required" => false),
+                "required" => true),
             "end_date" => array(
                 "type" => "int",
-                "required" => false),
+                "required" => true),
+            "offset" => array(
+                "type" => "int",
+                "required" => true),
             "limit" => array(
                 "type" => "int",
                 "required" => false)),
-        "Get instances filtered",
+        "Get events filtered by different parameters (see list_filters). Use '0' as the value for filters unwanted.",
         'GET', false, true);
     expose_function(
         $api_suffix."get_by_id",
@@ -317,34 +332,7 @@ function expose_event_functions(){
             "id_array" => array(
                 "type" => "array",
                 "required" => true)),
-        "Get instances by Id",
-        'GET', false, true);
-    expose_function(
-        $api_suffix."get_from_user",
-        $class_suffix."get_from_user",
-        array(
-            "user_id" => array(
-                "type" => "int",
-                "required" => true)),
-        "Get instances from a User Id",
-        'GET', false, true);
-    expose_function(
-        $api_suffix."get_from_object",
-        $class_suffix."get_from_object",
-        array(
-            "object_id" => array(
-                "type" => "int",
-                "required" => true)),
-        "Get instances from an Object Id",
-        'GET', false, true);
-    expose_function(
-        $api_suffix."get_from_object_type",
-        $class_suffix."get_from_object_type",
-        array(
-            "object_type" => array(
-                "type" => "string",
-                "required" => true)),
-        "Get instances from an Object Type",
+        "Get events filtered by Id.",
         'GET', false, true);
 }
 
@@ -685,5 +673,38 @@ function expose_video_functions(){
                  "type" => "int",
                  "required" => true)),
         "Get Comments from a Video",
+        'GET', false, true);
+    expose_function(
+        $api_suffix."add_tags",
+        $class_suffix."add_tags",
+        array(
+            "id" => array(
+                "type" => "int",
+                "required" => true),
+            "tag_array" => array(
+                "type" => "array",
+                "required" => true)),
+        "Add Tags by Id to a Video",
+        'POST', false, true);
+    expose_function(
+        $api_suffix."remove_tags",
+        $class_suffix."remove_tags",
+        array(
+            "id" => array(
+                "type" => "int",
+                "required" => true),
+            "tag_array" => array(
+                "type" => "array",
+                "required" => true)),
+        "Remove Tags by Id from a Video",
+        'POST', false, true);
+    expose_function(
+        $api_suffix."get_tags",
+        $class_suffix."get_tags",
+        array(
+            "id" => array(
+                "type" => "int",
+                "required" => true)),
+        "Get Tags from a Video",
         'GET', false, true);
 }

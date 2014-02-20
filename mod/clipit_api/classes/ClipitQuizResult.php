@@ -48,10 +48,6 @@ class ClipitQuizResult extends UBItem{
      * @var bool Determines if this Result is correct (true) or incorrect (false)
      */
     public $correct = false;
-    /**
-     * @var int Timestamp when the user submitted this Quiz Result
-     */
-    public $time_created = -1;
 
     /**
      * Loads a ClipitQuizResult instance from the system.
@@ -71,11 +67,12 @@ class ClipitQuizResult extends UBItem{
         $this->id = (int) $elgg_object->guid;
         $this->name = (string) $elgg_object->name;
         $this->description = (string) $elgg_object->description;
+        $this->owner_id = (int) $elgg_object->owner_guid;
+        $this->time_created = (int)$elgg_object->time_created;
         $this->result_array = (array) $elgg_object->result_array;
         $this->correct = (bool) $elgg_object->correct;
         $this->quiz_question = (int) $elgg_object->quiz_question;
         $this->user = (int) $elgg_object->user;
-        $this->time_created = (int) $elgg_object->time_created;
         return $this;
     }
 
@@ -97,10 +94,10 @@ class ClipitQuizResult extends UBItem{
         $elgg_object->correct = (bool) $this->correct;
         $elgg_object->quiz_question = (int) $this->quiz_question;
         $elgg_object->user = (int) $this->user;
-        $elgg_object->owner_guid = 0;
-        $elgg_object->container_guid = 0;
         $elgg_object->access_id = ACCESS_PUBLIC;
         $elgg_object->save();
+        $this->owner_id = (int) $elgg_object->owner_guid;
+        $this->time_created = (int)$elgg_object->time_created;
         return $this->id = $elgg_object->guid;
     }
 

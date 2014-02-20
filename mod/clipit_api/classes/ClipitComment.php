@@ -32,18 +32,11 @@ class ClipitComment extends UBItem{
      * @const string Elgg entity subtype for this class
      */
     const SUBTYPE = "clipit_comment";
+    const REL_TARGET = "comment-target";
     /**
      * @var int Id of item this comment is targeting
      */
     public $target = -1;
-    /**
-     * @var int Id of user who posted the comment
-     */
-    public $author = -1;
-    /**
-     * @var int Timestamp when the comment was posted
-     */
-    public $time_created = -1;
     /**
      * @var bool Overall rating opinion: true = good, false = bad
      */
@@ -72,9 +65,9 @@ class ClipitComment extends UBItem{
         $this->id = (int)$elgg_object->guid;
         $this->name = (string)$elgg_object->name;
         $this->description = (string)$elgg_object->description;
-        $this->target = (int)$elgg_object->target;
-        $this->author = (int)$elgg_object->author;
+        $this->owner_id = (int)$elgg_object->owner_guid;
         $this->time_created = (int)$elgg_object->time_created;
+        $this->target = (int)$elgg_object->target;
         $this->overall = (bool)$elgg_object->overall;
         $this->rating_array = (array)$elgg_object->rating_array;
         return $this;
@@ -95,42 +88,32 @@ class ClipitComment extends UBItem{
         $elgg_object->name = (string)$this->name;
         $elgg_object->description = (string)$this->description;
         $elgg_object->target = (int)$this->target;
-        $elgg_object->author = (int)$this->author;
         $elgg_object->overall = (bool)$this->overall;
         $elgg_object->rating_array = (array)$this->rating_array;
-        $elgg_object->owner_guid = 0;
-        $elgg_object->container_guid = 0;
         $elgg_object->access_id = ACCESS_PUBLIC;
         $elgg_object->save();
+        $this->owner_id = (int)$elgg_object->owner_guid;
+        $this->time_created = (int)$elgg_object->time_created;
         return $this->id = $elgg_object->guid;
     }
 
-    static function get_by_author($author_array){
-        $comment_array = array();
-        foreach($author_array as $author_id){
-            $elgg_object_array = elgg_get_entities_from_metadata(
-                array(
-                     "type" => ClipitComment::TYPE,
-                     "subtype" => ClipitComment::SUBTYPE,
-                     "metadata_names" => array("author"),
-                     "metadata_values" => ($author_id)
-                )
-            );
-            if(!$elgg_object_array){
-                $comment_array[] = null;
-            } else{
-                $temp_array = array();
-                foreach($elgg_object_array as $elgg_object){
-                    $temp_array[] = new ClipitComment($elgg_object->guid);
-                }
-                if(!$temp_array){
-                    $comment_array[] = null;
-                } else{
-                    $comment_array[] = $temp_array;
-                }
-            }
+    static function get_from_target($target_id){
+        $called_class = get_called_class();
+        $elgg_object_array = elgg_get_entities_from_metadata(
+            array(
+                "type" => $called_class::TYPE,
+                "subtype" => $called_class::SUBTYPE,
+                "metadata_names" => array("target"),
+                "metadata_values" => array($target_id)
+            ));
+        if(empty($elgg_object_array)){
+            return null;
         }
-        return $comment_array;
+        $object_array = array();
+        foreach($elgg_object_array as $elgg_object){
+            $object_array[] = new $called_class((int)$elgg_object->guid);
+        }
+        return $object_array;
     }
 }
 

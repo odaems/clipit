@@ -42,14 +42,12 @@ class UBUser extends UBItem{
      * @var string Random string to encode password
      * @var string User email
      * @var string User role (default: "user")
-     * @var int Timestamp when the user was first saved
      */
     public $login = "";
     public $password = "";
     public $email = "";
     public $role = self::DEFAULT_ROLE;
     public $language = "";
-    public $time_created = -1;
     private $password_hash = "";
 
     /**

@@ -27,27 +27,17 @@
  *
  * @package clipit
  */
-class ClipitVideo extends UBItem{
+class ClipitVideo extends UBCollection{
     /**
      * @const string Elgg entity sybtype for this class
      */
     const SUBTYPE = "clipit_video";
+    const REL_COMMENT = "video-comment";
+    const REL_TAG = "video-tag";
     /**
      * @var string Link to where the video is hosted (Youtube, Vimeo...)
      */
-    public $link = "";
-    /**
-     * @var array List of ClipitComment Ids targeting this Video
-     */
-    public $comment_array = array();
-    /**
-     * @var array List of Taxonomy Tags applied to this Video
-     */
-    public $taxonomy_tag_array = array();
-    /**
-     * @var int Timestamp when the Video was submitted
-     */
-    public $time_created = -1;
+    public $url = "";
 
     /**
      * Loads a ClipitVideo instance from the system.
@@ -67,10 +57,9 @@ class ClipitVideo extends UBItem{
         $this->id = (int)$elgg_object->guid;
         $this->name = (string)$elgg_object->name;
         $this->description = $elgg_object->description;
-        $this->link = (int)$elgg_object->link;
-        $this->comment_array = (array)$elgg_object->comment_array;
-        $this->taxonomy_tag_array = (array)$elgg_object->taconomy_tag_array;
+        $this->owner_id = (int) $elgg_object->owner_guid;
         $this->time_created = (int)$elgg_object->time_created;
+        $this->url = (int)$elgg_object->url;
         return $this;
     }
 
@@ -88,13 +77,11 @@ class ClipitVideo extends UBItem{
         }
         $elgg_object->name = (string)$this->name;
         $elgg_object->description = (string)$this->description;
-        $elgg_object->link = (int)$this->link;
-        $elgg_object->comment_array = (array)$this->comment_array;
-        $elgg_object->taxonomy_tag_array = (array)$this->taxonomy_tag_array;
-        $elgg_object->owner_guid = 0;
-        $elgg_object->container_guid = 0;
+        $elgg_object->url = (int)$this->url;
         $elgg_object->access_id = ACCESS_PUBLIC;
         $elgg_object->save();
+        $this->owner_id = (int) $elgg_object->owner_guid;
+        $this->time_created = (int)$elgg_object->time_created;
         return $this->id = $elgg_object->guid;
     }
 
@@ -109,15 +96,7 @@ class ClipitVideo extends UBItem{
         if(!$video = new ClipitVideo($id)){
             return false;
         }
-        if(!$video->comment_array){
-            $video->comment_array = $comment_array;
-        } else{
-            $video->comment_array = array_merge($video->comment_array, $comment_array);
-        }
-        if(!$video->save()){
-            return false;
-        }
-        return true;
+        return $video->addItems($comment_array, self::REL_COMMENT);
     }
 
     /**
@@ -131,21 +110,7 @@ class ClipitVideo extends UBItem{
         if(!$video = new ClipitVideo($id)){
             return false;
         }
-        if(!$video->comment_array){
-            return false;
-        }
-        foreach($comment_array as $comment_id){
-            $key = array_search($comment_id, $video->comment_array);
-            if(isset($key)){
-                unset($video->comment_array[$key]);
-            } else{
-                return false;
-            }
-        }
-        if(!$video->save()){
-            return false;
-        }
-        return true;
+        return $video->removeItems($comment_array, self::REL_COMMENT);
     }
 
     /**
@@ -158,86 +123,48 @@ class ClipitVideo extends UBItem{
         if(!$video = new ClipitVideo($id)){
             return false;
         }
-        $comment_array = array();
-        foreach($video->comment_array as $comment_id){
-            if(!$comment = new ClipitComment($comment_id)){
-                $comment_array[] = null;
-            } else{
-                $comment_array[] = $comment;
-            }
-        }
-        return $comment_array;
+        return $video->getItems(self::REL_COMMENT);
     }
 
     /**
-     * Adds Taxonomy Tags to a Video, referenced by Id.
+     * Adds Tags to a Video, referenced by Id.
      *
-     * @param int $id Id from the Video to add Taxonomy Tags to
-     * @param array $taxonomy_tag_array Array of Taxonomy Tag Ids to be added to the Video
+     * @param int $id Id from the Video to add Tags to
+     * @param array $taxonomy_tag_array Array of Tag Ids to be added to the Video
      * @return bool Returns true if success, false if error
      */
-    static function add_taxonomy_tags($id, $taxonomy_tag_array){
+    static function add_tags($id, $tag_array){
         if(!$video = new ClipitVideo($id)){
             return false;
         }
-        if(!$video->taxonomy_tag_array){
-            $video->taxonomy_tag_array = $taxonomy_tag_array;
-        } else{
-            $video->taxonomy_tag_array = array_merge($video->taxonomy_tag_array, $taxonomy_tag_array);
-        }
-        if(!$video->save()){
-            return false;
-        }
-        return true;
+        return $video->addItems($tag_array, self::REL_TAG);
     }
 
     /**
-     * Remove Taxonomy Tags from a Video.
+     * Remove Tags from a Video.
      *
-     * @param int $id Id from Video to remove Taxonomy Tags from
-     * @param array $taxonomy_tag_array Array of Taxonomy Tag Ids to remove from Video
+     * @param int $id Id from Video to remove Tags from
+     * @param array $taxonomy_tag_array Array of Tag Ids to remove from Video
      * @return bool Returns true if success, false if error
      */
-    static function remove_taxonomy_tags($id, $taxonomy_tag_array){
+    static function remove_tags($id, $tag_array){
         if(!$video = new ClipitVideo($id)){
             return false;
         }
-        if(!$video->taxonomy_tag_array){
-            return false;
-        }
-        foreach($taxonomy_tag_array as $taxonomy_tag_id){
-            $key = array_search($taxonomy_tag_id, $video->taxonomy_tag_array);
-            if(isset($key)){
-                unset($video->taxonomy_tag_array[$key]);
-            } else{
-                return false;
-            }
-        }
-        if(!$video->save()){
-            return false;
-        }
-        return true;
+        return $video->removeItems($tag_array, self::REL_TAG);
     }
 
     /**
-     * Get all Taxonomy Tags from a Video
+     * Get all Tags from a Video
      *
-     * @param int $id Id of the Video to get Taxonomy Tags from
-     * @return array|bool Returns an array of Taxonomy Tag items, or false if error
+     * @param int $id Id of the Video to get Tags from
+     * @return array|bool Returns an array of Tag items, or false if error
      */
-    static function get_taxonomy_tags($id){
+    static function get_tags($id){
         if(!$video = new ClipitVideo($id)){
             return false;
         }
-        $taxonomy_tag_array = array();
-        foreach($video->taxonomy_tag_array as $taxonomy_tag_id){
-            if(!$taxonomy_tag = new ClipitTaxonomyTag($taxonomy_tag_id)){
-                $taxonomy_tag_array[] = null;
-            } else{
-                $taxonomy_tag_array[] = $taxonomy_tag;
-            }
-        }
-        return $taxonomy_tag_array;
+        return $video->getItems(self::REL_TAG);
     }
 
 }

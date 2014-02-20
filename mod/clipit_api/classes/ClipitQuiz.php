@@ -67,6 +67,8 @@ class ClipitQuiz extends UBItem{
         $this->id = (int) $elgg_object->guid;
         $this->description = (string) $elgg_object->description;
         $this->name = (string) $elgg_object->name;
+        $this->owner_id = (int) $elgg_object->owner_guid;
+        $this->time_created = (int)$elgg_object->time_created;
         $this->public = (bool)$elgg_object->public;
         $this->question_array = (array) $elgg_object->question_array;
         $this->taxonomy = (int) $elgg_object->taxonomy;
@@ -92,10 +94,10 @@ class ClipitQuiz extends UBItem{
         $elgg_object->question_array = (array) $this->question_array;
         $elgg_object->taxonomy = (int) $this->taxonomy;
         $elgg_object->target = (string) $this->target;
-        $elgg_object->owner_guid = 0;
-        $elgg_object->container_guid = 0;
         $elgg_object->access_id = ACCESS_PUBLIC;
         $elgg_object->save();
+        $this->owner_id = (int) $elgg_object->owner_guid;
+        $this->time_created = (int)$elgg_object->time_created;
         return $this->id = $elgg_object->guid;
     }
 

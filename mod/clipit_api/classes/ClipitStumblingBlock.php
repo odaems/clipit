@@ -30,8 +30,7 @@
 class ClipitTaxonomySB{
 
     // Class properties
-    public $id = int;
-    public $name = string;
+    public $tag = "";
     public $tricky_topic = int;
 
 

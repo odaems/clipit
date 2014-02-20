@@ -26,19 +26,17 @@ class UBEvent{
 
     static function list_filters(){
         $filters["event_type"] = array("login", "create", "update", "delete", "logout");
-        $filters["user_id"] = -1;
+        $filters["user_array"] = array();
         $filters["object_id"] = -1;
-        $filters["object_type"] = array("clipit_activity", "clipit_comment", "clipit_file", "clipit_group",
-            "clipit_palette", "clipit_quiz", "clipit_quiz_question", "clipit_quiz_result", "clipit_sta",
-            "clipit_storyboard", "clipit_stumbling_block", "clipit_task", "clipit_tricky_topic", "clipit_user",
-            "clipit_video");
+        $filters["object_type"] = array("user", "relationship", "object");
+        $filters["relationship_type"] = "";
         $filters["begin_date"] = -1;
         $filters["end_date"] = -1;
         $filters["limit"] = -1;
         return $filters;
     }
 
-    static function get_all($limit = 20){
+    static function get_all($limit = 10){
         return get_system_log(
             null,           // $by_user = ""
             null,           // $event = ""
@@ -55,110 +53,60 @@ class UBEvent{
     }
 
     static function get_filtered(
-                        $event_type = "",
-                        $user_id = "",
-                        $object_id = 0,
-                        $object_type = "",
-                        $begin_date = 0,
-                        $end_date = 0,
-                        $limit = 20){
-        if($object_id != ""){
+                        $event_type,
+                        $user_array,
+                        $object_id ,
+                        $object_type,
+                        $relationship_type,
+                        $begin_date,
+                        $end_date,
+                        $limit = 10){
+        if(empty($event_type)){
+            $event_type = "";
+        }
+        if(empty($user_array)){
+            $user_array = "";
+        }
+        if(empty($object_id)){
+            $object_id = 0;
+        }
+        if(empty($object_type)){
+            $type = $subtype = "";
+        } else{
             switch ($object_type){
-                case "clipit_user":
+                case "user":
                     $type = "user";
                     $subtype = "";
+                    break;
+                case "relationship":
+                    $type = "relationship";
+                    $subtype = $relationship_type;
                     break;
                 default:
                     $type = "object";
                     $subtype = $object_type;
                     break;
             }
-        } else{
-            $type = "";
-            $subtype = "";
         }
-        return get_system_log(
-            $user_id,       // $by_user = ""
-            $event_type,    // $event = ""
-            null,           // $class = ""
-            $type,          // $type = ""
-            $subtype,       // $subtype = ""
-            $limit,         // $limit = 10
-            null,           // $offset = 0
-            null,           // $count = false
-            $end_date,      // $timebefore = 0
-            $begin_date,    // $timeafter = 0
-            $object_id,     // $object_id = 0
-            null);          // $ip_address = ""
-    }
-
-    static function get_by_id($id_array){
-        foreach($id_array as $event_id){
-            $log_event = get_log_entry($event_id);
-            if(empty($log_event)){
-                $event_array[] = null;
-            } else{
-                $event_array[] = $log_event;
-            }
+        if(empty($begin_date)){
+            $begin_date = 0;
         }
-        return $event_array;
-    }
-
-    static function get_from_user($user_id, $limit = 20){
-        return get_system_log(
-            $user_id,       // $by_user = ""
-            null,           // $event = ""
-            null,           // $class = ""
-            null,           // $type = ""
-            null,           // $subtype = ""
-            $limit,         // $limit = 10
-            null,           // $offset = 0
-            null,           // $count = false
-            null,           // $timebefore = 0
-            null,           // $timeafter = 0
-            null,           // $object_id = 0
-            null);          // $ip_address = ""
-    }
-
-    static function get_from_object($object_id, $limit = 20){
-        return get_system_log(
-            null,           // $by_user = ""
-            null,           // $event = ""
-            null,           // $class = ""
-            null,           // $type = ""
-            null,           // $subtype = ""
-            $limit,         // $limit = 10
-            null,           // $offset = 0
-            null,           // $count = false
-            null,           // $timebefore = 0
-            null,           // $timeafter = 0
-            $object_id,     // $object_id = 0
-            null);          // $ip_address = ""
-    }
-
-    static function get_from_object_type($object_type, $limit= 20){
-        switch ($object_type){
-            case "clipit_user":
-                $type = "user";
-                $subtype = "";
-                break;
-            default:
-                $type = "object";
-                $subtype = $object_type;
-                break;
+        if(empty($end_date)){
+            $end_date = 0;
         }
-        return get_system_log(
-            null,           // $by_user = ""
-            null,           // $event = ""
-            null,           // $class = ""
-            $type,          // $type = ""
-            $subtype,       // $subtype = ""
-            $limit,         // $limit = 10
-            null,           // $offset = 0
-            null,           // $count = false
-            null,           // $timebefore = 0
-            null,           // $timeafter = 0
-            null,           // $object_id = 0
-            null);          // $ip_address = ""
+
+    return get_system_log(
+        $user_array,    // $by_user = ""
+        $event_type,    // $event = ""
+        null,           // $class = ""
+        $type,          // $type = ""
+        $subtype,       // $subtype = ""
+        $limit,         // $limit = 10
+        null,           // $offset = 0
+        null,           // $count = false
+        $end_date,      // $timebefore = 0
+        $begin_date,    // $timeafter = 0
+        $object_id,     // $object_id = 0
+        null);          // $ip_address = ""
     }
 }

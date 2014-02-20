@@ -36,6 +36,7 @@ class ClipitActivity extends UBCollection{
     const USER_REL = "activity-user";
     const GROUP_REL = "activity-group";
     const VIDEO_REL = "activity-video";
+    const FILE_REL = "activity-file";
 
     public $color = "";
 
@@ -55,8 +56,10 @@ class ClipitActivity extends UBCollection{
             return null;
         }
         $this->id = (int)$elgg_object->guid;
-        $this->description = (string)$elgg_object->description;
         $this->name = (string)$elgg_object->name;
+        $this->description = (string)$elgg_object->description;
+        $this->owner_id = (int)$elgg_object->owner_guid;
+        $this->time_created = (int)$elgg_object->time_created;
         $this->color = (string) $elgg_object->color;
         return $this;
     }
@@ -76,10 +79,10 @@ class ClipitActivity extends UBCollection{
         $elgg_object->name = (string)$this->name;
         $elgg_object->description = (string)$this->description;
         $elgg_object->color = (string)$this->color;
-        $elgg_object->owner_guid = 0;
-        $elgg_object->container_guid = 0;
         $elgg_object->access_id = ACCESS_PUBLIC;
         $elgg_object->save();
+        $this->owner_id = (int)$elgg_object->owner_guid;
+        $this->time_created = (int)$elgg_object->time_created;
         return $this->id = $elgg_object->guid;
     }
 
@@ -140,19 +143,19 @@ class ClipitActivity extends UBCollection{
         return $activity->getItems(self::GROUP_REL);
     }
 
-    // VIDEOS(
-    static function add_videos($id, $group_array){
+    // VIDEOS
+    static function add_videos($id, $video_array){
         if(!$activity = new ClipitActivity($id)){
             return false;
         }
-        return $activity->addItems($group_array, self::VIDEO_REL);
+        return $activity->addItems($video_array, self::VIDEO_REL);
     }
 
-    static function remove_videos($id, $group_array){
+    static function remove_videos($id, $video_array){
         if(!$activity = new ClipitActivity($id)){
             return false;
         }
-        return $activity->removeItems($group_array, self::VIDEO_REL);
+        return $activity->removeItems($video_array, self::VIDEO_REL);
     }
 
     static function get_videos($id){
@@ -162,4 +165,25 @@ class ClipitActivity extends UBCollection{
         return $activity->getItems(self::VIDEO_REL);
     }
 
+    // FILES
+    static function add_files($id, $file_array){
+        if(!$activity = new ClipitActivity($id)){
+            return false;
+        }
+        return $activity->addItems($file_array, self::FILE_REL);
+    }
+
+    static function remove_files($id, $file_array){
+        if(!$activity = new ClipitActivity($id)){
+            return false;
+        }
+        return $activity->removeItems($file_array, self::FILE_REL);
+    }
+
+    static function get_files($id){
+        if(!$activity = new ClipitActivity($id)){
+            return false;
+        }
+        return $activity->getItems(self::FILE_REL);
+    }
 }
