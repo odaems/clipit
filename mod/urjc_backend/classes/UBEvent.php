@@ -24,89 +24,79 @@
 
 class UBEvent{
 
-    static function list_filters(){
-        $filters["event_type"] = array("login", "create", "update", "delete", "logout");
-        $filters["user_array"] = array();
-        $filters["object_id"] = -1;
-        $filters["object_type"] = array("user", "relationship", "object");
-        $filters["relationship_type"] = "";
-        $filters["begin_date"] = -1;
-        $filters["end_date"] = -1;
-        $filters["limit"] = -1;
-        return $filters;
+    static function get_event_types(){
+        return array("login", "create", "update", "delete", "logout");
     }
 
-    static function get_all($limit = 10){
+    static function get_latest($offset = 0, $limit = 10){
         return get_system_log(
-            null,           // $by_user = ""
-            null,           // $event = ""
-            null,           // $class = ""
-            null,           // $type = ""
-            null,           // $subtype = ""
-            $limit,         // $limit = 10
-            null,           // $offset = 0
-            null,           // $count = false
-            null,           // $timebefore = 0
-            null,           // $timeafter = 0
-            null,           // $object_id = 0
-            null);          // $ip_address = ""
+            null,           // $by_user
+            null,           // $event
+            null,           // $class
+            null,           // $type
+            null,           // $subtype
+            $limit,         // $limit
+            $offset,        // $offset
+            null,           // $count
+            null,           // $timebefore
+            null,           // $timeafter
+            null,           // $object_id
+            null,           // $ip_address
+            null            // $owner
+        );
     }
 
-    static function get_filtered(
-                        $event_type,
-                        $user_array,
-                        $object_id ,
-                        $object_type,
-                        $relationship_type,
-                        $begin_date,
-                        $end_date,
-                        $limit = 10){
-        if(empty($event_type)){
-            $event_type = "";
-        }
-        if(empty($user_array)){
-            $user_array = "";
-        }
-        if(empty($object_id)){
-            $object_id = 0;
-        }
-        if(empty($object_type)){
-            $type = $subtype = "";
-        } else{
-            switch ($object_type){
-                case "user":
-                    $type = "user";
-                    $subtype = "";
-                    break;
-                case "relationship":
-                    $type = "relationship";
-                    $subtype = $relationship_type;
-                    break;
-                default:
-                    $type = "object";
-                    $subtype = $object_type;
-                    break;
+    static function get_by_user($user_array, $offset = 0, $limit = 10){
+        global $CONFIG;
+        $query = "SELECT * FROM {$CONFIG->dbprefix}system_log where ";
+        $query .= "performed_by_guid in (".implode(",",$user_array).")";
+        $query .= " OR ";
+        $query .= "owner_guid in (".implode(",",$user_array).")";
+        foreach($user_array as $user_id){
+            $relationship_array = array_merge(
+                get_entity_relationships($user_id, false),
+                get_entity_relationships($user_id, true));
+            if($relationship_array){
+                foreach($relationship_array as $relationship){
+                    $relationship_ids[] = $relationship->id;
+                }
+                if(isset($relationship_ids) and !empty($relationship_ids)){
+                    $query .= " OR ";
+                    $query .= "object_id";
+                    $query .= " IN (" ;
+                    $query .= implode(",", $relationship_ids) . ")";
+                }
             }
         }
-        if(empty($begin_date)){
-            $begin_date = 0;
-        }
-        if(empty($end_date)){
-            $end_date = 0;
-        }
+        $query .= " ORDER BY ";
+        $query .= "time_created desc";
+        $query .= " LIMIT $offset, $limit"; // Add order and limit
+        return get_data($query);
+    }
 
-    return get_system_log(
-        $user_array,    // $by_user = ""
-        $event_type,    // $event = ""
-        null,           // $class = ""
-        $type,          // $type = ""
-        $subtype,       // $subtype = ""
-        $limit,         // $limit = 10
-        null,           // $offset = 0
-        null,           // $count = false
-        $end_date,      // $timebefore = 0
-        $begin_date,    // $timeafter = 0
-        $object_id,     // $object_id = 0
-        null);          // $ip_address = ""
+    static function get_by_object($object_array, $offset = 0, $limit = 10){
+        global $CONFIG;
+        $query = "SELECT * FROM {$CONFIG->dbprefix}system_log where ";
+        $query .= "object_id IN (".implode(",", $object_array) . ")";
+        foreach($object_array as $object_id){
+            $relationship_array = array_merge(
+                get_entity_relationships($object_id, false),
+                get_entity_relationships($object_id, true));
+            if($relationship_array){
+                foreach($relationship_array as $relationship){
+                    $relationship_ids[] = $relationship->id;
+                }
+                if(isset($relationship_ids) and !empty($relationship_ids)){
+                    $query .= " OR ";
+                    $query .= "object_id";
+                    $query .= " IN (" ;
+                    $query .= implode(",", $relationship_ids) . ") ";
+                }
+            }
+        }
+        $query .= " ORDER BY ";
+        $query .= "time_created desc";
+        $query .= " LIMIT $offset, $limit"; // Add order and limit
+        return get_data($query);
     }
 }

@@ -278,43 +278,52 @@ function expose_event_functions(){
     $api_suffix = "clipit.event.";
     $class_suffix = "ClipitEvent::";
     expose_function(
-        $api_suffix."list_filters",
-        $class_suffix."list_filters",
-        null,
-        "Get filters which can be applied to the get_filtered method",
-        'GET', false, true);
-    expose_function(
-        $api_suffix."get_all",
-        $class_suffix."get_all",
+        $api_suffix."get_latest",
+        $class_suffix."get_latest",
         array(
+            "offset" => array(
+                "type" => "int",
+                "required" => true),
             "limit" => array(
                 "type" => "int",
-                "required" => false)),
-        "Get all instances",
+                "required" => true)),
+        "Get the latest events without filtering.",
         'GET', false, true);
     expose_function(
-        $api_suffix."get_filtered",
-        $class_suffix."get_filtered",
+        $api_suffix."get_by_user",
+        $class_suffix."get_by_user",
         array(
-            "event_type" => array(
-                "type" => "string",
-                "required" => true),
             "user_array" => array(
                 "type" => "array",
                 "required" => true),
-            "object_id" => array(
+            "offset" => array(
                 "type" => "int",
                 "required" => true),
-            "object_type" => array(
-                "type" => "string",
+            "limit" => array(
+                "type" => "int",
+                "required" => true)),
+        "Get events filtered by User.",
+        'GET', false, true);
+    expose_function(
+        $api_suffix."get_by_object",
+        $class_suffix."get_by_object",
+        array(
+            "object_array" => array(
+                "type" => "array",
                 "required" => true),
-            "relation_type" => array(
-                "type" => "string",
-                "required" => true),
-            "begin_date" => array(
+            "offset" => array(
                 "type" => "int",
                 "required" => true),
-            "end_date" => array(
+            "limit" => array(
+                "type" => "int",
+                "required" => true)),
+        "Get events filtered by Object.",
+        'GET', false, true);
+    expose_function(
+        $api_suffix."get_recommended_events",
+        $class_suffix."get_recommended_events",
+        array(
+            "user_id" => array(
                 "type" => "int",
                 "required" => true),
             "offset" => array(
@@ -322,17 +331,8 @@ function expose_event_functions(){
                 "required" => true),
             "limit" => array(
                 "type" => "int",
-                "required" => false)),
-        "Get events filtered by different parameters (see list_filters). Use '0' as the value for filters unwanted.",
-        'GET', false, true);
-    expose_function(
-        $api_suffix."get_by_id",
-        $class_suffix."get_by_id",
-        array(
-            "id_array" => array(
-                "type" => "array",
                 "required" => true)),
-        "Get events filtered by Id.",
+        "Get events which may interest a User.",
         'GET', false, true);
 }
 
