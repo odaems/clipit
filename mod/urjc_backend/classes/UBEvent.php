@@ -78,22 +78,27 @@ class UBEvent{
         global $CONFIG;
         $query = "SELECT * FROM {$CONFIG->dbprefix}system_log where ";
         $query .= "object_id IN (".implode(",", $object_array) . ")";
+        $query .= " AND object_type != \"relationship\" AND object_type != \"metadata\"";
+        $query .= " UNION ";
+        $query .= "SELECT * FROM {$CONFIG->dbprefix}system_log where";
+        $relationship_array = array();
         foreach($object_array as $object_id){
             $relationship_array = array_merge(
+                $relationship_array,
                 get_entity_relationships($object_id, false),
                 get_entity_relationships($object_id, true));
-            if($relationship_array){
-                foreach($relationship_array as $relationship){
-                    $relationship_ids[] = $relationship->id;
-                }
-                if(isset($relationship_ids) and !empty($relationship_ids)){
-                    $query .= " OR ";
-                    $query .= "object_id";
-                    $query .= " IN (" ;
-                    $query .= implode(",", $relationship_ids) . ") ";
-                }
+        }
+        if(!empty($relationship_array)){
+            foreach($relationship_array as $relationship){
+                $relationship_ids[] = $relationship->id;
+            }
+            if(isset($relationship_ids) and !empty($relationship_ids)){
+                $query .= " object_id";
+                $query .= " IN (" ;
+                $query .= implode(",", $relationship_ids) . ") ";
             }
         }
+        $query .= " AND object_type = \"relationship\"";
         $query .= " ORDER BY ";
         $query .= "time_created desc";
         $query .= " LIMIT $offset, $limit"; // Add order and limit

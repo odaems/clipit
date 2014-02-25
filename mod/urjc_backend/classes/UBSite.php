@@ -23,11 +23,15 @@ class UBSite {
         return remove_user_token($token, null);
     }
     static function lookup($id){
-        $elgg_object = new ElggObject((int)$id);
-        $object['type'] = (string)$elgg_object->type;
-        $object['subtype'] = (string)get_subtype_from_id($elgg_object->subtype);
-        $object['name'] = (string)$elgg_object->name;
-        $object['description'] = (string)$elgg_object->description;
-        return $object;
+        try{
+            $elgg_object = new ElggObject((int)$id);
+            $object['type'] = (string)$elgg_object->type;
+            $object['subtype'] = (string)get_subtype_from_id($elgg_object->subtype);
+            $object['name'] = (string)$elgg_object->name;
+            $object['description'] = (string)$elgg_object->description;
+            return $object;
+        } catch (Exception $e){
+            throw new APIException("ERROR: Unidentified ID provided.");
+        }
     }
 } 
