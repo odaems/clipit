@@ -24,10 +24,6 @@
 
 class UBEvent{
 
-    static function get_event_types(){
-        return array("login", "create", "update", "delete", "logout");
-    }
-
     static function get_latest($offset = 0, $limit = 10){
         return get_system_log(
             null,           // $by_user

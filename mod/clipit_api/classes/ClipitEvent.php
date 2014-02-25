@@ -33,7 +33,9 @@ class ClipitEvent extends UBEvent {
         $user_groups = ClipitUser::get_groups($user_id);
         $user_activities = array();
         foreach($user_groups as $group){
-            $user_activities[] = ClipitGroup::get_activity($group);
+            if($activity_id = ClipitGroup::get_activity($group)){
+                $user_activities[] = $activity_id;
+            }
         }
         $object_array = array_merge($user_groups, $user_activities);
         return self::get_by_object($object_array, $offset, $limit);

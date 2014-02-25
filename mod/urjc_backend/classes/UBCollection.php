@@ -36,6 +36,17 @@ abstract class UBCollection extends UBItem{
      * @const string Details name for collection relationships.
      */
     const DEFAULT_REL = "collection-item";
+
+    /**
+     * Deletes an instance from the system.
+     *
+     * @return bool True if success, false if error.
+     */
+    function delete(){
+        $this->deleteItems();
+        return parent::delete();
+    }
+
     /**
      * Adds items to this collection.
      *
@@ -68,6 +79,17 @@ abstract class UBCollection extends UBItem{
             remove_entity_relationship($this->id, $rel_name, $item_id);
         }
         return true;
+    }
+
+    function deleteItems(){
+        $rel_array = get_entity_relationships((int) $this->id);
+        $delete_array = array();
+        foreach($rel_array as $rel){
+            $delete_array[] = $rel->guid_two;
+        }
+        if(!empty($delete_array)){
+            UBItem::delete_by_id($delete_array);
+        }
     }
 
     /**

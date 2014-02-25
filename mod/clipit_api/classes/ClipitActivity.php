@@ -86,6 +86,37 @@ class ClipitActivity extends UBCollection{
         return $this->id = $elgg_object->guid;
     }
 
+    function deleteItems(){
+        $rel_array = get_entity_relationships((int) $this->id);
+        $group_array = array();
+        $video_array = array();
+        $file_array = array();
+        foreach($rel_array as $rel){
+            switch($rel->relationship){
+                case self::GROUP_REL:
+                    $group_array[] = $rel->guid_two;
+                    break;
+                case self::VIDEO_REL:
+                    $video_array[] = $rel->guid_two;
+                    break;
+                case self::FILE_REL:
+                    $file_array[] = $rel->guid_two;
+                    break;
+                default:
+                    break;
+            }
+        }
+        if(!empty($group_array)){
+            ClipitGroup::delete_by_id($group_array);
+        }
+        if(!empty($video_array)){
+            ClipitVideo::delete_by_id($video_array);
+        }
+        if(!empty($file_array)){
+            ClipitFile::delete_by_id($file_array);
+        }
+    }
+
     static function get_from_user($user_id){
         if(!$group_ids = ClipitUser::get_groups($user_id)){
             return false;
