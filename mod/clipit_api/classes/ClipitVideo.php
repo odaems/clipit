@@ -59,7 +59,7 @@ class ClipitVideo extends UBCollection{
         $this->description = $elgg_object->description;
         $this->owner_id = (int) $elgg_object->owner_guid;
         $this->time_created = (int)$elgg_object->time_created;
-        $this->url = (int)$elgg_object->url;
+        $this->url = (string)$elgg_object->url;
         return $this;
     }
 
@@ -77,7 +77,7 @@ class ClipitVideo extends UBCollection{
         }
         $elgg_object->name = (string)$this->name;
         $elgg_object->description = (string)$this->description;
-        $elgg_object->url = (int)$this->url;
+        $elgg_object->url = (string)$this->url;
         $elgg_object->access_id = ACCESS_PUBLIC;
         $elgg_object->save();
         $this->owner_id = (int) $elgg_object->owner_guid;

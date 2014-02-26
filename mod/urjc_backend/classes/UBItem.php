@@ -84,7 +84,7 @@ class UBItem{
             return null;
         }
         $elgg_type = $elgg_object->type;
-        $elgg_subtype = get_subtype_from_id($elgg_object->subtype);
+        $elgg_subtype = $elgg_object->getSubtype();
         if(($elgg_type != $this::TYPE) || ($elgg_subtype != $this::SUBTYPE)){
             return null;
         }
@@ -254,6 +254,7 @@ class UBItem{
         if(empty($elgg_object_array)){
             return null;
         }
+        $object_array = array();
         foreach($elgg_object_array as $elgg_object){
             $object_array[] = new $called_class((int)$elgg_object->guid);
         }
@@ -268,6 +269,7 @@ class UBItem{
      */
     static function get_by_id($id_array){
         $called_class = get_called_class();
+        $object_array = array();
         foreach($id_array as $id){
             if(elgg_entity_exists($id)){
                 $object_array[] = new $called_class((int)$id);
@@ -306,15 +308,10 @@ class UBItem{
         if(empty($elgg_object_array)){
             return null;
         }
+        $object_array = array();
         foreach($elgg_object_array as $elgg_object){
             $object_array[] = new $called_class((int)$elgg_object->guid);
         }
         return $object_array;
-    }
-
-    static function get_owner($id){
-        $called_class = get_called_class();
-        $object = new $called_class($id);
-        return $object->owner_id;
     }
 }

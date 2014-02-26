@@ -104,7 +104,7 @@ class ClipitComment extends UBItem{
                 "type" => $called_class::TYPE,
                 "subtype" => $called_class::SUBTYPE,
                 "metadata_names" => array("target"),
-                "metadata_values" => array($target_id)
+                "metadata_values" => array((int)$target_id)
             ));
         if(empty($elgg_object_array)){
             return null;

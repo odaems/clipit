@@ -32,6 +32,7 @@ function clipit_expose_api(){
         "clipit.comment." => "ClipitComment::",
         "clipit.file." => "ClipitFile::",
         "clipit.group." => "ClipitGroup::",
+        "clipit.message." => "ClipitMessage::",
         "clipit.palette." => "ClipitPalette::",
         "clipit.quiz." => "ClipitQuiz::",
         "clipit.quiz.question." => "ClipitQuizQuestion::",
@@ -52,6 +53,7 @@ function clipit_expose_api(){
     expose_event_functions();
     expose_file_functions();
     expose_group_functions();
+    expose_message_functions();
     expose_palette_functions();
     expose_quiz_functions();
     expose_quiz_question_functions();
@@ -145,6 +147,15 @@ function expose_common_functions($api_suffix, $class_suffix){
                 "required" => false)),
         "Get object-type associated events.",
         "GET", false, true);
+    expose_function(
+        $api_suffix."get_from_owner",
+        $class_suffix."get_from_owner",
+        array(
+            "owner_id" => array(
+                "type" => "int",
+                "required" => true)),
+        "Get instances from an Owner",
+        'GET', false, true);
 }
 
 function expose_activity_functions(){
@@ -429,6 +440,20 @@ function expose_group_functions(){
                 "required" => true)),
         "Gets Files from a Group",
         "GET", false, true);
+}
+
+function expose_message_functions(){
+    $api_suffix = "clipit.message.";
+    $class_suffix = "ClipitMessage::";
+    expose_function(
+        $api_suffix."get_by_destination",
+        $class_suffix."get_by_destination",
+        array(
+            "destination_array" => array(
+                "type" => "array",
+                "required" => true)),
+        "Get instances from a Destination",
+        'GET', false, true);
 }
 
 function expose_palette_functions(){
