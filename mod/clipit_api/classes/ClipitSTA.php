@@ -29,13 +29,13 @@
  * @package clipit
  */
 class ClipitSTA{
-    // Class properties
-    public $description = string;
-    public $file_array = array(ClipitFile);
-    public $id = int;
-    public $name = string;
-    public $taxonomy_tag_array = array(ClipitTaxonomyTag);
-    public $taxonomy = ClipitTaxonomy;
+//    // Class properties
+//    public $description = string;
+//    public $file_array = array(ClipitFile);
+//    public $id = int;
+//    public $name = string;
+//    public $taxonomy_tag_array = array(ClipitTaxonomyTag);
+//    public $taxonomy = ClipitTaxonomy;
 
 
 }

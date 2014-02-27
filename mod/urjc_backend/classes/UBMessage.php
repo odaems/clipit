@@ -28,6 +28,8 @@ class UBMessage extends UBItem{
 
     public $destination_id = -1;
 
+    public $read = false;
+
     /**
      * Loads an instance from the system.
      *
@@ -49,6 +51,7 @@ class UBMessage extends UBItem{
         $this->owner_id = (int)$elgg_object->owner_guid;
         $this->time_created = (int)$elgg_object->time_created;
         $this->destination_id = (int)$elgg_object->destination_id;
+        $this->read = (bool)$elgg_object->read;
         return $this;
     }
 
@@ -67,6 +70,7 @@ class UBMessage extends UBItem{
         $elgg_object->name = (string)$this->name;
         $elgg_object->description = (string)$this->description;
         $elgg_object->destination_id = (int)$this->destination_id;
+        $elgg_object->read = (bool)$this->read;
         $elgg_object->access_id = ACCESS_PUBLIC;
         $elgg_object->save();
         $this->owner_id = (int) $elgg_object->owner_guid;
@@ -122,5 +126,23 @@ class UBMessage extends UBItem{
         }
         return $object_array;
     }
+
+    static function get_read_status($id){
+        $called_class = get_called_class();
+        if(!$comment = new $called_class($id)){
+            return null;
+        }
+        return $comment->read;
+    }
+
+    static function set_read_status($id, $read = true){
+        $called_class = get_called_class();
+        if(!$comment = new $called_class($id)){
+            return null;
+        }
+        $prop_value_array["read"] = (bool)$read;
+        return $comment->setProperties($prop_value_array);
+    }
+
 
 }

@@ -251,12 +251,14 @@ class UBItem{
                 'type' => $called_class::TYPE,
                 'subtype' => $called_class::SUBTYPE,
                 'limit' => $limit));
-        if(empty($elgg_object_array)){
-            return null;
+        if(!isset($elgg_object_array)){
+            return array();
         }
-        $object_array = array();
         foreach($elgg_object_array as $elgg_object){
             $object_array[] = new $called_class((int)$elgg_object->guid);
+        }
+        if(!isset($object_array)){
+            return array();
         }
         return $object_array;
     }
@@ -306,7 +308,7 @@ class UBItem{
                 'subtype' => $called_class::SUBTYPE,
                 'limit' => $limit));
         if(empty($elgg_object_array)){
-            return null;
+            return array();
         }
         $object_array = array();
         foreach($elgg_object_array as $elgg_object){

@@ -34,10 +34,6 @@ class ClipitComment extends UBItem{
     const SUBTYPE = "clipit_comment";
     const REL_TARGET = "comment-target";
     /**
-     * @var int Id of item this comment is targeting
-     */
-    public $target = -1;
-    /**
      * @var bool Overall rating opinion: true = good, false = bad
      */
     public $overall = false;
@@ -67,7 +63,6 @@ class ClipitComment extends UBItem{
         $this->description = (string)$elgg_object->description;
         $this->owner_id = (int)$elgg_object->owner_guid;
         $this->time_created = (int)$elgg_object->time_created;
-        $this->target = (int)$elgg_object->target;
         $this->overall = (bool)$elgg_object->overall;
         $this->rating_array = (array)$elgg_object->rating_array;
         return $this;
@@ -87,7 +82,6 @@ class ClipitComment extends UBItem{
         }
         $elgg_object->name = (string)$this->name;
         $elgg_object->description = (string)$this->description;
-        $elgg_object->target = (int)$this->target;
         $elgg_object->overall = (bool)$this->overall;
         $elgg_object->rating_array = (array)$this->rating_array;
         $elgg_object->access_id = ACCESS_PUBLIC;
@@ -97,23 +91,54 @@ class ClipitComment extends UBItem{
         return $this->id = $elgg_object->guid;
     }
 
-    static function get_from_target($target_id){
-        $called_class = get_called_class();
-        $elgg_object_array = elgg_get_entities_from_metadata(
-            array(
-                "type" => $called_class::TYPE,
-                "subtype" => $called_class::SUBTYPE,
-                "metadata_names" => array("target"),
-                "metadata_values" => array((int)$target_id)
-            ));
-        if(empty($elgg_object_array)){
+    function setTarget($target_id){
+        return add_entity_relationship($this->id, self::REL_TARGET, $target_id);
+    }
+
+    function getTarget(){
+        $rel_array = get_entity_relationships($this->id);
+        if(empty($rel_array) || count($rel_array) != 1){
             return null;
         }
-        $object_array = array();
-        foreach($elgg_object_array as $elgg_object){
-            $object_array[] = new $called_class((int)$elgg_object->guid);
+        $rel = array_pop($rel_array);
+        if($rel->relationship != self::REL_TARGET){
+            return null;
         }
-        return $object_array;
+        return $rel->guid_two;
     }
+
+    static function get_by_target($target_array){
+        foreach($target_array as $target_id){
+            $rel_array = get_entity_relationships($target_id, true);
+            foreach($rel_array as $rel){
+                if($rel->relationship == self::REL_TARGET){
+                    $temp_array[] = new ClipitComment($rel->guid_one);
+                }
+            }
+            if(isset($temp_array)){
+                $comment_array[] = $temp_array;
+            }
+        }
+        if(!isset($comment_array)){
+            return array();
+        }
+        return $comment_array;
+    }
+
+    static function set_target($id, $target_id){
+        if(!$comment = new ClipitComment($id)){
+            return null;
+        }
+        return $comment->setTarget($target_id);
+    }
+
+    static function get_target($id){
+        if(!$comment = new ClipitComment($id)){
+            return null;
+        }
+        return $comment->getTarget();
+    }
+
+
 }
 

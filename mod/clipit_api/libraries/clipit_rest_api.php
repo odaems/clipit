@@ -275,11 +275,32 @@ function expose_comment_functions(){
     $api_suffix = "clipit.comment.";
     $class_suffix = "ClipitComment::";
     expose_function(
-        $api_suffix."get_from_target",
-        $class_suffix."get_from_target",
+        $api_suffix."get_target",
+        $class_suffix."get_target",
+        array(
+            "id" => array(
+                "type" => "int",
+                "required" => true)),
+        "Get Target Id from a Comment",
+        'GET', false, true);
+    expose_function(
+        $api_suffix."set_target",
+        $class_suffix."set_target",
+        array(
+            "id" => array(
+                "type" => "int",
+                "required" => true),
+            "target_id" => array(
+                "type" => "int",
+                "required" => true)),
+        "Set Target Id for a Comment",
+        'POST', false, true);
+    expose_function(
+        $api_suffix."get_by_target",
+        $class_suffix."get_by_target",
         array(
              "target_id" => array(
-                 "type" => "int",
+                 "type" => "array",
                  "required" => true)),
         "Get all Comments by Target object",
         'GET', false, true);
@@ -446,14 +467,44 @@ function expose_message_functions(){
     $api_suffix = "clipit.message.";
     $class_suffix = "ClipitMessage::";
     expose_function(
+        $api_suffix."get_by_sender",
+        $class_suffix."get_by_sender",
+        array(
+            "sender_array" => array(
+                "type" => "array",
+                "required" => true)),
+        "Get instances by Sender",
+        'GET', false, true);
+    expose_function(
         $api_suffix."get_by_destination",
         $class_suffix."get_by_destination",
         array(
             "destination_array" => array(
                 "type" => "array",
                 "required" => true)),
-        "Get instances from a Destination",
+        "Get instances by Destination",
         'GET', false, true);
+    expose_function(
+        $api_suffix."get_read_status",
+        $class_suffix."get_read_status",
+        array(
+            "id" => array(
+                "type" => "int",
+                "required" => true)),
+        "Get read message status",
+        'GET', false, true);
+    expose_function(
+        $api_suffix."set_read_status",
+        $class_suffix."set_read_status",
+        array(
+            "id" => array(
+                "type" => "int",
+                "required" => true),
+            "read" => array(
+                "type" => "bool",
+                "required" => false)),
+        "Get read message status",
+        'POST', false, true);
 }
 
 function expose_palette_functions(){
@@ -661,6 +712,33 @@ function expose_user_functions(){
                 "required" => true)),
         "Get all Group Ids in which this user is a member of.",
         'GET', false, true);
+    expose_function(
+        $api_suffix."set_role_student",
+        $class_suffix."set_role_student",
+        array(
+            "id" => array(
+                "type" => "int",
+                "required" => true)),
+        "Set the Role of a User to Student.",
+        'POST', false, true);
+    expose_function(
+        $api_suffix."set_role_teacher",
+        $class_suffix."set_role_teacher",
+        array(
+            "id" => array(
+                "type" => "int",
+                "required" => true)),
+        "Set the Role of a User to Student.",
+        'POST', false, true);
+    expose_function(
+        $api_suffix."set_role_admin",
+        $class_suffix."set_role_admin",
+        array(
+            "id" => array(
+                "type" => "int",
+                "required" => true)),
+        "Set the Role of a User to Student.",
+        'POST', false, true);
 }
 
 function expose_video_functions(){
