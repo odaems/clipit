@@ -32,7 +32,7 @@ class ClipitUser extends UBUser{
     /**
      * @const Relationship name for Users belonging to a Group
      */
-    const GROUP_REL = "group-user";
+    const REL_GROUP = "group-user";
     /**
      * @const Role name for Students
      */
@@ -56,7 +56,7 @@ class ClipitUser extends UBUser{
         $rel_array = get_entity_relationships($id, true);
         $group_ids = array();
         foreach($rel_array as $rel){
-            if($rel->relationship == self::GROUP_REL){
+            if($rel->relationship == self::REL_GROUP){
                 $group_ids[] = (int) $rel->guid_one;
             }
         }

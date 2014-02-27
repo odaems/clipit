@@ -26,7 +26,7 @@ class UBMessage extends UBItem{
 
     const SUBTYPE = "message";
 
-    public $destination_id = -1;
+    const REL_DESTINATION = "message-destination";
 
     public $read = false;
 
@@ -50,7 +50,6 @@ class UBMessage extends UBItem{
         $this->name = (string)$elgg_object->name;
         $this->owner_id = (int)$elgg_object->owner_guid;
         $this->time_created = (int)$elgg_object->time_created;
-        $this->destination_id = (int)$elgg_object->destination_id;
         $this->read = (bool)$elgg_object->read;
         return $this;
     }
@@ -69,13 +68,32 @@ class UBMessage extends UBItem{
         }
         $elgg_object->name = (string)$this->name;
         $elgg_object->description = (string)$this->description;
-        $elgg_object->destination_id = (int)$this->destination_id;
         $elgg_object->read = (bool)$this->read;
         $elgg_object->access_id = ACCESS_PUBLIC;
         $elgg_object->save();
         $this->owner_id = (int) $elgg_object->owner_guid;
         $this->time_created = (int)$elgg_object->time_created;
         return $this->id = (int) $elgg_object->guid;
+    }
+
+    static function get_destination($id){
+        $called_class = get_called_class();
+        $message = new $called_class($id);
+        $rel_array = get_entity_relationships($message->id);
+        if(empty($rel_array) || count($rel_array) != 1){
+            return null;
+        }
+        $rel = array_pop($rel_array);
+        if($rel->relationship != self::REL_DESTINATION){
+            return null;
+        }
+        return $rel->guid_two;
+    }
+
+    static function set_destination($id, $destination_id){
+        $called_class = get_called_class();
+        $message = new $called_class($id);
+        return add_entity_relationship($message->id, self::REL_DESTINATION, $destination_id);
     }
 
     static function get_by_sender($sender_array){
@@ -106,17 +124,10 @@ class UBMessage extends UBItem{
         $called_class = get_called_class();
         $object_array = array();
         foreach($destination_array as $destination_id){
-            $elgg_object_array = elgg_get_entities_from_metadata(
-                array(
-                    "type" => $called_class::TYPE,
-                    "subtype" => $called_class::SUBTYPE,
-                    "metadata_name" => "destination_id",
-                    "metadata_value" => (int)$destination_id
-                )
-            );
+            $rel_array = get_entity_relationships($destination_id, true);
             $temp_array = array();
-            foreach($elgg_object_array as $elgg_object){
-                $temp_array[] = new $called_class((int)$elgg_object->guid);
+            foreach($rel_array as $rel){
+                $temp_array[] = new $called_class((int)$rel->guid_one);
             }
             if(!empty($temp_array)){
                 $object_array[] = $temp_array;

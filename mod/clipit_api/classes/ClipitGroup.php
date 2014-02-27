@@ -33,8 +33,8 @@ class ClipitGroup extends UBCollection{
      */
     const SUBTYPE = "clipit_group";
 
-    const USER_REL = "group-user";
-    const FILE_REL = "group-file";
+    const REL_USER = "group-user";
+    const REL_FILE = "group-file";
 
 
     static function get_from_user_activity($user_id, $activity_id){
@@ -72,7 +72,7 @@ class ClipitGroup extends UBCollection{
         if(!$group = new ClipitGroup($id)){
             return false;
         }
-        return $group->addItems($user_array, self::USER_REL);
+        return $group->addItems($user_array, self::REL_USER);
     }
     /**
      * Remove Users from a Group.
@@ -85,7 +85,7 @@ class ClipitGroup extends UBCollection{
         if(!$group = new ClipitGroup($id)){
             return false;
         }
-        return $group->removeItems($user_array, self::USER_REL);
+        return $group->removeItems($user_array, self::REL_USER);
     }
     /**
      * Get User Ids from a Group.
@@ -97,7 +97,7 @@ class ClipitGroup extends UBCollection{
         if(!$group = new ClipitGroup($id)){
             return false;
         }
-        return $group->getItems(self::USER_REL);
+        return $group->getItems(self::REL_USER);
     }
     /**
      * Add Files to a Group.
@@ -110,7 +110,7 @@ class ClipitGroup extends UBCollection{
         if(!$group = new ClipitGroup($id)){
             return false;
         }
-        return $group->addItems($file_array, self::FILE_REL);
+        return $group->addItems($file_array, self::REL_FILE);
     }
     /**
      * Remove Files from a Group.
@@ -123,7 +123,7 @@ class ClipitGroup extends UBCollection{
         if(!$group = new ClipitGroup($id)){
             return false;
         }
-        return $group->removeItems($file_array, self::FILE_REL);
+        return $group->removeItems($file_array, self::REL_FILE);
     }
     /**
      * Get File Ids from a Group.
@@ -135,6 +135,6 @@ class ClipitGroup extends UBCollection{
         if(!$group = new ClipitGroup($id)){
             return false;
         }
-        return $group->getItems(self::FILE_REL);
+        return $group->getItems(self::REL_FILE);
     }
 }

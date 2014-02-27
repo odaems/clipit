@@ -33,10 +33,10 @@ class ClipitActivity extends UBCollection{
      */
     const SUBTYPE = "clipit_activity";
 
-    const USER_REL = "activity-user";
-    const GROUP_REL = "activity-group";
-    const VIDEO_REL = "activity-video";
-    const FILE_REL = "activity-file";
+    const REL_USER = "activity-user";
+    const REL_GROUP = "activity-group";
+    const REL_VIDEO = "activity-video";
+    const REL_FILE = "activity-file";
 
     public $color = "";
 
@@ -93,13 +93,13 @@ class ClipitActivity extends UBCollection{
         $file_array = array();
         foreach($rel_array as $rel){
             switch($rel->relationship){
-                case self::GROUP_REL:
+                case self::REL_GROUP:
                     $group_array[] = $rel->guid_two;
                     break;
-                case self::VIDEO_REL:
+                case self::REL_VIDEO:
                     $video_array[] = $rel->guid_two;
                     break;
-                case self::FILE_REL:
+                case self::REL_FILE:
                     $file_array[] = $rel->guid_two;
                     break;
                 default:
@@ -135,21 +135,21 @@ class ClipitActivity extends UBCollection{
         if(!$activity = new ClipitActivity($id)){
             return false;
         }
-        return $activity->addItems($user_array, self::USER_REL);
+        return $activity->addItems($user_array, self::REL_USER);
     }
 
     static function remove_called_users($id, $user_array){
         if(!$activity = new ClipitActivity($id)){
             return false;
         }
-        return $activity->removeItems($user_array, self::USER_REL);
+        return $activity->removeItems($user_array, self::REL_USER);
     }
 
     static function get_called_users($id){
         if(!$activity = new ClipitActivity($id)){
             return false;
         }
-        return $activity->getItems(self::USER_REL);
+        return $activity->getItems(self::REL_USER);
     }
 
     // GROUPS
@@ -157,21 +157,21 @@ class ClipitActivity extends UBCollection{
         if(!$activity = new ClipitActivity($id)){
             return false;
         }
-        return $activity->addItems($group_array, self::GROUP_REL);
+        return $activity->addItems($group_array, self::REL_GROUP);
     }
 
     static function remove_groups($id, $group_array){
         if(!$activity = new ClipitActivity($id)){
             return false;
         }
-        return $activity->removeItems($group_array, self::GROUP_REL);
+        return $activity->removeItems($group_array, self::REL_GROUP);
     }
 
     static function get_groups($id){
         if(!$activity = new ClipitActivity($id)){
             return false;
         }
-        return $activity->getItems(self::GROUP_REL);
+        return $activity->getItems(self::REL_GROUP);
     }
 
     // VIDEOS
@@ -179,21 +179,21 @@ class ClipitActivity extends UBCollection{
         if(!$activity = new ClipitActivity($id)){
             return false;
         }
-        return $activity->addItems($video_array, self::VIDEO_REL);
+        return $activity->addItems($video_array, self::REL_VIDEO);
     }
 
     static function remove_videos($id, $video_array){
         if(!$activity = new ClipitActivity($id)){
             return false;
         }
-        return $activity->removeItems($video_array, self::VIDEO_REL);
+        return $activity->removeItems($video_array, self::REL_VIDEO);
     }
 
     static function get_videos($id){
         if(!$activity = new ClipitActivity($id)){
             return false;
         }
-        return $activity->getItems(self::VIDEO_REL);
+        return $activity->getItems(self::REL_VIDEO);
     }
 
     // FILES
@@ -201,20 +201,20 @@ class ClipitActivity extends UBCollection{
         if(!$activity = new ClipitActivity($id)){
             return false;
         }
-        return $activity->addItems($file_array, self::FILE_REL);
+        return $activity->addItems($file_array, self::REL_FILE);
     }
 
     static function remove_files($id, $file_array){
         if(!$activity = new ClipitActivity($id)){
             return false;
         }
-        return $activity->removeItems($file_array, self::FILE_REL);
+        return $activity->removeItems($file_array, self::REL_FILE);
     }
 
     static function get_files($id){
         if(!$activity = new ClipitActivity($id)){
             return false;
         }
-        return $activity->getItems(self::FILE_REL);
+        return $activity->getItems(self::REL_FILE);
     }
 }

@@ -35,7 +35,7 @@ abstract class UBCollection extends UBItem{
     /**
      * @const string Details name for collection relationships.
      */
-    const DEFAULT_REL = "collection-item";
+    const REL_DEFAULT = "collection-item";
 
     /**
      * Deletes an instance from the system.
@@ -56,7 +56,7 @@ abstract class UBCollection extends UBItem{
      */
     function addItems($item_array, $rel_name = ""){
         if(empty($rel_name)){
-            $rel_name = $this::DEFAULT_REL;
+            $rel_name = $this::REL_DEFAULT;
         }
         foreach($item_array as $item_id){
             add_entity_relationship($this->id, $rel_name, $item_id);
@@ -73,7 +73,7 @@ abstract class UBCollection extends UBItem{
      */
     function removeItems($item_array, $rel_name = ""){
         if(empty($rel_name)){
-            $rel_name = $this::DEFAULT_REL;
+            $rel_name = $this::REL_DEFAULT;
         }
         foreach($item_array as $item_id){
             remove_entity_relationship($this->id, $rel_name, $item_id);
@@ -100,7 +100,7 @@ abstract class UBCollection extends UBItem{
      */
     function getItems($rel_name = ""){
         if(empty($rel_name)){
-            $rel_name = $this::DEFAULT_REL;
+            $rel_name = $this::REL_DEFAULT;
         }
         $rel_array = get_entity_relationships($this->id);
         $item_ids = array();

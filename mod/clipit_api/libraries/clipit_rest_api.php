@@ -467,14 +467,26 @@ function expose_message_functions(){
     $api_suffix = "clipit.message.";
     $class_suffix = "ClipitMessage::";
     expose_function(
-        $api_suffix."get_by_sender",
-        $class_suffix."get_by_sender",
+        $api_suffix."get_destination",
+        $class_suffix."get_destination",
         array(
-            "sender_array" => array(
-                "type" => "array",
+            "id" => array(
+                "type" => "int",
                 "required" => true)),
-        "Get instances by Sender",
+        "Get Destination Id of a Message",
         'GET', false, true);
+    expose_function(
+        $api_suffix."set_destination",
+        $class_suffix."set_destination",
+        array(
+            "id" => array(
+                "type" => "int",
+                "required" => true),
+            "destination_id" => array(
+                "type" => "int",
+                "required" => true)),
+        "Set the Destination Id of a Message",
+        'POST', false, true);
     expose_function(
         $api_suffix."get_by_destination",
         $class_suffix."get_by_destination",

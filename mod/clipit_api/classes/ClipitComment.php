@@ -91,22 +91,6 @@ class ClipitComment extends UBItem{
         return $this->id = $elgg_object->guid;
     }
 
-    function setTarget($target_id){
-        return add_entity_relationship($this->id, self::REL_TARGET, $target_id);
-    }
-
-    function getTarget(){
-        $rel_array = get_entity_relationships($this->id);
-        if(empty($rel_array) || count($rel_array) != 1){
-            return null;
-        }
-        $rel = array_pop($rel_array);
-        if($rel->relationship != self::REL_TARGET){
-            return null;
-        }
-        return $rel->guid_two;
-    }
-
     static function get_by_target($target_array){
         foreach($target_array as $target_id){
             $rel_array = get_entity_relationships($target_id, true);
@@ -129,14 +113,22 @@ class ClipitComment extends UBItem{
         if(!$comment = new ClipitComment($id)){
             return null;
         }
-        return $comment->setTarget($target_id);
+        return add_entity_relationship($comment->id, self::REL_TARGET, $target_id);
     }
 
     static function get_target($id){
         if(!$comment = new ClipitComment($id)){
             return null;
         }
-        return $comment->getTarget();
+        $rel_array = get_entity_relationships($comment->id);
+        if(empty($rel_array) || count($rel_array) != 1){
+            return null;
+        }
+        $rel = array_pop($rel_array);
+        if($rel->relationship != self::REL_TARGET){
+            return null;
+        }
+        return $rel->guid_two;
     }
 
 
