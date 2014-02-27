@@ -29,7 +29,22 @@
  */
 class ClipitUser extends UBUser{
 
+    /**
+     * @const Relationship name for Users belonging to a Group
+     */
     const GROUP_REL = "group-user";
+    /**
+     * @const Role name for Students
+     */
+    const ROLE_STUDENT = "student";
+    /**
+     * @const Role name for Teachers
+     */
+    const ROLE_TEACHER = "teacher";
+    /**
+     * @const Role name for Administrators
+     */
+    const ROLE_ADMIN = "admin";
 
     /**
      * Get all Group Ids in which a user is member of.
@@ -46,6 +61,45 @@ class ClipitUser extends UBUser{
             }
         }
         return $group_ids;
+    }
+
+    /**
+     * Sets a User role to Student.
+     *
+     * @param int $id User Id.
+     * @return int Returns the User Id if set correctly.
+     */
+    static function set_role_student($id){
+        $user = new ClipitUser($id);
+        remove_user_admin($id);
+        $prop_value_array["role"] = self::ROLE_STUDENT;
+        return $user->setProperties($prop_value_array);
+    }
+
+    /**
+     * Sets a User role to Teacher.
+     *
+     * @param int $id User Id.
+     * @return int Returns the User Id if set correctly.
+     */
+    static function set_role_teacher($id){
+        $user = new ClipitUser($id);
+        make_user_admin($id);
+        $prop_value_array["role"] = self::ROLE_TEACHER;
+        return $user->setProperties($prop_value_array);
+    }
+
+    /**
+     * Sets a User role to Admin.
+     *
+     * @param int $id User Id.
+     * @return int Returns the User Id if set correctly.
+     */
+    static function set_role_admin($id){
+        $user = new ClipitUser($id);
+        make_user_admin($id);
+        $prop_value_array["role"] = self::ROLE_ADMIN;
+        return $user->setProperties($prop_value_array);
     }
 
 }

@@ -154,7 +154,7 @@ class ClipitQuizResult extends UBItem{
                      "type" => ClipitQuizResult::TYPE,
                      "subtype" => ClipitQuizResult::SUBTYPE,
                      "metadata_names" => array("quiz_question"),
-                     "metadata_values" => array($quiz_question_id)
+                     "metadata_values" => array((int)$quiz_question_id)
                 )
             );
             if(!$elgg_object_array){

@@ -24,10 +24,6 @@
 
 class UBEvent{
 
-    static function get_event_types(){
-        return array("login", "create", "update", "delete", "logout");
-    }
-
     static function get_latest($offset = 0, $limit = 10){
         return get_system_log(
             null,           // $by_user
@@ -75,12 +71,15 @@ class UBEvent{
     }
 
     static function get_by_object($object_array, $offset = 0, $limit = 10){
+        if(empty($object_array)){
+            return array();
+        }
         global $CONFIG;
         $query = "SELECT * FROM {$CONFIG->dbprefix}system_log where ";
         $query .= "object_id IN (".implode(",", $object_array) . ")";
         $query .= " AND object_type != \"relationship\" AND object_type != \"metadata\"";
-        $query .= " UNION ";
-        $query .= "SELECT * FROM {$CONFIG->dbprefix}system_log where";
+        $query .= " UNION";
+        $query .= " SELECT * FROM {$CONFIG->dbprefix}system_log";
         $relationship_array = array();
         foreach($object_array as $object_id){
             $relationship_array = array_merge(
@@ -93,12 +92,11 @@ class UBEvent{
                 $relationship_ids[] = $relationship->id;
             }
             if(isset($relationship_ids) and !empty($relationship_ids)){
-                $query .= " object_id";
-                $query .= " IN (" ;
+                $query .= " where object_id IN (";
                 $query .= implode(",", $relationship_ids) . ") ";
+                $query .= " AND object_type = \"relationship\"";
             }
         }
-        $query .= " AND object_type = \"relationship\"";
         $query .= " ORDER BY ";
         $query .= "time_created desc";
         $query .= " LIMIT $offset, $limit"; // Add order and limit

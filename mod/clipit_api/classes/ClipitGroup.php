@@ -33,7 +33,6 @@ class ClipitGroup extends UBCollection{
      */
     const SUBTYPE = "clipit_group";
 
-    const ACTIVITY_REL = "activity-group";
     const USER_REL = "group-user";
     const FILE_REL = "group-file";
 
@@ -56,7 +55,7 @@ class ClipitGroup extends UBCollection{
      */
     static function get_activity($id){
         $rel_array = get_entity_relationships($id, true);
-        if(count($rel_array) != 1){
+        if(empty($rel_array) || count($rel_array) != 1){
             return false;
         }
         return array_pop($rel_array)->guid_one;

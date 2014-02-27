@@ -53,7 +53,7 @@ class UBFile extends UBItem{
         }
         $this->id = (int)$elgg_file->guid;
         $this->type = (string)$elgg_file->type;
-        $this->subtype = (string)get_subtype_from_id($elgg_file->subtype);
+        $this->subtype = $elgg_file->getSubtype();
         $temp_name = explode($this::TIMESTAMP_DELIMITER, (string)$elgg_file->getFilename());
         if(empty($temp_name[1])){
             // no timestamp found
@@ -63,8 +63,8 @@ class UBFile extends UBItem{
         }
         $this->description = (string)$elgg_file->description;
         $this->owner_id = (int)$elgg_file->owner_guid;
-        $this->data = $elgg_file->grabFile();
         $this->time_created = (int)$elgg_file->time_created;
+        $this->data = $elgg_file->grabFile();
         return $this;
     }
 

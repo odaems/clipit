@@ -7,12 +7,28 @@
  */
 
 class UBSite {
+    /**
+     * Get the REST API method list, including description and required parameters.
+     *
+     * @return array List of all available REST API Methods.
+     */
     static function api_list(){
         return list_all_apis();
     }
-    static function get_token($username, $password, $timeout = 60) {
-        if (true === elgg_authenticate($username, $password)) {
-            $token = create_user_token($username, $timeout);
+
+    /**
+     * Get authentication token, required for all other REST API calls. The token must be set as the value for the
+     * "auth_token" key in each REST API call.
+     *
+     * @param string $login User login
+     * @param string $password User password
+     * @param int $timeout Session timeout
+     * @return string Authentication Token.
+     * @throws SecurityException
+     */
+    static function get_token($login, $password, $timeout = 60) {
+        if (true === elgg_authenticate($login, $password)) {
+            $token = create_user_token($login, $timeout);
             if ($token) {
                 return $token;
             }

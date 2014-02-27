@@ -28,13 +28,13 @@
  * @package clipit
  */
 class ClipitStoryboard{
-
-    // Class properties
-    public $content = ElggFile;
-    public $creation_date = DateTime;
-    public $id = int;
-    public $name = string;
-    public $palette_items = array();
+//
+//    // Class properties
+//    public $content = ElggFile;
+//    public $creation_date = DateTime;
+//    public $id = int;
+//    public $name = string;
+//    public $palette_items = array();
 
 
 }
