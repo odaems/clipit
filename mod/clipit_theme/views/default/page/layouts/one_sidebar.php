@@ -16,10 +16,16 @@ $class = 'elgg-layout elgg-layout-one-sidebar clearfix';
 if (isset($vars['class'])) {
 	$class = "$class {$vars['class']}";
 }
-
+$title_style = "";
+if(isset($vars['title_style'])){
+    $title_style = "style='{$vars['title_style']}'";
+}
 // navigation defaults to breadcrumbs
 $nav = elgg_extract('nav', $vars, elgg_view('navigation/breadcrumbs'));
-
+$subtitle = "";
+if($vars['sub-title']){
+    $subtitle = "<h3>".$vars['sub-title']."</h3>";
+}
 ?>
 
 <div class="<?php echo $class; ?>">
@@ -28,22 +34,13 @@ $nav = elgg_extract('nav', $vars, elgg_view('navigation/breadcrumbs'));
 			echo elgg_view('page/elements/sidebar', $vars);
 		?>
 	</div>
-<!--    --><?php
-//
-//
-//    if (isset($vars['title'])) {
-//        echo "
-//        <div class='elgg-head-layout col-md-pull-3'>
-//        {$nav}
-//        ".elgg_view_title($vars['title'])."
-//        </div>";
-//    }
-//    ?>
+
 	<div class="elgg-main elgg-body col-md-pull-3">
         <?php
             if (isset($vars['title'])) {
-                echo "<div class='elgg-head-layout'>
+                echo "<div class='elgg-head-layout' {$title_style}>
                         {$nav}
+                        {$subtitle}
                         ".elgg_view_title($vars['title'])."
                        </div>";
             }

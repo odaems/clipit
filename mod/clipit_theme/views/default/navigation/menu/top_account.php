@@ -50,7 +50,7 @@ $context = elgg_get_context();
                             <i class="fa fa-exclamation-circle" style=" color: #FFF; font-size: 15px; padding: 0; "></i>
                         </button>
                         <div style=" font-size: 13px; text-transform: none; letter-spacing: 0; overflow: hidden;">
-                            <div style="color: #333;" class="text-truncate">Debes unirte al grupo de la actividad</div>
+                            <div style="color: #333;" class="text-truncate">You must join in activity group</div>
                             <small style="display: block;">12:00H, NOV 18, 2013</small>
                         </div>
                     </a>

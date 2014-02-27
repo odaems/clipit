@@ -8,14 +8,20 @@
 @import "walled_garden";
 @import "content";
 @import "forms";
+@import "modal";
+@import "lists";
 @import "widgets";
 @import "header";
 @import "footer";
+@import "activity";
+@import "video";
 //@import "elgg_mod.less";
 //
 
-body{
+html{
   overflow-y: scroll;
+}
+body{
   background: #f1f2f7;
 }
 a{
@@ -25,10 +31,26 @@ ul, ol {
   list-style: none;
   margin-top: 0;
   margin-bottom: 10px;
+  padding: 0;
 }
 .text-truncate{
   display: block;
   .text-truncate();
+}
+.text-justify{
+  text-align: justify;
+}
+.view-all{
+  text-transform: uppercase;
+  font-size: 12px;
+}
+.title-bold{
+  font-family: @font-family-futurabold;
+  color: @blue_clipit;
+}
+.btn-sp{
+  padding: 5px 10px !important;
+  .pull-right();
 }
 small, .small{
   font-size: 75%;
@@ -38,6 +60,10 @@ small, .small{
 .fa:hover{
   opacity: .7;
   text-decoration: none;
+}
+// toggle menu
+.toggle-menu{
+  display: none;
 }
 
 
@@ -81,6 +107,12 @@ small, .small{
     background-color: darken(@btn-color, 12%);
   }
 }
+// Progress
+// --------------------------------------------------
+.progress{
+  margin-bottom: 0;
+}
+
 //
 // Buttons
 // --------------------------------------------------
@@ -314,11 +346,8 @@ h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6{
 // Badges Stacked
 // --------------------------------------------------
 .nav-stacked {
-  a{
-    color: @blue_clipit;
-    letter-spacing: 0px;
-    font-weight: bold;
-    font-size: 15px;
+  > li{
+    border-radius: 4px;
     background: #FFF;
     margin-bottom: 5px;
     &:hover,
@@ -327,15 +356,24 @@ h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6{
     }
     > .badge{
       border: 2px solid #FFF !important;
+      margin: 10px;
+    }
+    &.active {
+      background-color: @blue_clipit !important;
+      > .badge {
+        color: #FFF !important;
+        border: 2px solid #FFF !important;
+        background-color: transparent;
+      }
     }
   }
-  > .active > a  {
-    background-color: @blue_clipit !important;
-    > .badge {
-      color: #FFF !important;
-      border: 2px solid #FFF !important;
-      background-color: transparent;
-    }
+  a{
+    color: @blue_clipit;
+    letter-spacing: 0px;
+    font-weight: bold;
+    font-size: 15px;
+    border-radius: 0 !important;
+    background-color: transparent !important;
   }
 }
 // Con actividad relacionada

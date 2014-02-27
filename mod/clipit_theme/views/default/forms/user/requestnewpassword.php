@@ -6,8 +6,6 @@
  * @subpackage Core
  */
 ?>
-<script src="<?php echo elgg_get_site_url()?>mod/clipit_theme/vendors/jquery.validate.js"></script>
-<script src="http://malsup.github.com/jquery.form.js"></script>
 <script>
 $(function(){
     $(".elgg-form-user-requestnewpassword").validate({
@@ -46,7 +44,6 @@ $(function(){
                             " <strong>Check your email to confirm your password reset.</strong></p>")
                     .remove();
             })
-            //$(form).submit();
         }
     });
 });

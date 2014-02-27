@@ -10,28 +10,28 @@ $content = '
 <!-- foreach-->
 <div class="separator wrapper">
     <span class="point" style="background: #00a99d;"></span>
-    <a>Tarea pendiente 1</a>
+    <a>Pending task 1</a>
     <small class="pull-right">12:00H, NOV 18, 2013</small>
 </div>
 <!-- endforeach-->
 <!-- foreach-->
 <div class="separator wrapper">
     <span class="point" style="background: #ed1e79;"></span>
-    1/3 <a>PDF\'s subidos</a>
+    1/3 <a>PDF\'s uploaded</a>
     <small class="pull-right">12:00H, NOV 18, 2013</small>
 </div>
 <!-- endforeach-->
 <!-- foreach-->
 <div class="separator wrapper">
     <span class="point" style="background: #ed1e79;"></span>
-    <a>Tarea pendiente 3</a>
+    <a>Pending task 3</a>
     <small class="pull-right">12:00H, NOV 18, 2013</small>
 </div>
 <!-- endforeach-->
 <!-- foreach-->
 <div class="separator wrapper">
     <span class="point" style="background: #f7931e;"></span>
-    <a>Tarea pendiente 4</a>
+    <a>Pending task 4</a>
     <small class="pull-right">12:00H, NOV 18, 2013</small>
 </div>
 <!-- endforeach-->';

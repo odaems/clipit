@@ -103,14 +103,16 @@
       h3{
         padding-left: 10px;
         text-transform: uppercase;
-        color: #FFF;
-        opacity: .7;
         position: absolute;
         line-height: inherit;
         width: 100%;
         margin: 0;
         font-size: @font-size-large;
         .text-truncate();
+        a{
+          color: #FFF;
+          opacity: .7;
+        }
       }
     }
   }
@@ -208,7 +210,7 @@
     width: 5px;
     margin-left: -1px;
     bottom: 10px;
-    z-index: 1000;
+    z-index: 99;
   }
   ul{
     width: 100%;
@@ -226,7 +228,7 @@
 
       .circle-activity{
         position: absolute;
-        z-index: 10000;
+        z-index: 100;
         left: 2px;
         border-radius: 30px;
         width: 15px;
@@ -234,7 +236,7 @@
         top: 12px;
       }
 
-      .event-details{
+      .event-section{
         padding: 15px;
         position: relative;
         margin-bottom: 20px;
@@ -254,12 +256,51 @@
           left: -10px;
           top: 12px;
           position: absolute;
-          z-index: 10000;
+          z-index: 102;
+        }
+        .event-details{
+          margin-top: 10px;
+          background: #f1f2f7;
+          overflow: hidden;
+          border-radius: 3px;
+          padding: 8px;
+          color: #797979;
+          font-size: 14px;
+          .icon{
+            font-size: 20px;
+            float: left;
+            margin-right: 15px;
+            color: #797979;
+          }
+          .img-thumb{
+            float: left;
+            margin-right: 10px;
+            max-width: 120px;
+            max-height: 90px;
+          }
+          .section{
+            overflow: hidden;
+            .title{
+              .text-truncate();
+            }
+            .sub-title{
+              font-size: 11px;
+              display: block;
+            }
+            .description{
+              font-size: 12px;
+              margin-top: 5px;
+            }
+          }
         }
         .event-date{
           display: block;
           padding: 5px 0;
           margin-top: 5px;
+          font-size: 75%;
+          color: #999999;
+          border-bottom: 0;
+          cursor: default;
         }
       }
     }

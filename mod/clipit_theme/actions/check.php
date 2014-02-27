@@ -17,10 +17,12 @@ if (elgg_get_config('allow_registration')) {
     /*if(!get_user_by_email($email) || !isset($email)){
         $result = "false";
     }*/
-    if(get_user_by_username($username) || !isset($username)){
+    if(get_user_by_username($username) && isset($username)){
+        $result = "false";
+    }
+    if(!get_user_by_email($email) && isset($email)){
         $result = "false";
     }
     echo $result;
 }
 die();
-forward(REFERER);

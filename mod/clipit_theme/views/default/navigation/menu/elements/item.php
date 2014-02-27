@@ -26,13 +26,17 @@ if ($children) {
 
 $item_class = $item->getItemClass();
 if ($item->getSelected()) {
-    $item_class = "$item_class elgg-state-selected active";
+    $item_class = "$item_class active";
 }
 if (isset($vars['item_class']) && $vars['item_class']) {
     $item_class .= ' ' . $vars['item_class'];
 }
-
-echo "<li class=\"$item_class\">";
+$badge = "";
+if (isset($item->badge)) {
+    $badge = "<span class=\"badge pull-right\">{$item->badge}</span>";
+}
+echo "<li class=\"$item_class\" role=\"presentation\" tabindex=\"-1\">";
+echo $badge;
 echo $item->getContent();
 if ($children) {
     echo elgg_view('navigation/menu/elements/section', array(

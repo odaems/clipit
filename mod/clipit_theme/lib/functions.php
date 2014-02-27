@@ -41,11 +41,13 @@ function group_events($subtype, $object_rel, $relationship){
     // User object
     $user = array_pop(ClipitUser::get_by_id(array($relationship->performed_by_guid)));
     $user = new ElggUser($user->id);
+
     switch($subtype){
         case "group-user":
             $params =  array(
-                'title' => 'Nuevo miembro',
-                'href'  => 'profile/'.$items['sub-item']->login,
+                'title' => 'New member',
+                'id'    => $relationship->id,
+                'href'  => 'profile/'.$user->login,
                 'icon'  => 'user',
                 'color' => $activity->color,
                 'time'  => $relationship->time_created,
@@ -57,7 +59,7 @@ function group_events($subtype, $object_rel, $relationship){
                         'class' => 'img-thumb',
                     )),
                     'title' => $user->name,
-                    'sub-title' => 'En '.$group->name,
+                    'sub-title' => 'In '.$group->name,
                 ),
             );
             $content .= elgg_view("page/components/timeline_event", $params);
@@ -65,9 +67,10 @@ function group_events($subtype, $object_rel, $relationship){
         case "group-file":
             $file = array_pop(ClipitFile::get_by_id(array($object_rel->guid_two)));
             $params =  array(
-                'title' => 'Archivo subido',
+                'title' => 'File uploaded',
+                'id'    => $relationship->id,
                 'href'  => 'clipit_activity/'.$activity->id.'/file/'.$file->id,
-                'icon'  => 'file-text',
+                'icon'  => 'upload',
                 'color' => $activity->color,
                 'time'  => $relationship->time_created,
                 'details' => array(
@@ -81,4 +84,10 @@ function group_events($subtype, $object_rel, $relationship){
             break;
     }
     return $content;
+}
+/*
+ * Activity events types
+ */
+function activity_events($subtype, $object_rel, $relationship){
+
 }

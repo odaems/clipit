@@ -17,6 +17,7 @@ $name = get_input('name');
 $friend_guid = (int) get_input('friend_guid', 0);
 $invitecode = get_input('invitecode');
 
+
 if (elgg_get_config('allow_registration')) {
     try {
         if (trim($password) == "" || trim($password2) == "") {
@@ -31,33 +32,12 @@ if (elgg_get_config('allow_registration')) {
             'login'     => $username,
             'password'  => $password,
             'name'      => $name,
-            'email'     => $email,
-            'role'      => 'student'
+            'email'     => $email
         ));
+
         if ($guid) {
+            ClipitUser::set_role_student($guid);
             $new_user = get_entity($guid);
-
-            // allow plugins to respond to self registration
-            // note: To catch all new users, even those created by an admin,
-            // register for the create, user event instead.
-            // only passing vars that aren't in ElggUser.
-            $params = array(
-                'user' => $new_user,
-                'password' => $password,
-                'friend_guid' => $friend_guid,
-                'invitecode' => $invitecode
-            );
-
-            // @todo should registration be allowed no matter what the plugins return?
-            if (!elgg_trigger_plugin_hook('register', 'user', $params, TRUE)) {
-                $ia = elgg_set_ignore_access(true);
-                $new_user->delete();
-                elgg_set_ignore_access($ia);
-                // @todo this is a generic messages. We could have plugins
-                // throw a RegistrationException, but that is very odd
-                // for the plugin hooks system.
-                throw new RegistrationException(elgg_echo('registerbad'));
-            }
 
             elgg_clear_sticky_form('register');
             system_message(elgg_echo("registerok", array(elgg_get_site_entity()->name)));
@@ -65,7 +45,7 @@ if (elgg_get_config('allow_registration')) {
             // if exception thrown, this probably means there is a validation
             // plugin that has disabled the user
             try {
-                login($new_user);
+                ClipitUser::login($username, $password);
             } catch (LoginException $e) {
                 // do nothing
             }
@@ -81,5 +61,4 @@ if (elgg_get_config('allow_registration')) {
 } else {
     register_error(elgg_echo('registerdisabled'));
 }
-
-forward(REFERER);
+die();

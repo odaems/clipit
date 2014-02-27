@@ -28,8 +28,14 @@
   }
 }
 
-
-
+// Navbar fixed top
+.navbar-fixed-top{
+  border-width: 1px solid transparent;
+  .navbar-collapse{
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
 
 // Default navbar
 .navbar-default {
@@ -82,6 +88,8 @@
       height: 23px;
       border-radius: 0px;
       .box-shadow(none);
+      padding-top: 0;
+      padding-bottom: 0;
     }
     .input-group-btn button[type=submit]{
       background: #fff;
@@ -119,7 +127,7 @@ ul.top-account{
   .avatar-user{
     padding: 0;
     padding: 6px 5px 0 0;
-    max-width: 170px;
+    max-width: 175px;
     img{
       vertical-align: middle;
       margin: 3px;
