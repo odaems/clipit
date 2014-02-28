@@ -140,19 +140,14 @@ class UBMessage extends UBItem{
 
     static function get_read_status($id){
         $called_class = get_called_class();
-        if(!$comment = new $called_class($id)){
-            return null;
-        }
-        return $comment->read;
+        $prop_array[] = "read";
+        return $called_class::get_properties($id, $prop_array);
     }
 
     static function set_read_status($id, $read = true){
         $called_class = get_called_class();
-        if(!$comment = new $called_class($id)){
-            return null;
-        }
         $prop_value_array["read"] = (bool)$read;
-        return $comment->setProperties($prop_value_array);
+        return $called_class::set_properties($id, $prop_value_array);
     }
 
 

@@ -171,6 +171,42 @@ function expose_activity_functions(){
         "Get an array of Activity Ids in which a User is involved",
         "GET", false, true);
     expose_function(
+        $api_suffix."get_status",
+        $class_suffix."get_status",
+        array(
+            "id" => array(
+                "type" => "int",
+                "required" => true)),
+        "Get Activity Status",
+        "GET", false, true);
+    expose_function(
+        $api_suffix."set_status_enroll",
+        $class_suffix."set_status_enroll",
+        array(
+            "id" => array(
+                "type" => "int",
+                "required" => true)),
+        "Set Activity Status to Enroll",
+        "GET", false, true);
+    expose_function(
+        $api_suffix."set_status_active",
+        $class_suffix."set_status_active",
+        array(
+            "id" => array(
+                "type" => "int",
+                "required" => true)),
+        "Set Activity Status to Active",
+        "GET", false, true);
+    expose_function(
+        $api_suffix."set_status_closed",
+        $class_suffix."set_status_closed",
+        array(
+            "id" => array(
+                "type" => "int",
+                "required" => true)),
+        "Set Activity Status to Closed",
+        "GET", false, true);
+    expose_function(
         $api_suffix."add_called_users",
         $class_suffix."add_called_users",
         array(
@@ -630,7 +666,7 @@ function expose_site_functions(){
         $class_suffix."api_list",
         null,
         "Return the API method list, including description and required parameters.",
-        'GET', false, false);
+        'GET', false, true);
     unexpose_function("auth.gettoken");
     expose_function(
         $api_suffix."get_token",
@@ -646,7 +682,7 @@ function expose_site_functions(){
                 "type" => "int",
                 "required" => false)),
         "Obtain a user authentication token which can be used for authenticating future API calls passing it as the parameter \"auth_token\"",
-        'POST', false, false);
+        'GET', false, false);
     expose_function(
         $api_suffix."remove_token",
         $class_suffix."remove_token",

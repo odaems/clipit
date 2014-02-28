@@ -38,7 +38,12 @@ class ClipitActivity extends UBCollection{
     const REL_VIDEO = "activity-video";
     const REL_FILE = "activity-file";
 
+    const STATUS_ENROLL = "enroll";
+    const STATUS_ACTIVE = "active";
+    const STATUS_CLOSED = "closed";
+
     public $color = "";
+    public $status = "";
 
     /**
      * Loads an instance from the system.
@@ -61,6 +66,7 @@ class ClipitActivity extends UBCollection{
         $this->owner_id = (int)$elgg_object->owner_guid;
         $this->time_created = (int)$elgg_object->time_created;
         $this->color = (string) $elgg_object->color;
+        $this->status = (string) $elgg_object->status;
         return $this;
     }
 
@@ -79,6 +85,7 @@ class ClipitActivity extends UBCollection{
         $elgg_object->name = (string)$this->name;
         $elgg_object->description = (string)$this->description;
         $elgg_object->color = (string)$this->color;
+        $elgg_object->status = (string)$this->status;
         $elgg_object->access_id = ACCESS_PUBLIC;
         $elgg_object->save();
         $this->owner_id = (int)$elgg_object->owner_guid;
@@ -115,6 +122,26 @@ class ClipitActivity extends UBCollection{
         if(!empty($file_array)){
             ClipitFile::delete_by_id($file_array);
         }
+    }
+
+    static function get_status($id){
+        $prop_array[] = "status";
+        return ClipitActivity::get_properties($id, $prop_array);
+    }
+
+    static function set_status_enroll($id){
+        $prop_value_array["status"] = self::STATUS_ENROLL;
+        return ClipitActivity::set_properties($id, $prop_value_array);
+    }
+
+    static function set_status_active($id){
+        $prop_value_array["status"] = self::STATUS_ACTIVE;
+        return ClipitActivity::set_properties($id, $prop_value_array);
+    }
+
+    static function set_status_close($id){
+        $prop_value_array["status"] = self::STATUS_CLOSED;
+        return ClipitActivity::set_properties($id, $prop_value_array);
     }
 
     static function get_from_user($user_id){

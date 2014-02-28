@@ -32,6 +32,7 @@ elgg_register_event_handler('init', 'system', 'urjc_backend_init');
  */
 function urjc_backend_init(){
     //loadFiles(elgg_get_plugins_path()."urjc_backend/libraries/");
+    register_pam_handler('clipit_auth_usertoken');
 }
 
 /**
@@ -51,4 +52,53 @@ function loadFiles($path){
             throw new InstallationException($msg);
         }
     }
+}
+
+/**
+ * Check the user token
+ * This examines whether an authentication token is present and returns true if
+ * it is present and is valid. The user gets logged in so with the current
+ * session code of Elgg, that user will be logged out of all other sessions.
+ *
+ * @return bool
+ * @access private
+ */
+function clipit_auth_usertoken() {
+    global $CONFIG;
+
+    // Get api header
+    $token = $_SERVER['AUTH_TOKEN'];
+    if (!$token) {
+        return false;
+    }
+
+    $validated_userid = validate_user_token($token, $CONFIG->site_id);
+
+    if ($validated_userid) {
+        $u = get_entity($validated_userid);
+
+        // Could we get the user?
+        if (!$u) {
+            return false;
+        }
+
+        // Not an elgg user
+        if ((!$u instanceof ElggUser)) {
+            return false;
+        }
+
+        // User is banned
+        if ($u->isBanned()) {
+            return false;
+        }
+
+        // Fail if we couldn't log the user in
+        if (!login($u)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    return false;
 }
