@@ -65,10 +65,10 @@ function loadFiles($path){
  */
 function clipit_auth_usertoken() {
     global $CONFIG;
-
-    // Get api header
-    $token = $_SERVER['AUTH_TOKEN'];
-    if (!$token) {
+    if(isset($_SERVER["HTTP_AUTH_TOKEN"])){
+        $token = $_SERVER["HTTP_AUTH_TOKEN"];
+    }
+    if (!isset($token) || empty($token)) {
         return false;
     }
 

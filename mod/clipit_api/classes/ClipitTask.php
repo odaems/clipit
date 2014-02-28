@@ -8,4 +8,10 @@
 
 class ClipitTask extends UBItem{
 
+    const SUBTYPE = "clipit_task";
+
+    static function get_activity($id){
+
+    }
+
 } 

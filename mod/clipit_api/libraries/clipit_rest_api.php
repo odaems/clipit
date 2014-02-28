@@ -26,7 +26,7 @@
  * Expose all functions for the ClipIt REST API
  */
 function clipit_expose_api(){
-    // We don't add classes like ClipitEvent or ClipIt Site which don't extend ClipitItem
+    // We don't add classes which don't extend ClipitItem (like ClipitEvent or ClipIt Site)
     $suffix_list = array(
         "clipit.activity." => "ClipitActivity::",
         "clipit.comment." => "ClipitComment::",
@@ -39,6 +39,7 @@ function clipit_expose_api(){
         "clipit.quiz.result." => "ClipitQuizResult::",
         "clipit.sta." => "ClipitSTA::",
         "clipit.storyboard." => "ClipitStoryboard::",
+        "clipit.task." => "ClipitTask::",
         "clipit.taxonomy." => "ClipitTaxonomy::",
         "clipit.taxonomy.sb." => "ClipitTaxonomySB::",
         "clipit.taxonomy.tag." => "ClipitTaxonomyTag::",
@@ -61,6 +62,7 @@ function clipit_expose_api(){
     expose_site_functions();
     expose_sta_functions();
     expose_storyboard_functions();
+    expose_task_functions();
     expose_taxonomy_functions();
     expose_taxonomy_sb_functions();
     expose_taxonomy_tag_functions();
@@ -666,7 +668,7 @@ function expose_site_functions(){
         $class_suffix."api_list",
         null,
         "Return the API method list, including description and required parameters.",
-        'GET', false, true);
+        'POST', false, true);
     unexpose_function("auth.gettoken");
     expose_function(
         $api_suffix."get_token",
@@ -707,6 +709,10 @@ function expose_sta_functions(){
 }
 
 function expose_storyboard_functions(){
+}
+
+function expose_task_functions(){
+
 }
 
 function expose_taxonomy_functions(){

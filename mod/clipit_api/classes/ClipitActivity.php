@@ -139,7 +139,7 @@ class ClipitActivity extends UBCollection{
         return ClipitActivity::set_properties($id, $prop_value_array);
     }
 
-    static function set_status_close($id){
+    static function set_status_closed($id){
         $prop_value_array["status"] = self::STATUS_CLOSED;
         return ClipitActivity::set_properties($id, $prop_value_array);
     }
