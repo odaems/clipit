@@ -668,7 +668,7 @@ function expose_site_functions(){
         $class_suffix."api_list",
         null,
         "Return the API method list, including description and required parameters.",
-        'POST', false, true);
+        'GET', false, false);
     unexpose_function("auth.gettoken");
     expose_function(
         $api_suffix."get_token",

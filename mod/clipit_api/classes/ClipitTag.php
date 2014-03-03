@@ -27,11 +27,7 @@
  *
  * @package clipit
  */
-class ClipitTaxonomySB{
-
-    // Class properties
-    public $tag = "";
-    public $tricky_topic = int;
+class ClipitTag extends UBItem{
 
 
 }

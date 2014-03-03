@@ -32,8 +32,9 @@ class ClipitVideo extends UBCollection{
      * @const string Elgg entity sybtype for this class
      */
     const SUBTYPE = "clipit_video";
-    const REL_COMMENT = "video-comment";
-    const REL_TAG = "video-tag";
+
+    const REL_VIDEO_COMMENT = "video-comment";
+    const REL_VIDEO_TAG = "video-tag";
     /**
      * @var string Link to where the video is hosted (Youtube, Vimeo...)
      */
@@ -85,6 +86,26 @@ class ClipitVideo extends UBCollection{
         return $this->id = $elgg_object->guid;
     }
 
+    function deleteRelatedItems(){
+        $rel_array = get_entity_relationships((int) $this->id);
+        foreach($rel_array as $rel){
+            switch($rel->relationship){
+                case $this::REL_VIDEO_COMMENT:
+                    $comment_array[] = $rel->guid_two;
+                    break;
+                case $this::REL_VIDEO_TAG:
+                    $tag_array[] = $rel->guid_two;
+                    break;
+            }
+        }
+        if(isset($comment_array)){
+            ClipitComment::delete_by_id($comment_array);
+        }
+        if(isset($tag_array)){
+            ClipitTag::delete_by_id($tag_array);
+        }
+    }
+
     /**
      * Adds Comments to a Video, referenced by Id.
      *
@@ -93,10 +114,7 @@ class ClipitVideo extends UBCollection{
      * @return bool Returns true if success, false if error
      */
     static function add_comments($id, $comment_array){
-        if(!$video = new ClipitVideo($id)){
-            return false;
-        }
-        return $video->addItems($comment_array, self::REL_COMMENT);
+        return ClipitVideo::add_items($id, $comment_array, ClipitVideo::REL_VIDEO_COMMENT);
     }
 
     /**
@@ -107,10 +125,7 @@ class ClipitVideo extends UBCollection{
      * @return bool Returns true if success, false if error
      */
     static function remove_comments($id, $comment_array){
-        if(!$video = new ClipitVideo($id)){
-            return false;
-        }
-        return $video->removeItems($comment_array, self::REL_COMMENT);
+        return ClipitVideo::remove_items($id, $comment_array, ClipitVideo::REL_VIDEO_COMMENT);
     }
 
     /**
@@ -120,10 +135,7 @@ class ClipitVideo extends UBCollection{
      * @return array|bool Returns an array of ClipitComment items, or false if error
      */
     static function get_comments($id){
-        if(!$video = new ClipitVideo($id)){
-            return false;
-        }
-        return $video->getItems(self::REL_COMMENT);
+        return ClipitVideo::get_items($id, ClipitVideo::REL_VIDEO_COMMENT);
     }
 
     /**
@@ -134,10 +146,7 @@ class ClipitVideo extends UBCollection{
      * @return bool Returns true if success, false if error
      */
     static function add_tags($id, $tag_array){
-        if(!$video = new ClipitVideo($id)){
-            return false;
-        }
-        return $video->addItems($tag_array, self::REL_TAG);
+        return ClipitVideo::add_items($id, $tag_array, ClipitVideo::REL_VIDEO_TAG);
     }
 
     /**
@@ -148,10 +157,7 @@ class ClipitVideo extends UBCollection{
      * @return bool Returns true if success, false if error
      */
     static function remove_tags($id, $tag_array){
-        if(!$video = new ClipitVideo($id)){
-            return false;
-        }
-        return $video->removeItems($tag_array, self::REL_TAG);
+        return ClipitVideo::remove_items($id, $tag_array, ClipitVideo::REL_VIDEO_TAG);
     }
 
     /**
@@ -161,10 +167,7 @@ class ClipitVideo extends UBCollection{
      * @return array|bool Returns an array of Tag items, or false if error
      */
     static function get_tags($id){
-        if(!$video = new ClipitVideo($id)){
-            return false;
-        }
-        return $video->getItems(self::REL_TAG);
+        return ClipitVideo::get_items($id, ClipitVideo::REL_VIDEO_TAG);
     }
 
 }

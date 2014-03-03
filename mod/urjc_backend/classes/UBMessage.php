@@ -29,6 +29,9 @@ class UBMessage extends UBItem{
     const REL_DESTINATION = "message-destination";
 
     public $read = false;
+    public $destination = -1;
+
+
 
     /**
      * Loads an instance from the system.
@@ -51,6 +54,7 @@ class UBMessage extends UBItem{
         $this->owner_id = (int)$elgg_object->owner_guid;
         $this->time_created = (int)$elgg_object->time_created;
         $this->read = (bool)$elgg_object->read;
+        $this->destination = $this->getDestination();
         return $this;
     }
 
@@ -71,29 +75,53 @@ class UBMessage extends UBItem{
         $elgg_object->read = (bool)$this->read;
         $elgg_object->access_id = ACCESS_PUBLIC;
         $elgg_object->save();
+        $this->id = (int) $elgg_object->guid;
         $this->owner_id = (int) $elgg_object->owner_guid;
         $this->time_created = (int)$elgg_object->time_created;
-        return $this->id = (int) $elgg_object->guid;
+        $this->setDestination();
+        return $this->id;
     }
 
-    static function get_destination($id){
-        $called_class = get_called_class();
-        $message = new $called_class($id);
-        $rel_array = get_entity_relationships($message->id);
+    function getDestination(){
+        $temp_array = get_entity_relationships($this->id);
+        foreach($temp_array as $rel){
+            if($rel->relationship == self::REL_DESTINATION){
+                $rel_array[] = $rel;
+            }
+        }
         if(empty($rel_array) || count($rel_array) != 1){
             return null;
         }
         $rel = array_pop($rel_array);
-        if($rel->relationship != self::REL_DESTINATION){
-            return null;
-        }
         return $rel->guid_two;
+    }
+
+    function setDestination($destination_id = -1){
+        if($rel_array = get_entity_relationships($this->id)){
+            foreach($rel_array as $rel){
+                if($rel->relationship == self::REL_DESTINATION){
+                    delete_relationship($rel->id);
+                }
+            }
+        }
+        if($destination_id == -1){
+            $destination_id = $this->destination;
+        }
+        return add_entity_relationship($this->id, self::REL_DESTINATION, $destination_id);
+    }
+
+    /* STATIC FUNCTIONS */
+
+    static function get_destination($id){
+        $called_class = get_called_class();
+        $message = new $called_class($id);
+        return $message->getDestination();
     }
 
     static function set_destination($id, $destination_id){
         $called_class = get_called_class();
         $message = new $called_class($id);
-        return add_entity_relationship($message->id, self::REL_DESTINATION, $destination_id);
+        return $message->setDestination($destination_id);
     }
 
     static function get_by_sender($sender_array){
@@ -127,12 +155,14 @@ class UBMessage extends UBItem{
             $rel_array = get_entity_relationships($destination_id, true);
             $temp_array = array();
             foreach($rel_array as $rel){
-                $temp_array[] = new $called_class((int)$rel->guid_one);
+                if($rel->relationship == self::REL_DESTINATION){
+                    $temp_array[] = new $called_class((int)$rel->guid_one);
+                }
             }
-            if(!empty($temp_array)){
-                $object_array[] = $temp_array;
-            } else{
+            if(empty($temp_array)){
                 $object_array[] = null;
+            } else{
+                $object_array[] = $temp_array;
             }
         }
         return $object_array;

@@ -32,7 +32,7 @@ class ClipitComment extends UBItem{
      * @const string Elgg entity subtype for this class
      */
     const SUBTYPE = "clipit_comment";
-    const REL_TARGET = "comment-target";
+    const REL_COMMENT_TARGET = "comment-target";
     /**
      * @var bool Overall rating opinion: true = good, false = bad
      */
@@ -95,7 +95,7 @@ class ClipitComment extends UBItem{
         foreach($target_array as $target_id){
             $rel_array = get_entity_relationships($target_id, true);
             foreach($rel_array as $rel){
-                if($rel->relationship == self::REL_TARGET){
+                if($rel->relationship == ClipitComment::REL_COMMENT_TARGET){
                     $temp_array[] = new ClipitComment($rel->guid_one);
                 }
             }
@@ -113,7 +113,7 @@ class ClipitComment extends UBItem{
         if(!$comment = new ClipitComment($id)){
             return null;
         }
-        return add_entity_relationship($comment->id, self::REL_TARGET, $target_id);
+        return add_entity_relationship($comment->id, ClipitComment::REL_COMMENT_TARGET, $target_id);
     }
 
     static function get_target($id){
@@ -125,7 +125,7 @@ class ClipitComment extends UBItem{
             return null;
         }
         $rel = array_pop($rel_array);
-        if($rel->relationship != self::REL_TARGET){
+        if($rel->relationship != ClipitComment::REL_COMMENT_TARGET){
             return null;
         }
         return $rel->guid_two;

@@ -38,6 +38,6 @@ class ClipitEvent extends UBEvent {
             }
         }
         $object_array = array_merge($user_groups, $user_activities);
-        return self::get_by_object($object_array, $offset, $limit);
+        return ClipitEvent::get_by_object($object_array, $offset, $limit);
     }
 } 

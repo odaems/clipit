@@ -33,10 +33,11 @@ class ClipitActivity extends UBCollection{
      */
     const SUBTYPE = "clipit_activity";
 
-    const REL_USER = "activity-user";
-    const REL_GROUP = "activity-group";
-    const REL_VIDEO = "activity-video";
-    const REL_FILE = "activity-file";
+    const REL_ACTIVITY_USER = "activity-user";
+    const REL_ACTIVITY_GROUP = "activity-group";
+    const REL_ACTIVITY_TASK = "activity-task";
+    const REL_ACTIVITY_VIDEO = "activity-video";
+    const REL_ACTIVITY_FILE = "activity-file";
 
     const STATUS_ENROLL = "enroll";
     const STATUS_ACTIVE = "active";
@@ -93,33 +94,28 @@ class ClipitActivity extends UBCollection{
         return $this->id = $elgg_object->guid;
     }
 
-    function deleteItems(){
+    function deleteRelatedItems(){
         $rel_array = get_entity_relationships((int) $this->id);
-        $group_array = array();
-        $video_array = array();
-        $file_array = array();
         foreach($rel_array as $rel){
             switch($rel->relationship){
-                case self::REL_GROUP:
+                case ClipitActivity::REL_ACTIVITY_GROUP:
                     $group_array[] = $rel->guid_two;
                     break;
-                case self::REL_VIDEO:
+                case ClipitActivity::REL_ACTIVITY_VIDEO:
                     $video_array[] = $rel->guid_two;
                     break;
-                case self::REL_FILE:
+                case ClipitActivity::REL_ACTIVITY_FILE:
                     $file_array[] = $rel->guid_two;
-                    break;
-                default:
                     break;
             }
         }
-        if(!empty($group_array)){
+        if(isset($group_array)){
             ClipitGroup::delete_by_id($group_array);
         }
-        if(!empty($video_array)){
+        if(isset($video_array)){
             ClipitVideo::delete_by_id($video_array);
         }
-        if(!empty($file_array)){
+        if(isset($file_array)){
             ClipitFile::delete_by_id($file_array);
         }
     }
@@ -130,17 +126,17 @@ class ClipitActivity extends UBCollection{
     }
 
     static function set_status_enroll($id){
-        $prop_value_array["status"] = self::STATUS_ENROLL;
+        $prop_value_array["status"] = ClipitActivity::STATUS_ENROLL;
         return ClipitActivity::set_properties($id, $prop_value_array);
     }
 
     static function set_status_active($id){
-        $prop_value_array["status"] = self::STATUS_ACTIVE;
+        $prop_value_array["status"] = ClipitActivity::STATUS_ACTIVE;
         return ClipitActivity::set_properties($id, $prop_value_array);
     }
 
     static function set_status_closed($id){
-        $prop_value_array["status"] = self::STATUS_CLOSED;
+        $prop_value_array["status"] = ClipitActivity::STATUS_CLOSED;
         return ClipitActivity::set_properties($id, $prop_value_array);
     }
 
@@ -159,89 +155,66 @@ class ClipitActivity extends UBCollection{
 
     // USERS
     static function add_called_users($id, $user_array){
-        if(!$activity = new ClipitActivity($id)){
-            return false;
-        }
-        return $activity->addItems($user_array, self::REL_USER);
+        return ClipitActivity::add_items($id, $user_array, ClipitActivity::REL_ACTIVITY_USER);
     }
 
     static function remove_called_users($id, $user_array){
-        if(!$activity = new ClipitActivity($id)){
-            return false;
-        }
-        return $activity->removeItems($user_array, self::REL_USER);
+        return ClipitActivity::remove_items($id, $user_array, ClipitActivity::REL_ACTIVITY_USER);
     }
 
     static function get_called_users($id){
-        if(!$activity = new ClipitActivity($id)){
-            return false;
-        }
-        return $activity->getItems(self::REL_USER);
+        return ClipitActivity::get_items($id, ClipitActivity::REL_ACTIVITY_USER);
     }
 
     // GROUPS
     static function add_groups($id, $group_array){
-        if(!$activity = new ClipitActivity($id)){
-            return false;
-        }
-        return $activity->addItems($group_array, self::REL_GROUP);
+        return ClipitActivity::add_items($id, $group_array, ClipitActivity::REL_ACTIVITY_GROUP, true);
     }
 
     static function remove_groups($id, $group_array){
-        if(!$activity = new ClipitActivity($id)){
-            return false;
-        }
-        return $activity->removeItems($group_array, self::REL_GROUP);
+        return ClipitActivity::remove_items($id, $group_array, ClipitActivity::REL_ACTIVITY_GROUP);
     }
 
     static function get_groups($id){
-        if(!$activity = new ClipitActivity($id)){
-            return false;
-        }
-        return $activity->getItems(self::REL_GROUP);
+        return ClipitActivity::get_items($id, ClipitActivity::REL_ACTIVITY_GROUP);
+    }
+
+    // TASKS
+    static function add_tasks($id, $task_array){
+        return ClipitActivity::add_items($id, $task_array, ClipitActivity::REL_ACTIVITY_TASK, true);
+    }
+
+    static function remove_tasks($id, $task_array){
+        return ClipitActivity::remove_items($id, $task_array, ClipitActivity::REL_ACTIVITY_TASK);
+    }
+
+    static function get_tasks($id){
+        return ClipitActivity::get_items($id, ClipitActivity::REL_ACTIVITY_TASK);
     }
 
     // VIDEOS
     static function add_videos($id, $video_array){
-        if(!$activity = new ClipitActivity($id)){
-            return false;
-        }
-        return $activity->addItems($video_array, self::REL_VIDEO);
+        return ClipitActivity::add_items($id, $video_array, ClipitActivity::REL_ACTIVITY_VIDEO);
     }
 
     static function remove_videos($id, $video_array){
-        if(!$activity = new ClipitActivity($id)){
-            return false;
-        }
-        return $activity->removeItems($video_array, self::REL_VIDEO);
+        return ClipitActivity::remove_items($id, $video_array, ClipitActivity::REL_ACTIVITY_VIDEO);
     }
 
     static function get_videos($id){
-        if(!$activity = new ClipitActivity($id)){
-            return false;
-        }
-        return $activity->getItems(self::REL_VIDEO);
+        return ClipitActivity::get_items($id, ClipitActivity::REL_ACTIVITY_VIDEO);
     }
 
     // FILES
     static function add_files($id, $file_array){
-        if(!$activity = new ClipitActivity($id)){
-            return false;
-        }
-        return $activity->addItems($file_array, self::REL_FILE);
+        return ClipitActivity::add_items($id, $file_array, ClipitActivity::REL_ACTIVITY_FILE);
     }
 
     static function remove_files($id, $file_array){
-        if(!$activity = new ClipitActivity($id)){
-            return false;
-        }
-        return $activity->removeItems($file_array, self::REL_FILE);
+        return ClipitActivity::remove_items($id, $file_array, ClipitActivity::REL_ACTIVITY_FILE);
     }
 
     static function get_files($id){
-        if(!$activity = new ClipitActivity($id)){
-            return false;
-        }
-        return $activity->getItems(self::REL_FILE);
+        return ClipitActivity::get_items($id, ClipitActivity::REL_ACTIVITY_FILE);
     }
 }

@@ -30,10 +30,6 @@
 class ClipitUser extends UBUser{
 
     /**
-     * @const Relationship name for Users belonging to a Group
-     */
-    const REL_GROUP = "group-user";
-    /**
      * @const Role name for Students
      */
     const ROLE_STUDENT = "student";
@@ -56,7 +52,7 @@ class ClipitUser extends UBUser{
         $rel_array = get_entity_relationships($id, true);
         $group_ids = array();
         foreach($rel_array as $rel){
-            if($rel->relationship == self::REL_GROUP){
+            if($rel->relationship == ClipitGroup::REL_GROUP_USER){
                 $group_ids[] = (int) $rel->guid_one;
             }
         }
@@ -72,7 +68,7 @@ class ClipitUser extends UBUser{
     static function set_role_student($id){
         $user = new ClipitUser($id);
         remove_user_admin($id);
-        $prop_value_array["role"] = self::ROLE_STUDENT;
+        $prop_value_array["role"] = ClipitUser::ROLE_STUDENT;
         return $user->setProperties($prop_value_array);
     }
 
@@ -85,7 +81,7 @@ class ClipitUser extends UBUser{
     static function set_role_teacher($id){
         $user = new ClipitUser($id);
         make_user_admin($id);
-        $prop_value_array["role"] = self::ROLE_TEACHER;
+        $prop_value_array["role"] = ClipitUser::ROLE_TEACHER;
         return $user->setProperties($prop_value_array);
     }
 
@@ -98,7 +94,7 @@ class ClipitUser extends UBUser{
     static function set_role_admin($id){
         $user = new ClipitUser($id);
         make_user_admin($id);
-        $prop_value_array["role"] = self::ROLE_ADMIN;
+        $prop_value_array["role"] = ClipitUser::ROLE_ADMIN;
         return $user->setProperties($prop_value_array);
     }
 

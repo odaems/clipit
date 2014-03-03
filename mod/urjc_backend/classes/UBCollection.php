@@ -40,11 +40,41 @@ abstract class UBCollection extends UBItem{
     /**
      * Deletes an instance from the system.
      *
+     * @param bool $delete_related If set, deletes all related items before deleting this Collection
      * @return bool True if success, false if error.
      */
-    function delete(){
-        $this->deleteItems();
+    function delete($delete_related = false){
+        if($delete_related){
+            $this->deleteRelatedItems();
+        }
         return parent::delete();
+    }
+
+    function deleteRelatedItems(){
+        $rel_array = get_entity_relationships((int) $this->id);
+        foreach($rel_array as $rel){
+            switch($rel->relationship){
+                case $this::REL_DEFAULT:
+                    $item_array[] = $rel->guid_two;
+                    break;
+            }
+        }
+        if(isset($item_array)){
+            UBItem::delete_by_id($item_array);
+        }
+    }
+
+    static function delete_by_id($id_array, $delete_related = false){
+        $called_class = get_called_class();
+        foreach($id_array as $id){
+            if(!$item = new $called_class($id)){
+                return false;
+            }
+            if(!$item->delete($delete_related)){
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -52,13 +82,24 @@ abstract class UBCollection extends UBItem{
      *
      * @param array $item_array Array of item ids to add to this collection.
      * @param string $rel_name Name of the relationship for added items.
+     * @param bool $exclusive If set, checks that the relationship does not exist previously
      * @return bool Returns true if added correctly, or false in case of error.
      */
-    function addItems($item_array, $rel_name = ""){
-        if(empty($rel_name)){
+    function addItems($item_array, $rel_name, $exclusive = false){
+        if(is_null($rel_name)){
             $rel_name = $this::REL_DEFAULT;
         }
         foreach($item_array as $item_id){
+            if($exclusive){
+                if($rel_array = get_entity_relationships($item_id, true)){
+                    foreach($rel_array as $rel){
+                        if($rel->relationship == $rel_name){
+                            throw new Exception("UBCollection: Exclusive relationship already exists - ".
+                                $rel->guid_one."-".$rel->relationship."-".$rel->guid_two);
+                        }
+                    }
+                }
+            }
             add_entity_relationship($this->id, $rel_name, $item_id);
         }
         return true;
@@ -71,8 +112,8 @@ abstract class UBCollection extends UBItem{
      * @param string $rel_name Name of the relationship to remove items from.
      * @return bool Returns true if removed correctly, false if error.
      */
-    function removeItems($item_array, $rel_name = ""){
-        if(empty($rel_name)){
+    function removeItems($item_array, $rel_name){
+        if(is_null($rel_name)){
             $rel_name = $this::REL_DEFAULT;
         }
         foreach($item_array as $item_id){
@@ -81,25 +122,14 @@ abstract class UBCollection extends UBItem{
         return true;
     }
 
-    function deleteItems(){
-        $rel_array = get_entity_relationships((int) $this->id);
-        $delete_array = array();
-        foreach($rel_array as $rel){
-            $delete_array[] = $rel->guid_two;
-        }
-        if(!empty($delete_array)){
-            UBItem::delete_by_id($delete_array);
-        }
-    }
-
     /**
      * Returns items from this collection.
      *
      * @param string $rel_name Name of the relationship to get items from.
      * @return int[] Array of items in this Collection.
      */
-    function getItems($rel_name = ""){
-        if(empty($rel_name)){
+    function getItems($rel_name){
+        if(is_null($rel_name)){
             $rel_name = $this::REL_DEFAULT;
         }
         $rel_array = get_entity_relationships($this->id);
@@ -119,12 +149,12 @@ abstract class UBCollection extends UBItem{
      * @param array $item_array Array of Item Ids to add
      * @return bool Returns true if success, false if error
      */
-    static function add_items($id, $item_array){
+    static function add_items($id, $item_array, $rel_name, $exclusive = false){
         $called_class = get_called_class();
         if(!$collection = new $called_class($id)){
             return false;
         }
-        return $collection->addItems($item_array);
+        return $collection->addItems($item_array, $rel_name, $exclusive);
     }
 
     /**
@@ -134,12 +164,12 @@ abstract class UBCollection extends UBItem{
      * @param array $item_array Array of Item Ids to remove.
      * @return bool Returns true if success, false if error.
      */
-    static function remove_items($id, $item_array){
+    static function remove_items($id, $item_array, $rel_name){
         $called_class = get_called_class();
         if(!$collection = new $called_class($id)){
             return false;
         }
-        return $collection->removeItems($item_array);
+        return $collection->removeItems($item_array, $rel_name);
     }
 
     /**
@@ -148,12 +178,12 @@ abstract class UBCollection extends UBItem{
      * @param int $id Id from Collection to get Items from.
      * @return int[]|bool Returns an array of Item IDs, or false if error.
      */
-    static function get_items($id){
+    static function get_items($id, $rel_name){
         $called_class = get_called_class();
         if(!$collection = new $called_class($id)){
             return false;
         }
-        return $collection->getItems();
+        return $collection->getItems($rel_name);
     }
 
 }

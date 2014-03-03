@@ -27,11 +27,8 @@
  *
  * @package clipit
  */
-class ClipitPalette{
+class ClipitPalette extends UBItem{
 
-    // Class properties
-    public $id = int;
-    public $items = array();
-
+    const SUBTYPE = "clipit_palette";
 
 }

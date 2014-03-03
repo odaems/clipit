@@ -29,10 +29,6 @@
  */
 class ClipitTrickyTopic{
 
-    // Class properties
-    public $id = int;
-    public $name = string;
-    public $stumbling_block_list = array(ClipitStumblingBlock);
 
 
 }
