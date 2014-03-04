@@ -1,12 +1,12 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: Pablo Llinás
  * Date: 12/02/14
  * Time: 13:10
  */
-
-class UBSite {
+class UBSite{
     /**
      * Get the REST API method list, including description and required parameters.
      *
@@ -22,22 +22,25 @@ class UBSite {
      *
      * @param string $login User login
      * @param string $password User password
-     * @param int $timeout Session timeout
+     * @param int    $timeout Session timeout
+     *
      * @return string Authentication Token.
      * @throws SecurityException
      */
-    static function get_token($login, $password, $timeout = 60) {
-        if (elgg_authenticate($login, $password)) {
+    static function get_token($login, $password, $timeout = 60){
+        if(elgg_authenticate($login, $password)){
             $token = create_user_token($login, $timeout);
-            if ($token) {
+            if($token){
                 return $token;
             }
         }
         throw new SecurityException(elgg_echo('SecurityException:authenticationfailed'));
     }
+
     static function remove_token($token){
         return remove_user_token($token, null);
     }
+
     static function lookup($id){
         try{
             $elgg_object = new ElggObject((int)$id);
@@ -46,7 +49,7 @@ class UBSite {
             $object['name'] = (string)$elgg_object->name;
             $object['description'] = (string)$elgg_object->description;
             return $object;
-        } catch (Exception $e){
+        } catch(Exception $e){
             throw new APIException("ERROR: Unidentified ID provided.");
         }
     }

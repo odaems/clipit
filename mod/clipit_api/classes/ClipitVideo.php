@@ -44,6 +44,7 @@ class ClipitVideo extends UBCollection{
      * Loads a ClipitVideo instance from the system.
      *
      * @param int $id Id of Video to load
+     *
      * @return ClipitVideo|null Returns Video instance, or null if error
      */
     protected function _load($id){
@@ -58,7 +59,7 @@ class ClipitVideo extends UBCollection{
         $this->id = (int)$elgg_object->guid;
         $this->name = (string)$elgg_object->name;
         $this->description = $elgg_object->description;
-        $this->owner_id = (int) $elgg_object->owner_guid;
+        $this->owner_id = (int)$elgg_object->owner_guid;
         $this->time_created = (int)$elgg_object->time_created;
         $this->url = (string)$elgg_object->url;
         return $this;
@@ -81,13 +82,13 @@ class ClipitVideo extends UBCollection{
         $elgg_object->url = (string)$this->url;
         $elgg_object->access_id = ACCESS_PUBLIC;
         $elgg_object->save();
-        $this->owner_id = (int) $elgg_object->owner_guid;
+        $this->owner_id = (int)$elgg_object->owner_guid;
         $this->time_created = (int)$elgg_object->time_created;
         return $this->id = $elgg_object->guid;
     }
 
     function deleteRelatedItems(){
-        $rel_array = get_entity_relationships((int) $this->id);
+        $rel_array = get_entity_relationships((int)$this->id);
         foreach($rel_array as $rel){
             switch($rel->relationship){
                 case $this::REL_VIDEO_COMMENT:
@@ -109,8 +110,9 @@ class ClipitVideo extends UBCollection{
     /**
      * Adds Comments to a Video, referenced by Id.
      *
-     * @param int $id Id from the Video to add Comments to
+     * @param int   $id Id from the Video to add Comments to
      * @param array $comment_array Array of Comment Ids to be added to the Video
+     *
      * @return bool Returns true if success, false if error
      */
     static function add_comments($id, $comment_array){
@@ -120,8 +122,9 @@ class ClipitVideo extends UBCollection{
     /**
      * Remove Comments from a Video.
      *
-     * @param int $id Id from Video to remove Comments from
+     * @param int   $id Id from Video to remove Comments from
      * @param array $comment_array Array of Comment Ids to remove from Video
+     *
      * @return bool Returns true if success, false if error
      */
     static function remove_comments($id, $comment_array){
@@ -132,6 +135,7 @@ class ClipitVideo extends UBCollection{
      * Get all Comments for a Video
      *
      * @param int $id Id of the Video to get Comments from
+     *
      * @return array|bool Returns an array of ClipitComment items, or false if error
      */
     static function get_comments($id){
@@ -141,8 +145,9 @@ class ClipitVideo extends UBCollection{
     /**
      * Adds Tags to a Video, referenced by Id.
      *
-     * @param int $id Id from the Video to add Tags to
+     * @param int   $id Id from the Video to add Tags to
      * @param array $taxonomy_tag_array Array of Tag Ids to be added to the Video
+     *
      * @return bool Returns true if success, false if error
      */
     static function add_tags($id, $tag_array){
@@ -152,8 +157,9 @@ class ClipitVideo extends UBCollection{
     /**
      * Remove Tags from a Video.
      *
-     * @param int $id Id from Video to remove Tags from
+     * @param int   $id Id from Video to remove Tags from
      * @param array $taxonomy_tag_array Array of Tag Ids to remove from Video
+     *
      * @return bool Returns true if success, false if error
      */
     static function remove_tags($id, $tag_array){
@@ -164,6 +170,7 @@ class ClipitVideo extends UBCollection{
      * Get all Tags from a Video
      *
      * @param int $id Id of the Video to get Tags from
+     *
      * @return array|bool Returns an array of Tag items, or false if error
      */
     static function get_tags($id){

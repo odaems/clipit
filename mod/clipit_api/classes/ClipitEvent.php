@@ -27,7 +27,7 @@
  *
  * @package clipit
  */
-class ClipitEvent extends UBEvent {
+class ClipitEvent extends UBEvent{
 
     static function get_recommended_events($user_id, $offset = 0, $limit = 10){
         $user_groups = ClipitUser::get_groups($user_id);

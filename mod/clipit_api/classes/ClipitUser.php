@@ -46,6 +46,7 @@ class ClipitUser extends UBUser{
      * Get all Group Ids in which a user is member of.
      *
      * @param int $id Id of the user to get groups from.
+     *
      * @return array Returns an array of Group Ids the user is member of.
      */
     static function get_groups($id){
@@ -53,7 +54,7 @@ class ClipitUser extends UBUser{
         $group_ids = array();
         foreach($rel_array as $rel){
             if($rel->relationship == ClipitGroup::REL_GROUP_USER){
-                $group_ids[] = (int) $rel->guid_one;
+                $group_ids[] = (int)$rel->guid_one;
             }
         }
         return $group_ids;
@@ -63,6 +64,7 @@ class ClipitUser extends UBUser{
      * Sets a User role to Student.
      *
      * @param int $id User Id.
+     *
      * @return int Returns the User Id if set correctly.
      */
     static function set_role_student($id){
@@ -76,6 +78,7 @@ class ClipitUser extends UBUser{
      * Sets a User role to Teacher.
      *
      * @param int $id User Id.
+     *
      * @return int Returns the User Id if set correctly.
      */
     static function set_role_teacher($id){
@@ -89,6 +92,7 @@ class ClipitUser extends UBUser{
      * Sets a User role to Admin.
      *
      * @param int $id User Id.
+     *
      * @return int Returns the User Id if set correctly.
      */
     static function set_role_admin($id){

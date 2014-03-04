@@ -37,7 +37,7 @@ class ClipitGroup extends UBCollection{
     const REL_GROUP_FILE = "group-file";
 
     function deleteRelatedItems(){
-        $rel_array = get_entity_relationships((int) $this->id);
+        $rel_array = get_entity_relationships((int)$this->id);
         foreach($rel_array as $rel){
             switch($rel->relationship){
                 case $this::REL_GROUP_FILE:
@@ -64,6 +64,7 @@ class ClipitGroup extends UBCollection{
      * Gets the Activity Id in which a Group takes part in.
      *
      * @param int $id Id from the Group.
+     *
      * @return bool|int Returns an Activity Id.
      */
     static function get_activity($id){
@@ -82,56 +83,67 @@ class ClipitGroup extends UBCollection{
     /**
      * Add Users to a Group.
      *
-     * @param int $id Id of the Group to add Users to.
+     * @param int   $id Id of the Group to add Users to.
      * @param array $user_array Array of User Ids to add to the Group.
+     *
      * @return bool Returns true if added correctly, or false if error.
      */
     static function add_users($id, $user_array){
         return ClipitGroup::add_items($id, $user_array, ClipitGroup::REL_GROUP_USER);
     }
+
     /**
      * Remove Users from a Group.
      *
-     * @param int $id Id of the Group to remove Users from.
+     * @param int   $id Id of the Group to remove Users from.
      * @param array $user_array Array of User Ids to remove from the Group.
+     *
      * @return bool Returns true if removed correctly, or false if error.
      */
     static function remove_users($id, $user_array){
         return ClipitGroup::remove_items($id, $user_array, ClipitGroup::REL_GROUP_USER);
     }
+
     /**
      * Get User Ids from a Group.
      *
      * @param int $id Id of the Group to get Users from.
+     *
      * @return bool Returns array of User Ids, or false if error.
      */
     static function get_users($id){
         return ClipitGroup::get_items($id, ClipitGroup::REL_GROUP_USER);
     }
+
     /**
      * Add Files to a Group.
      *
-     * @param int $id Id of the Group to add Files to.
+     * @param int   $id Id of the Group to add Files to.
      * @param array $file_array Array of File Ids to add to the Group.
+     *
      * @return bool Returns true if added correctly, or false if error.
      */
     static function add_files($id, $file_array){
         return ClipitGroup::add_items($id, $file_array, ClipitGroup::REL_GROUP_FILE);
     }
+
     /**
      * Remove Files from a Group.
      *
-     * @param int $id Id of the Group to remove Files from.
+     * @param int   $id Id of the Group to remove Files from.
      * @param array $file_array Array of File Ids to remove from the Group.
+     *
      * @return bool Returns true if removed correctly, or false if error.
      */
     static function remove_files($id, $file_array){
         return ClipitGroup::remove_items($id, $file_array, ClipitGroup::REL_GROUP_FILE);
     }
+
     /**
      * Get File Ids from a Group.
      *
      * @param int $id Id of the Group to get Files from.
+     *
      * @return bool Returns array of User Ids, or false if error.
      */
     static function get_files($id){

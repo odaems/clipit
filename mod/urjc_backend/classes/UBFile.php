@@ -45,6 +45,7 @@ class UBFile extends UBItem{
      * Loads an instance from the system.
      *
      * @param int $id Id of the instance to load from the system.
+     *
      * @return UBFile|null Returns instance, or null if error.
      */
     protected function _load($id){
@@ -81,7 +82,7 @@ class UBFile extends UBItem{
             return false;
         }
         $date_obj = new DateTime();
-        $elgg_file->setFilename((string)$date_obj->getTimestamp().$this::TIMESTAMP_DELIMITER.(string)$this->name);
+        $elgg_file->setFilename((string)$date_obj->getTimestamp() . $this::TIMESTAMP_DELIMITER . (string)$this->name);
         $elgg_file->description = (string)$this->description;
         $elgg_file->open("write");
         $elgg_file->write($this->data);
@@ -89,7 +90,7 @@ class UBFile extends UBItem{
         $elgg_file->access_id = ACCESS_PUBLIC;
         $elgg_file->save();
         $this->owner_id = (int)$elgg_file->owner_guid;
-        $this->time_created = (int) $elgg_file->time_created;
-        return $this->id = (int) $elgg_file->guid;
+        $this->time_created = (int)$elgg_file->time_created;
+        return $this->id = (int)$elgg_file->guid;
     }
 }

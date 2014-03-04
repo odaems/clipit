@@ -53,10 +53,11 @@ class ClipitQuiz extends UBItem{
      * Loads a ClipitQuiz from the system.
      *
      * @param int $id IF of the ClipitQuiz to load from the system.
+     *
      * @return ClipitQuiz|bool Returns ClipitQuiz instance, or false if error.
      */
     protected function _load($id){
-        if(!($elgg_object = new ElggObject((int) $id))){
+        if(!($elgg_object = new ElggObject((int)$id))){
             return null;
         }
         $elgg_type = $elgg_object->type;
@@ -64,15 +65,15 @@ class ClipitQuiz extends UBItem{
         if(($elgg_type != $this::TYPE) || ($elgg_subtype != $this::SUBTYPE)){
             return null;
         }
-        $this->id = (int) $elgg_object->guid;
-        $this->description = (string) $elgg_object->description;
-        $this->name = (string) $elgg_object->name;
-        $this->owner_id = (int) $elgg_object->owner_guid;
+        $this->id = (int)$elgg_object->guid;
+        $this->description = (string)$elgg_object->description;
+        $this->name = (string)$elgg_object->name;
+        $this->owner_id = (int)$elgg_object->owner_guid;
         $this->time_created = (int)$elgg_object->time_created;
         $this->public = (bool)$elgg_object->public;
-        $this->question_array = (array) $elgg_object->question_array;
-        $this->taxonomy = (int) $elgg_object->taxonomy;
-        $this->target = (string) $elgg_object->target;
+        $this->question_array = (array)$elgg_object->question_array;
+        $this->taxonomy = (int)$elgg_object->taxonomy;
+        $this->target = (string)$elgg_object->target;
         return $this;
     }
 
@@ -90,13 +91,13 @@ class ClipitQuiz extends UBItem{
         }
         $elgg_object->name = (string)$this->name;
         $elgg_object->description = (string)$this->description;
-        $elgg_object->public = (bool) $this->public;
-        $elgg_object->question_array = (array) $this->question_array;
-        $elgg_object->taxonomy = (int) $this->taxonomy;
-        $elgg_object->target = (string) $this->target;
+        $elgg_object->public = (bool)$this->public;
+        $elgg_object->question_array = (array)$this->question_array;
+        $elgg_object->taxonomy = (int)$this->taxonomy;
+        $elgg_object->target = (string)$this->target;
         $elgg_object->access_id = ACCESS_PUBLIC;
         $elgg_object->save();
-        $this->owner_id = (int) $elgg_object->owner_guid;
+        $this->owner_id = (int)$elgg_object->owner_guid;
         $this->time_created = (int)$elgg_object->time_created;
         return $this->id = $elgg_object->guid;
     }
@@ -105,6 +106,7 @@ class ClipitQuiz extends UBItem{
      * Sets values into specified properties of the instance
      *
      * @param array $prop_value_array Array of prop=>value pairs to set into the instance
+     *
      * @return int Returns instance Id, or false if error
      * @throws InvalidParameterException
      */
@@ -136,15 +138,16 @@ class ClipitQuiz extends UBItem{
         } elseif($value == "false"){
             $this->public = false;
         } else{
-            $this->public = (bool) $value;
+            $this->public = (bool)$value;
         }
     }
 
     /**
      * Adds Quiz Questions to a Quiz.
      *
-     * @param int $id Id from Quiz to add Questions to
+     * @param int   $id Id from Quiz to add Questions to
      * @param array $question_array Array of Questions to add
+     *
      * @return bool Returns true if success, false if error
      */
     static function add_questions($id, $question_array){
@@ -165,8 +168,9 @@ class ClipitQuiz extends UBItem{
     /**
      * Remove Quiz Questions from a Quiz.
      *
-     * @param int $id Id from Quiz to remove Questions from
+     * @param int   $id Id from Quiz to remove Questions from
      * @param array $question_array Array of Questions to remove
+     *
      * @return bool Returns true if success, false if error
      */
     static function remove_questions($id, $question_array){
@@ -194,6 +198,7 @@ class ClipitQuiz extends UBItem{
      * Get an array of Quiz Questions included in a Quiz.
      *
      * @param int $id The Id of the Quiz to get questions from
+     *
      * @return array|bool Returns an array of ClipitQuizQuestion objects, or false if error
      */
     static function get_questions($id){

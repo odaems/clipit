@@ -31,7 +31,7 @@ elgg_register_event_handler('init', 'system', 'clipit_api_init');
  * Initialization method which loads objects, libraries, exposes the REST API, and registers test classes.
  */
 function clipit_api_init(){
-    loadFiles(elgg_get_plugins_path()."clipit_api/libraries/");
+    loadFiles(elgg_get_plugins_path() . "clipit_api/libraries/");
     clipit_expose_api();
     //clipit_register_subtypes();
 }
@@ -55,16 +55,16 @@ function clipit_register_subtypes(){
         "clipit_taxonomy_tc" => "ClipitTaxonomyTC",
         "clipit_video" => "ClipitVideo");
     foreach($subtype_class_array as $subtype => $class){
-        if (get_subtype_id('object',$subtype)) {
+        if(get_subtype_id('object', $subtype)){
             update_subtype('object', $subtype, $class);
-        } else {
+        } else{
             add_subtype('object', $subtype, $class);
         }
     }
 
     if(get_subtype_id('clipit_user', '')){
         update_subtype('clipit_user', '', "ClipitUser");
-    } else {
+    } else{
         add_subtype("clipit_user", "", "ClipitUser");
     }
 

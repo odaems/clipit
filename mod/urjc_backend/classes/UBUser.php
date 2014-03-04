@@ -48,12 +48,14 @@ class UBUser extends UBItem{
     public $email = "";
     public $role = self::DEFAULT_ROLE;
     public $language = "";
+    public $last_login = -1;
     private $password_hash = "";
 
     /**
      * Loads a User instance from the system.
      *
      * @param int $id Id of the User to load from the system.
+     *
      * @return UBUser|bool Returns User instance, or false if error.
      */
     protected function _load($id){
@@ -69,6 +71,7 @@ class UBUser extends UBItem{
         $this->password_hash = (string)$elgg_user->salt;
         $this->role = (string)$elgg_user->role;
         $this->language = (string)$elgg_user->language;
+        $this->last_login = (int)$elgg_user->last_login;
         $this->time_created = (int)$elgg_user->time_created;
         return true;
     }
@@ -109,6 +112,7 @@ class UBUser extends UBItem{
      * Sets values into specified properties of the instance
      *
      * @param array $prop_value_array Array of prop=>value pairs to set into the instance
+     *
      * @return int Returns instance Id, or false if error
      * @throws InvalidParameterException
      */
@@ -133,6 +137,7 @@ class UBUser extends UBItem{
      * Creates an encoded user password using a random hash for encoding.
      *
      * @param string $password The new user password in clear text.
+     *
      * @return bool 'true' if success, 'false' if error.
      */
     function setPassword($password){
@@ -140,7 +145,7 @@ class UBUser extends UBItem{
             return false;
         }
         $this->password_hash = generate_random_cleartext_password();
-        $this->password = md5($password.$this->password_hash);
+        $this->password = md5($password . $this->password_hash);
         return true;
     }
 
@@ -149,7 +154,8 @@ class UBUser extends UBItem{
      *
      * @param string $login User login
      * @param string $password User password
-     * @param bool $persistent Determines whether to make the session persistent
+     * @param bool   $persistent Determines whether to make the session persistent
+     *
      * @return bool Returns true if ok, or false if error
      */
     static function login($login, $password, $persistent = false){
@@ -173,6 +179,7 @@ class UBUser extends UBItem{
      * Get users with login contained in a given list of logins.
      *
      * @param array $login_array Array of user logins
+     *
      * @return UBUser[] Returns an array of User objects
      */
     static function get_by_login($login_array){
@@ -195,6 +202,7 @@ class UBUser extends UBItem{
      * array.
      *
      * @param array $email_array Array of user emails
+     *
      * @return UBUser[] Returns an array of arrays of User objects
      */
     static function get_by_email($email_array){
@@ -219,6 +227,7 @@ class UBUser extends UBItem{
      * Get users with role contained in a given list of roles.
      *
      * @param array $role_array Array of user roles
+     *
      * @return UBUser[] Returns an array of arrays of User objects
      */
     static function get_by_role($role_array){
@@ -227,10 +236,10 @@ class UBUser extends UBItem{
         foreach($role_array as $role){
             $elgg_user_array = elgg_get_entities_from_metadata(
                 array(
-                     'type' => $called_class::TYPE,
-                     'subtype' => $called_class::SUBTYPE,
-                     'metadata_names' => array("role"),
-                     'metadata_values' => array($role)
+                    'type' => $called_class::TYPE,
+                    'subtype' => $called_class::SUBTYPE,
+                    'metadata_names' => array("role"),
+                    'metadata_values' => array($role)
                 )
             );
             if(!$elgg_user_array){
@@ -244,5 +253,11 @@ class UBUser extends UBItem{
             }
         }
         return $user_array;
+    }
+
+    static function get_last_login($id){
+        $called_class = get_called_class();
+        $user = new $called_class($id);
+        return $user->last_login;
     }
 }

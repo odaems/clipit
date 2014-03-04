@@ -47,6 +47,7 @@ class ClipitComment extends UBItem{
      * Loads a ClipitComment instance from the system.
      *
      * @param int $id Id of Comment to load
+     *
      * @return ClipitComment|null Returns Comment instance, or null if error
      */
     protected function _load($id){

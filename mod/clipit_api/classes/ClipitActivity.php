@@ -50,6 +50,7 @@ class ClipitActivity extends UBCollection{
      * Loads an instance from the system.
      *
      * @param int $id Id of the instance to load from the system.
+     *
      * @return UBItem|bool Returns instance, or false if error.
      */
     protected function _load($id){
@@ -66,8 +67,8 @@ class ClipitActivity extends UBCollection{
         $this->description = (string)$elgg_object->description;
         $this->owner_id = (int)$elgg_object->owner_guid;
         $this->time_created = (int)$elgg_object->time_created;
-        $this->color = (string) $elgg_object->color;
-        $this->status = (string) $elgg_object->status;
+        $this->color = (string)$elgg_object->color;
+        $this->status = (string)$elgg_object->status;
         return $this;
     }
 
@@ -95,7 +96,7 @@ class ClipitActivity extends UBCollection{
     }
 
     function deleteRelatedItems(){
-        $rel_array = get_entity_relationships((int) $this->id);
+        $rel_array = get_entity_relationships((int)$this->id);
         foreach($rel_array as $rel){
             switch($rel->relationship){
                 case ClipitActivity::REL_ACTIVITY_GROUP:

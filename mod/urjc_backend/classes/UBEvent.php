@@ -1,4 +1,5 @@
 <?php
+
 /**
  * URJC Backend
  * PHP version:     >= 5.2
@@ -21,33 +22,32 @@
  *                  along with this program. If not, see
  *                  http://www.gnu.org/licenses/agpl-3.0.txt.
  */
-
 class UBEvent{
 
     static function get_latest($offset = 0, $limit = 10){
         return get_system_log(
-            null,           // $by_user
-            null,           // $event
-            null,           // $class
-            null,           // $type
-            null,           // $subtype
-            $limit,         // $limit
-            $offset,        // $offset
-            null,           // $count
-            null,           // $timebefore
-            null,           // $timeafter
-            null,           // $object_id
-            null,           // $ip_address
-            null            // $owner
+            null, // $by_user
+            null, // $event
+            null, // $class
+            null, // $type
+            null, // $subtype
+            $limit, // $limit
+            $offset, // $offset
+            null, // $count
+            null, // $timebefore
+            null, // $timeafter
+            null, // $object_id
+            null, // $ip_address
+            null // $owner
         );
     }
 
     static function get_by_user($user_array, $offset = 0, $limit = 10){
         global $CONFIG;
         $query = "SELECT * FROM {$CONFIG->dbprefix}system_log where ";
-        $query .= "performed_by_guid in (".implode(",",$user_array).")";
+        $query .= "performed_by_guid in (" . implode(",", $user_array) . ")";
         $query .= " OR ";
-        $query .= "owner_guid in (".implode(",",$user_array).")";
+        $query .= "owner_guid in (" . implode(",", $user_array) . ")";
         foreach($user_array as $user_id){
             $relationship_array = array_merge(
                 get_entity_relationships($user_id, false),
@@ -59,7 +59,7 @@ class UBEvent{
                 if(isset($relationship_ids) and !empty($relationship_ids)){
                     $query .= " OR ";
                     $query .= "object_id";
-                    $query .= " IN (" ;
+                    $query .= " IN (";
                     $query .= implode(",", $relationship_ids) . ")";
                 }
             }
@@ -76,7 +76,7 @@ class UBEvent{
         }
         global $CONFIG;
         $query = "SELECT * FROM {$CONFIG->dbprefix}system_log where ";
-        $query .= "object_id IN (".implode(",", $object_array) . ")";
+        $query .= "object_id IN (" . implode(",", $object_array) . ")";
         $query .= " AND object_type != \"relationship\" AND object_type != \"metadata\"";
         $query .= " UNION";
         $query .= " SELECT * FROM {$CONFIG->dbprefix}system_log";

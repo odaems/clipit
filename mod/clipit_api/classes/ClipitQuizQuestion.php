@@ -53,10 +53,11 @@ class ClipitQuizQuestion extends UBItem{
      * Loads a ClipitQuizQuestion instance from the system.
      *
      * @param int $id Id of the ClipitQuiz to load from the system.
+     *
      * @return ClipitQuizQuestion|bool Returns ClipitQuiz instance, or false if error.
      */
     protected function _load($id){
-        if(!$elgg_object = new ElggObject((int) $id)){
+        if(!$elgg_object = new ElggObject((int)$id)){
             return null;
         }
         $elgg_type = $elgg_object->type;
@@ -64,15 +65,15 @@ class ClipitQuizQuestion extends UBItem{
         if(($elgg_type != $this::TYPE) || ($elgg_subtype != $this::SUBTYPE)){
             return null;
         }
-        $this->id = (int) $elgg_object->guid;
-        $this->name = (string) $elgg_object->name;
-        $this->description = (string) $elgg_object->description;
-        $this->owner_id = (int) $elgg_object->owner_guid;
+        $this->id = (int)$elgg_object->guid;
+        $this->name = (string)$elgg_object->name;
+        $this->description = (string)$elgg_object->description;
+        $this->owner_id = (int)$elgg_object->owner_guid;
         $this->time_created = (int)$elgg_object->time_created;
-        $this->option_array = (array) $elgg_object->option_array;
-        $this->tag_array = (array) $elgg_object->tag_array;
-        $this->option_type = (string) $elgg_object->option_type;
-        $this->video = (int) $elgg_object->video;
+        $this->option_array = (array)$elgg_object->option_array;
+        $this->tag_array = (array)$elgg_object->tag_array;
+        $this->option_type = (string)$elgg_object->option_type;
+        $this->video = (int)$elgg_object->video;
         return $this;
     }
 
@@ -84,19 +85,19 @@ class ClipitQuizQuestion extends UBItem{
     function save(){
         if($this->id == -1){
             $elgg_object = new ElggObject();
-            $elgg_object->subtype = (string) $this::SUBTYPE;
+            $elgg_object->subtype = (string)$this::SUBTYPE;
         } elseif(!$elgg_object = new ElggObject($this->id)){
             return false;
         }
         $elgg_object->name = (string)$this->name;
         $elgg_object->description = (string)$this->description;
-        $elgg_object->option_array = (array) $this->option_array;
-        $elgg_object->tag_array = (array) $this->tag_array;
-        $elgg_object->option_type = (string) $this->option_type;
-        $elgg_object->video = (int) $this->video;
+        $elgg_object->option_array = (array)$this->option_array;
+        $elgg_object->tag_array = (array)$this->tag_array;
+        $elgg_object->option_type = (string)$this->option_type;
+        $elgg_object->video = (int)$this->video;
         $elgg_object->access_id = ACCESS_PUBLIC;
         $elgg_object->save();
-        $this->owner_id = (int) $elgg_object->owner_guid;
+        $this->owner_id = (int)$elgg_object->owner_guid;
         $this->time_created = (int)$elgg_object->time_created;
         return $this->id = $elgg_object->guid;
     }
@@ -105,6 +106,7 @@ class ClipitQuizQuestion extends UBItem{
      * Get all Quiz Results from a specified Quiz Question.
      *
      * @param int $id Id of Quiz Question to get Results form
+     *
      * @return array|bool Array of Quiz Results, or false if error
      */
     static function get_results($id){
@@ -116,8 +118,9 @@ class ClipitQuizQuestion extends UBItem{
     /**
      * Add a list of Stumbling Block Tags to a Quiz Question.
      *
-     * @param int $id Id of the Quiz Question
+     * @param int   $id Id of the Quiz Question
      * @param array $tag_array Array of Stumbling Block Tags to add to the Quiz Question
+     *
      * @return bool True if success, false if error
      */
     static function add_tags($id, $tag_array){
@@ -138,8 +141,9 @@ class ClipitQuizQuestion extends UBItem{
     /**
      * Remove a list of Stumbling Block Tags from a Quiz Question.
      *
-     * @param int $id Id of the Quiz Question
+     * @param int   $id Id of the Quiz Question
      * @param array $tag_array Array of Stumbling Block Tags to remove from the Quiz Question
+     *
      * @return bool True if success, false if error
      */
     static function remove_tags($id, $tag_array){
@@ -153,7 +157,7 @@ class ClipitQuizQuestion extends UBItem{
             $key = array_search($tag, $quiz_question->tag_array);
             if(isset($key)){
                 unset($quiz_question->tag_array[$key]);
-            }else{
+            } else{
                 return false;
             }
         }
@@ -167,6 +171,7 @@ class ClipitQuizQuestion extends UBItem{
      * Get all Stumbling Block Tags for a Quiz Question.
      *
      * @param int $id Id from the Quiz Question to get Stumbling Block Tags from
+     *
      * @return array|bool Returns an array of Stumbling Block Tag items, or false if error
      */
     static function get_tags($id){

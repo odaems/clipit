@@ -62,13 +62,14 @@ class UBItem{
      * Constructor
      *
      * @param int|null $id If $id is null, create new instance; else load instance with id = $id.
+     *
      * @throws APIException
      */
     function __construct($id = null){
         if($id){
             if(!$this->_load((int)$id)){
                 $called_class = get_called_class();
-                throw new APIException("ERROR: Id '".$id."' does not correspond to a ".$called_class." object.");
+                throw new APIException("ERROR: Id '" . $id . "' does not correspond to a " . $called_class . " object.");
             }
         }
     }
@@ -77,6 +78,7 @@ class UBItem{
      * Loads an instance from the system.
      *
      * @param int $id Id of the instance to load from the system.
+     *
      * @return UBItem|null Returns instance, or null if error.
      */
     protected function _load($id){
@@ -112,9 +114,9 @@ class UBItem{
         $elgg_object->description = (string)$this->description;
         $elgg_object->access_id = ACCESS_PUBLIC;
         $elgg_object->save();
-        $this->owner_id = (int) $elgg_object->owner_guid;
+        $this->owner_id = (int)$elgg_object->owner_guid;
         $this->time_created = (int)$elgg_object->time_created;
-        return $this->id = (int) $elgg_object->guid;
+        return $this->id = (int)$elgg_object->guid;
     }
 
     /**
@@ -133,6 +135,7 @@ class UBItem{
      * Gets the values for the properties specified in prop_array.
      *
      * @param array $prop_array Array of properties to get values from
+     *
      * @return array Array of prop=>value items
      */
     function getProperties($prop_array){
@@ -147,6 +150,7 @@ class UBItem{
      * Sets values into specified properties of the instance
      *
      * @param array $prop_value_array Array of prop=>value pairs to set into the instance
+     *
      * @return int Returns instance Id, or false if error
      * @throws InvalidParameterException
      */
@@ -177,8 +181,9 @@ class UBItem{
     /**
      * Get specified property values for an Item
      *
-     * @param int $id Id of instance to get properties from
+     * @param int   $id Id of instance to get properties from
      * @param array $prop_array Array of property names to get values from
+     *
      * @return array|bool Returns an array of property=>value pairs, or false if error
      */
     static function get_properties($id, $prop_array){
@@ -192,8 +197,9 @@ class UBItem{
     /**
      * Sets values to specified properties of an Item
      *
-     * @param int $id Id of Item to set property valyes
+     * @param int   $id Id of Item to set property valyes
      * @param array $prop_value_array Array of property=>value pairs to set into the Item
+     *
      * @return int|bool Returns Id of Item if correct, or false if error
      */
     static function set_properties($id, $prop_value_array){
@@ -211,6 +217,7 @@ class UBItem{
      * Create a new instance of this class, and assign values to its properties.
      *
      * @param array $prop_value_array Array of [property]=>value pairs to set into the new instance
+     *
      * @return int|bool Returns instance Id if correct, or false if error
      */
     static function create($prop_value_array){
@@ -223,6 +230,7 @@ class UBItem{
      * Delete Items given their Id.
      *
      * @param array $id_array List of Item Ids to delete
+     *
      * @return bool Returns true if correct, or false if error
      */
     static function delete_by_id($id_array){
@@ -242,6 +250,7 @@ class UBItem{
      * Get all Objects of this TYPE/SUBTYPE from the system.
      *
      * @param int $limit Number of results to show, default= 0 [no limit] (optional)
+     *
      * @return UBItem[] Returns an array of Objects
      */
     static function get_all($limit = 0){
@@ -251,7 +260,7 @@ class UBItem{
                 'type' => $called_class::TYPE,
                 'subtype' => $called_class::SUBTYPE,
                 'limit' => $limit));
-        if(!isset($elgg_object_array)){
+        if(!$elgg_object_array){
             return array();
         }
         foreach($elgg_object_array as $elgg_object){
@@ -267,6 +276,7 @@ class UBItem{
      * Get Objects with id contained in a given list.
      *
      * @param array $id_array Array of Object Ids
+     *
      * @return UBItem[] Returns an array of Objects
      */
     static function get_by_id($id_array){
@@ -285,18 +295,18 @@ class UBItem{
     static function get_events($limit = 10){
         $called_class = get_called_class();
         return get_system_log(
-            null,                   // $by_user = ""
-            null,                   // $event = ""
-            null,                   // $class = ""
-            $called_class::TYPE,    // $type = ""
+            null, // $by_user = ""
+            null, // $event = ""
+            null, // $class = ""
+            $called_class::TYPE, // $type = ""
             $called_class::SUBTYPE, // $subtype = ""
-            $limit,                 // $limit = 10
-            null,                   // $offset = 0
-            null,                   // $count = false
-            null,                   // $timebefore = 0
-            null,                   // $timeafter = 0
-            null,                   // $object_id = 0
-            null);                  // $ip_address = ""
+            $limit, // $limit = 10
+            null, // $offset = 0
+            null, // $count = false
+            null, // $timebefore = 0
+            null, // $timeafter = 0
+            null, // $object_id = 0
+            null); // $ip_address = ""
     }
 
     static function get_from_owner($owner_id, $limit = 10){
