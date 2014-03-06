@@ -27,38 +27,20 @@ class UBMessage extends UBItem{
     const SUBTYPE = "message";
 
     const REL_MESSAGE_DESTINATION = "message-destination";
-    const REL_MESSAGE_PARENT = "message-parent";
+    const REL_MESSAGE_FILE = "message-file";
 
     public $read = false;
+    public $read_by_user = array();
     public $destination = -1;
-    public $parent = -1;
+    public $file_array = array();
 
 
-    /**
-     * Loads an instance from the system.
-     *
-     * @param int $id Id of the instance to load from the system.
-     *
-     * @return UBItem|null Returns instance, or null if error.
-     */
-    protected function _load($id){
-        if(!($elgg_object = new ElggObject((int)$id))){
-            return null;
-        }
-        $elgg_type = $elgg_object->type;
-        $elgg_subtype = $elgg_object->getSubtype();
-        if(($elgg_type != $this::TYPE) || ($elgg_subtype != $this::SUBTYPE)){
-            return null;
-        }
-        $this->id = (int)$elgg_object->guid;
-        $this->description = (string)$elgg_object->description;
-        $this->name = (string)$elgg_object->name;
-        $this->owner_id = (int)$elgg_object->owner_guid;
-        $this->time_created = (int)$elgg_object->time_created;
+    protected function _load($elgg_object){
+        parent::_load($elgg_object);
         $this->read = (bool)$elgg_object->read;
-        $this->destination = $this->getDestination();
-        $this->parent = $this->getParent();
-        return $this;
+        $this->read_by_user = (array)$elgg_object->read_by_user;
+        $this->destination = static::get_destination($this->id);
+        $this->file_array = static::get_files($this->id);
     }
 
     /**
@@ -69,103 +51,74 @@ class UBMessage extends UBItem{
     function save(){
         if($this->id == -1){
             $elgg_object = new ElggObject();
-            $elgg_object->subtype = (string)$this::SUBTYPE;
+            $elgg_object->subtype = (string)static::SUBTYPE;
         } elseif(!$elgg_object = new ElggObject((int)$this->id)){
             return false;
         }
         $elgg_object->name = (string)$this->name;
         $elgg_object->description = (string)$this->description;
         $elgg_object->read = (bool)$this->read;
+        $elgg_object->read_by_user = (array)$this->read_by_user;
         $elgg_object->access_id = ACCESS_PUBLIC;
         $elgg_object->save();
         $this->id = (int)$elgg_object->guid;
         $this->owner_id = (int)$elgg_object->owner_guid;
         $this->time_created = (int)$elgg_object->time_created;
-        $this->setDestination();
-        $this->setParent();
+        static::set_destination($this->id, $this->destination);
+        static::add_files($this->id, $this->file_array);
         return $this->id;
     }
 
-    function getDestination(){
-        $temp_array = get_entity_relationships($this->id);
-        foreach($temp_array as $rel){
-            if($rel->relationship == self::REL_MESSAGE_DESTINATION){
-                $rel_array[] = $rel;
-            }
-        }
-        if(empty($rel_array) || count($rel_array) != 1){
-            return -1;
-        }
-        $rel = array_pop($rel_array);
-        return $rel->guid_two;
-    }
-
-    function setDestination($destination_id = -1){
-        if($rel_array = get_entity_relationships($this->id)){
+    function delete(){
+        if($rel_array = get_entity_relationships($this->id, true)){
             foreach($rel_array as $rel){
-                if($rel->relationship == self::REL_MESSAGE_DESTINATION){
-                    delete_relationship($rel->id);
+                switch($rel->relationship){
+                    case ClipitMessage::REL_MESSAGE_DESTINATION:
+                        $reply_array[] = $rel->guid_one;
+                        break;
                 }
             }
-        }
-        if($destination_id == -1){
-            $destination_id = $this->destination;
-        }
-        return add_entity_relationship($this->id, self::REL_MESSAGE_DESTINATION, $destination_id);
-    }
-
-    function getParent(){
-        $temp_array = get_entity_relationships($this->id);
-        foreach($temp_array as $rel){
-            if($rel->relationship == self::REL_MESSAGE_PARENT){
-                $rel_array[] = $rel;
+            if(isset($reply_array)){
+                ClipitMessage::delete_by_id($reply_array);
             }
         }
-        if(empty($rel_array) || count($rel_array) != 1){
-            return -1;
-        }
-        $rel = array_pop($rel_array);
-        return $rel->guid_two;
-    }
-
-    function setParent($parent_id = -1){
-        if($rel_array = get_entity_relationships($this->id)){
-            foreach($rel_array as $rel){
-                if($rel->relationship == self::REL_MESSAGE_PARENT){
-                    delete_relationship($rel->id);
-                }
-            }
-        }
-        if($parent_id == -1){
-            $parent_id = $this->parent;
-        }
-        return add_entity_relationship($this->id, self::REL_MESSAGE_PARENT, $parent_id);
+        return parent::delete();
     }
 
     /* STATIC FUNCTIONS */
 
     static function get_destination($id){
-        $called_class = get_called_class();
-        $message = new $called_class($id);
-        return $message->getDestination();
+        $item_array = UBCollection::get_items($id, static::REL_MESSAGE_DESTINATION);
+        if(empty($item_array)){
+            return -1;
+        }
+        return array_pop($item_array);
     }
 
     static function set_destination($id, $destination_id){
-        $called_class = get_called_class();
-        $message = new $called_class($id);
-        return $message->setDestination($destination_id);
+        if($destination_id != -1){
+            UBCollection::remove_all_items($id, static::REL_MESSAGE_DESTINATION);
+            return UBCollection::add_items($id, array($destination_id), static::REL_MESSAGE_DESTINATION);
+        }
     }
 
-    static function get_parent($id){
-        $called_class = get_called_class();
-        $message = new $called_class($id);
-        return $message->getParent();
+    static function get_files($id){
+        return UBCollection::get_items($id, static::REL_MESSAGE_FILE);
     }
 
-    static function set_parent($id, $destination_id){
-        $called_class = get_called_class();
-        $message = new $called_class($id);
-        return $message->setParent($destination_id);
+    static function add_files($id, $file_array){
+        return UBCollection::add_items($id, $file_array, static::REL_MESSAGE_FILE, true);
+    }
+
+    static function get_replies($id){
+        $temp_array = get_entity_relationships($id, true);
+        $reply_array = array();
+        foreach($temp_array as $rel){
+            if($rel->relationship == static::REL_MESSAGE_DESTINATION){
+                $reply_array[] = $rel->guid_one;
+            }
+        }
+        return $reply_array;
     }
 
     static function get_by_sender($sender_array){
@@ -199,7 +152,7 @@ class UBMessage extends UBItem{
             $rel_array = get_entity_relationships($destination_id, true);
             $temp_array = array();
             foreach($rel_array as $rel){
-                if($rel->relationship == self::REL_MESSAGE_DESTINATION){
+                if($rel->relationship == static::REL_MESSAGE_DESTINATION){
                     $temp_array[] = new $called_class((int)$rel->guid_one);
                 }
             }
@@ -212,17 +165,46 @@ class UBMessage extends UBItem{
         return $object_array;
     }
 
-    static function get_read_status($id){
+    static function get_read_status($id, $user_array = null){
         $called_class = get_called_class();
-        $prop_array[] = "read";
-        return $called_class::get_properties($id, $prop_array);
+        if(!$user_array){
+            $prop_array[] = "read";
+            return $called_class::get_properties($id, $prop_array);
+        }
+        $prop_array[] = "read_by_user";
+        $read_by_user = $called_class::get_properties($id, $prop_array);
+        $return_array = array();
+        foreach($user_array as $user_id){
+            if(array_search($user_id, $read_by_user)){
+                $return_array[$user_id] = true;
+            } else{
+                $return_array[$user_id] = false;
+            }
+        }
+        return $return_array;
     }
 
-    static function set_read_status($id, $read = true){
+    static function set_read_status($id, $read, $user_array = null){
         $called_class = get_called_class();
-        $prop_value_array["read"] = (bool)$read;
+        if(!$user_array){
+            $prop_value_array["read"] = (bool)$read;
+            return $called_class::set_properties($id, $prop_value_array);
+        }
+        $prop_array[] = "read_by_user";
+        $read_by_user = $called_class::get_properties($id, $prop_array);
+        foreach($user_array as $user_id){
+            if($read == true){
+                if(!array_search($user_id, $read_by_user)){
+                    array_push($read_by_user, $user_id);
+                }
+            } else if($read == false){
+                if($index = array_search($user_id, $read_by_user)){
+                    array_splice($read_by_user, $index, 1);
+                }
+            }
+        }
+        $prop_value_array["read_by_user"] = $read_by_user;
         return $called_class::set_properties($id, $prop_value_array);
     }
-
 
 }

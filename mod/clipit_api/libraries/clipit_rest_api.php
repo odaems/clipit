@@ -525,27 +525,6 @@ function expose_message_functions(){
         "Set the Destination Id of a Message",
         'POST', false, true);
     expose_function(
-        $api_suffix . "get_parent",
-        $class_suffix . "get_parent",
-        array(
-            "id" => array(
-                "type" => "int",
-                "required" => true)),
-        "Get Parent Id of a Message",
-        'GET', false, true);
-    expose_function(
-        $api_suffix . "set_parent",
-        $class_suffix . "set_parent",
-        array(
-            "id" => array(
-                "type" => "int",
-                "required" => true),
-            "parent_id" => array(
-                "type" => "int",
-                "required" => true)),
-        "Set the Parent Id of a Message",
-        'POST', false, true);
-    expose_function(
         $api_suffix . "get_by_sender",
         $class_suffix . "get_by_sender",
         array(
@@ -564,13 +543,25 @@ function expose_message_functions(){
         "Get instances by Destination",
         'GET', false, true);
     expose_function(
+        $api_suffix . "get_replies",
+        $class_suffix . "get_replies",
+        array(
+            "id" => array(
+                "type" => "int",
+                "required" => true)),
+        "Get Replies for a Message",
+        "GET", false, true);
+    expose_function(
         $api_suffix . "get_read_status",
         $class_suffix . "get_read_status",
         array(
             "id" => array(
                 "type" => "int",
-                "required" => true)),
-        "Get read message status",
+                "required" => true),
+            "user_array" => array(
+                "type" => "array",
+                "required" => false)),
+        "Get read message status. If user_array is specified, get read status by user.",
         'GET', false, true);
     expose_function(
         $api_suffix . "set_read_status",
@@ -581,8 +572,11 @@ function expose_message_functions(){
                 "required" => true),
             "read" => array(
                 "type" => "bool",
+                "required" => true),
+            "user_array" => array(
+                "type" => "array",
                 "required" => false)),
-        "Get read message status",
+        "Get read message status. If user_array is specified, set read status by user.",
         'POST', false, true);
 }
 
@@ -832,6 +826,15 @@ function expose_user_functions(){
                 "required" => true)),
         "Set the Role of a User to Student.",
         'POST', false, true);
+    expose_function(
+        $api_suffix . "get_last_login",
+        $class_suffix . "get_last_login",
+        array(
+            "id" => array(
+                "type" => "int",
+                "required" => true)),
+        "Get the last login time for a User.",
+        "GET", false, true);
 }
 
 function expose_video_functions(){

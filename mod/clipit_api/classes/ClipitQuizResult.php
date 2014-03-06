@@ -49,32 +49,12 @@ class ClipitQuizResult extends UBItem{
      */
     public $correct = false;
 
-    /**
-     * Loads a ClipitQuizResult instance from the system.
-     *
-     * @param int $id Id of Quiz Result to load
-     *
-     * @return ClipitQuizResult|null Returns Quiz Question instance, or null if error
-     */
-    protected function _load($id){
-        if(!$elgg_object = new ElggObject((int)$id)){
-            return null;
-        }
-        $elgg_type = $elgg_object->type;
-        $elgg_subtype = get_subtype_from_id($elgg_object->subtype);
-        if(($elgg_type != $this::TYPE) || ($elgg_subtype != $this::SUBTYPE)){
-            return null;
-        }
-        $this->id = (int)$elgg_object->guid;
-        $this->name = (string)$elgg_object->name;
-        $this->description = (string)$elgg_object->description;
-        $this->owner_id = (int)$elgg_object->owner_guid;
-        $this->time_created = (int)$elgg_object->time_created;
+    protected function _load($elgg_object){
+        parent::_load($elgg_object);
         $this->result_array = (array)$elgg_object->result_array;
         $this->correct = (bool)$elgg_object->correct;
         $this->quiz_question = (int)$elgg_object->quiz_question;
         $this->user = (int)$elgg_object->user;
-        return $this;
     }
 
     /**
@@ -85,7 +65,7 @@ class ClipitQuizResult extends UBItem{
     function save(){
         if($this->id == -1){
             $elgg_object = new ElggObject();
-            $elgg_object->subtype = (string)$this::SUBTYPE;
+            $elgg_object->subtype = (string)static::SUBTYPE;
         } elseif(!$elgg_object = new ElggObject($this->id)){
             return false;
         }
@@ -111,20 +91,15 @@ class ClipitQuizResult extends UBItem{
      * @throws InvalidParameterException
      */
     function setProperties($prop_value_array){
+        $new_prop_value_array = array();
         foreach($prop_value_array as $prop => $value){
-            if(!array_key_exists($prop, $this->list_properties())){
-                throw new InvalidParameterException("ERROR: One or more property names do not exist.");
-            }
-            if($prop == "id"){
-                throw new InvalidParameterException("ERROR: Cannot modify 'id' of instance.");
-            }
             if($prop == "correct"){
                 $this->setCorrect($value);
             } else{
-                $this->$prop = $value;
+                $new_prop_value_array[$prop] = $value;
             }
         }
-        return $this->save();
+        return parent::setProperties($new_prop_value_array);
     }
 
     /**

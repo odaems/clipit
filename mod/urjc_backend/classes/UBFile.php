@@ -41,21 +41,32 @@ class UBFile extends UBItem{
      */
     public $data = null;
 
+    /* Instance Functions */
     /**
-     * Loads an instance from the system.
+     * Constructor
      *
-     * @param int $id Id of the instance to load from the system.
+     * @param int $id If $id is null, create new instance; else load instance with id = $id.
      *
-     * @return UBFile|null Returns instance, or null if error.
+     * @throws APIException
      */
-    protected function _load($id){
-        if(!($elgg_file = new ElggFile((int)$id))){
-            return null;
+    function __construct($id = null){
+        if($id){
+            if(!($elgg_file = new ElggFile((int)$id))){
+                $called_class = get_called_class();
+                throw new APIException("ERROR 1: Id '" . $id . "' does not correspond to a " . $called_class . " object.");
+            }
+            $this->_load($elgg_file);
         }
+    }
+
+    /**
+     * @param ElggFile $elgg_file
+     */
+    protected function _load($elgg_file){
         $this->id = (int)$elgg_file->guid;
         $this->type = (string)$elgg_file->type;
         $this->subtype = $elgg_file->getSubtype();
-        $temp_name = explode($this::TIMESTAMP_DELIMITER, (string)$elgg_file->getFilename());
+        $temp_name = explode(static::TIMESTAMP_DELIMITER, (string)$elgg_file->getFilename());
         if(empty($temp_name[1])){
             // no timestamp found
             $this->name = $temp_name[0];
@@ -66,7 +77,6 @@ class UBFile extends UBItem{
         $this->owner_id = (int)$elgg_file->owner_guid;
         $this->time_created = (int)$elgg_file->time_created;
         $this->data = $elgg_file->grabFile();
-        return $this;
     }
 
     /**
@@ -77,12 +87,12 @@ class UBFile extends UBItem{
     function save(){
         if($this->id == -1){
             $elgg_file = new ElggFile();
-            $elgg_file->subtype = (string)$this::SUBTYPE;
+            $elgg_file->subtype = (string)static::SUBTYPE;
         } elseif(!$elgg_file = new ElggFile((int)$this->id)){
             return false;
         }
         $date_obj = new DateTime();
-        $elgg_file->setFilename((string)$date_obj->getTimestamp() . $this::TIMESTAMP_DELIMITER . (string)$this->name);
+        $elgg_file->setFilename((string)$date_obj->getTimestamp() . static::TIMESTAMP_DELIMITER . (string)$this->name);
         $elgg_file->description = (string)$this->description;
         $elgg_file->open("write");
         $elgg_file->write($this->data);

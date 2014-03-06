@@ -31,6 +31,11 @@ elgg_register_event_handler('init', 'system', 'urjc_backend_init');
  * Initialization method which loads objects, libraries, exposes the REST API, and registers test classes.
  */
 function urjc_backend_init(){
+    /*echo elgg_get_entities(
+        array(
+            'type' => "object",
+            'subtype' => "clipit_activity",
+            'limit' => 10));*/
     //loadFiles(elgg_get_plugins_path()."urjc_backend/libraries/");
     register_pam_handler('clipit_auth_usertoken');
 }

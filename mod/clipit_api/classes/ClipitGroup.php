@@ -27,7 +27,7 @@
  *
  * @package clipit
  */
-class ClipitGroup extends UBCollection{
+class ClipitGroup extends UBItem{
     /**
      * @const string Elgg entity subtype for this class
      */
@@ -36,11 +36,11 @@ class ClipitGroup extends UBCollection{
     const REL_GROUP_USER = "group-user";
     const REL_GROUP_FILE = "group-file";
 
-    function deleteRelatedItems(){
+    function delete(){
         $rel_array = get_entity_relationships((int)$this->id);
         foreach($rel_array as $rel){
             switch($rel->relationship){
-                case $this::REL_GROUP_FILE:
+                case ClipitGroup::REL_GROUP_FILE:
                     $file_array[] = $rel->guid_two;
                     break;
             }
@@ -48,6 +48,7 @@ class ClipitGroup extends UBCollection{
         if(isset($file_array)){
             ClipitFile::delete_by_id($file_array);
         }
+        parent::delete();
     }
 
     static function get_from_user_activity($user_id, $activity_id){
@@ -89,7 +90,7 @@ class ClipitGroup extends UBCollection{
      * @return bool Returns true if added correctly, or false if error.
      */
     static function add_users($id, $user_array){
-        return ClipitGroup::add_items($id, $user_array, ClipitGroup::REL_GROUP_USER);
+        return UBCollection::add_items($id, $user_array, ClipitGroup::REL_GROUP_USER);
     }
 
     /**
@@ -101,7 +102,7 @@ class ClipitGroup extends UBCollection{
      * @return bool Returns true if removed correctly, or false if error.
      */
     static function remove_users($id, $user_array){
-        return ClipitGroup::remove_items($id, $user_array, ClipitGroup::REL_GROUP_USER);
+        return UBCollection::remove_items($id, $user_array, ClipitGroup::REL_GROUP_USER);
     }
 
     /**
@@ -112,7 +113,7 @@ class ClipitGroup extends UBCollection{
      * @return bool Returns array of User Ids, or false if error.
      */
     static function get_users($id){
-        return ClipitGroup::get_items($id, ClipitGroup::REL_GROUP_USER);
+        return UBCollection::get_items($id, ClipitGroup::REL_GROUP_USER);
     }
 
     /**
@@ -124,7 +125,7 @@ class ClipitGroup extends UBCollection{
      * @return bool Returns true if added correctly, or false if error.
      */
     static function add_files($id, $file_array){
-        return ClipitGroup::add_items($id, $file_array, ClipitGroup::REL_GROUP_FILE);
+        return UBCollection::add_items($id, $file_array, ClipitGroup::REL_GROUP_FILE);
     }
 
     /**
@@ -136,7 +137,7 @@ class ClipitGroup extends UBCollection{
      * @return bool Returns true if removed correctly, or false if error.
      */
     static function remove_files($id, $file_array){
-        return ClipitGroup::remove_items($id, $file_array, ClipitGroup::REL_GROUP_FILE);
+        return UBCollection::remove_items($id, $file_array, ClipitGroup::REL_GROUP_FILE);
     }
 
     /**
@@ -147,6 +148,6 @@ class ClipitGroup extends UBCollection{
      * @return bool Returns array of User Ids, or false if error.
      */
     static function get_files($id){
-        return ClipitGroup::get_items($id, ClipitGroup::REL_GROUP_FILE);
+        return UBCollection::get_items($id, ClipitGroup::REL_GROUP_FILE);
     }
 }

@@ -61,41 +61,31 @@ class UBItem{
     /**
      * Constructor
      *
-     * @param int|null $id If $id is null, create new instance; else load instance with id = $id.
+     * @param int $id If $id is null, create new instance; else load instance with id = $id.
      *
      * @throws APIException
      */
-    function __construct($id = null){
-        if($id){
-            if(!$this->_load((int)$id)){
-                $called_class = get_called_class();
-                throw new APIException("ERROR: Id '" . $id . "' does not correspond to a " . $called_class . " object.");
+    function __construct($id = -1){
+        if($id != -1){
+            $called_class = get_called_class();
+            if(!($elgg_object = new ElggObject($id))){
+                throw new APIException("ERROR 1: Id '" . $id . "' does not correspond to a " . $called_class . " object.");
             }
+            $elgg_type = $elgg_object->type;
+            $elgg_subtype = $elgg_object->getSubtype();
+            if(($elgg_type != $called_class::TYPE) || ($elgg_subtype != $called_class::SUBTYPE)){
+                throw new APIException("ERROR 2: Id '" . $id . "' does not correspond to a " . $called_class . " object.");
+            }
+            $this->_load($elgg_object);
         }
     }
 
-    /**
-     * Loads an instance from the system.
-     *
-     * @param int $id Id of the instance to load from the system.
-     *
-     * @return UBItem|null Returns instance, or null if error.
-     */
-    protected function _load($id){
-        if(!($elgg_object = new ElggObject((int)$id))){
-            return null;
-        }
-        $elgg_type = $elgg_object->type;
-        $elgg_subtype = $elgg_object->getSubtype();
-        if(($elgg_type != $this::TYPE) || ($elgg_subtype != $this::SUBTYPE)){
-            return null;
-        }
+    protected function _load($elgg_object){
         $this->id = (int)$elgg_object->guid;
         $this->description = (string)$elgg_object->description;
         $this->name = (string)$elgg_object->name;
         $this->owner_id = (int)$elgg_object->owner_guid;
         $this->time_created = (int)$elgg_object->time_created;
-        return $this;
     }
 
     /**
@@ -106,7 +96,7 @@ class UBItem{
     function save(){
         if($this->id == -1){
             $elgg_object = new ElggObject();
-            $elgg_object->subtype = (string)$this::SUBTYPE;
+            $elgg_object->subtype = (string)static::SUBTYPE;
         } elseif(!$elgg_object = new ElggObject((int)$this->id)){
             return false;
         }
@@ -210,7 +200,8 @@ class UBItem{
         if(!$item = new $called_class($id)){
             return false;
         }
-        return $item->setProperties($prop_value_array);
+        $item->setProperties($prop_value_array);
+        return $item->save();
     }
 
     /**

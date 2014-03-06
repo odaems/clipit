@@ -41,43 +41,28 @@ class ClipitComment extends UBItem{
      * @var array Ratings in the form: rating_array["rating_name"]=>"rating_value"
      */
     public $rating_array = array();
-
-
     /**
-     * Loads a ClipitComment instance from the system.
-     *
-     * @param int $id Id of Comment to load
-     *
-     * @return ClipitComment|null Returns Comment instance, or null if error
+     * @var array Comments in the form: comment_array["comment_name"]=>"comment"
      */
-    protected function _load($id){
-        if(!$elgg_object = new ElggObject((int)$id)){
-            return null;
-        }
-        $elgg_type = $elgg_object->type;
-        $elgg_subtype = get_subtype_from_id($elgg_object->subtype);
-        if(($elgg_type != $this::TYPE) || ($elgg_subtype != $this::SUBTYPE)){
-            return null;
-        }
-        $this->id = (int)$elgg_object->guid;
-        $this->name = (string)$elgg_object->name;
-        $this->description = (string)$elgg_object->description;
-        $this->owner_id = (int)$elgg_object->owner_guid;
-        $this->time_created = (int)$elgg_object->time_created;
+    public $comment_array = array();
+
+
+    protected function _load($elgg_object){
+        parent::_load($elgg_object);
         $this->overall = (bool)$elgg_object->overall;
         $this->rating_array = (array)$elgg_object->rating_array;
-        return $this;
+        $this->comment_array = (array)$elgg_object->comment_array;
     }
 
     /**
-     * Saves this instance to the system
+     * Saves this instance to the system.
      *
      * @return bool|int Returns the Id of the saved instance, or false if error
      */
     function save(){
         if($this->id == -1){
             $elgg_object = new ElggObject();
-            $elgg_object->subtype = (string)$this::SUBTYPE;
+            $elgg_object->subtype = (string)static::SUBTYPE;
         } elseif(!$elgg_object = new ElggObject($this->id)){
             return false;
         }
@@ -85,6 +70,7 @@ class ClipitComment extends UBItem{
         $elgg_object->description = (string)$this->description;
         $elgg_object->overall = (bool)$this->overall;
         $elgg_object->rating_array = (array)$this->rating_array;
+        $elgg_object->comment_array = (array)$this->comment_array;
         $elgg_object->access_id = ACCESS_PUBLIC;
         $elgg_object->save();
         $this->owner_id = (int)$elgg_object->owner_guid;

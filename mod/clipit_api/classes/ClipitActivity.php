@@ -27,7 +27,7 @@
  *
  * @package clipit
  */
-class ClipitActivity extends UBCollection{
+class ClipitActivity extends UBItem{
     /**
      * @const string Elgg entity subtype for this class
      */
@@ -45,31 +45,21 @@ class ClipitActivity extends UBCollection{
 
     public $color = "";
     public $status = "";
+    public $called_users_array = array();
+    public $group_array = array();
+    public $task_array = array();
+    public $video_array = array();
+    public $file_array = array();
 
-    /**
-     * Loads an instance from the system.
-     *
-     * @param int $id Id of the instance to load from the system.
-     *
-     * @return UBItem|bool Returns instance, or false if error.
-     */
-    protected function _load($id){
-        if(!($elgg_object = new ElggObject((int)$id))){
-            return null;
-        }
-        $elgg_type = $elgg_object->type;
-        $elgg_subtype = get_subtype_from_id($elgg_object->subtype);
-        if(($elgg_type != $this::TYPE) || ($elgg_subtype != $this::SUBTYPE)){
-            return null;
-        }
-        $this->id = (int)$elgg_object->guid;
-        $this->name = (string)$elgg_object->name;
-        $this->description = (string)$elgg_object->description;
-        $this->owner_id = (int)$elgg_object->owner_guid;
-        $this->time_created = (int)$elgg_object->time_created;
+    protected function _load($elgg_object){
+        parent::_load($elgg_object);
         $this->color = (string)$elgg_object->color;
         $this->status = (string)$elgg_object->status;
-        return $this;
+        $this->called_users_array = static::get_called_users($this->id, $this->called_users_array);
+        $this->group_array = static::get_groups($this->id);
+        $this->task_array = static::get_tasks($this->id);
+        $this->video_array = static::get_videos($this->id);
+        $this->file_array = static::get_files($this->id);
     }
 
     /**
@@ -80,7 +70,7 @@ class ClipitActivity extends UBCollection{
     function save(){
         if($this->id == -1){
             $elgg_object = new ElggObject();
-            $elgg_object->subtype = (string)$this::SUBTYPE;
+            $elgg_object->subtype = (string)static::SUBTYPE;
         } elseif(!$elgg_object = new ElggObject((int)$this->id)){
             return false;
         }
@@ -90,17 +80,26 @@ class ClipitActivity extends UBCollection{
         $elgg_object->status = (string)$this->status;
         $elgg_object->access_id = ACCESS_PUBLIC;
         $elgg_object->save();
+        $this->id = $elgg_object->guid;
         $this->owner_id = (int)$elgg_object->owner_guid;
         $this->time_created = (int)$elgg_object->time_created;
-        return $this->id = $elgg_object->guid;
+        static::add_called_users($this->id, $this->called_users_array);
+        static::add_groups($this->id, $this->group_array);
+        static::add_tasks($this->id, $this->task_array);
+        static::add_videos($this->id, $this->video_array);
+        static::add_files($this->id, $this->file_array);
+        return $this->id;
     }
 
-    function deleteRelatedItems(){
+    function delete(){
         $rel_array = get_entity_relationships((int)$this->id);
         foreach($rel_array as $rel){
             switch($rel->relationship){
                 case ClipitActivity::REL_ACTIVITY_GROUP:
                     $group_array[] = $rel->guid_two;
+                    break;
+                case ClipitActivity::REL_ACTIVITY_TASK:
+                    $task_array[] = $rel->guid_two;
                     break;
                 case ClipitActivity::REL_ACTIVITY_VIDEO:
                     $video_array[] = $rel->guid_two;
@@ -113,13 +112,19 @@ class ClipitActivity extends UBCollection{
         if(isset($group_array)){
             ClipitGroup::delete_by_id($group_array);
         }
+        if(isset($task_array)){
+            ClipitTask::delete_by_id($task_array);
+        }
         if(isset($video_array)){
             ClipitVideo::delete_by_id($video_array);
         }
         if(isset($file_array)){
             ClipitFile::delete_by_id($file_array);
         }
+        parent::delete();
     }
+
+    /** STATIC FUNCTIONS */
 
     static function get_status($id){
         $prop_array[] = "status";
@@ -156,66 +161,66 @@ class ClipitActivity extends UBCollection{
 
     // USERS
     static function add_called_users($id, $user_array){
-        return ClipitActivity::add_items($id, $user_array, ClipitActivity::REL_ACTIVITY_USER);
+        return UBCollection::add_items($id, $user_array, ClipitActivity::REL_ACTIVITY_USER);
     }
 
     static function remove_called_users($id, $user_array){
-        return ClipitActivity::remove_items($id, $user_array, ClipitActivity::REL_ACTIVITY_USER);
+        return UBCollection::remove_items($id, $user_array, ClipitActivity::REL_ACTIVITY_USER);
     }
 
     static function get_called_users($id){
-        return ClipitActivity::get_items($id, ClipitActivity::REL_ACTIVITY_USER);
+        return UBCollection::get_items($id, ClipitActivity::REL_ACTIVITY_USER);
     }
 
     // GROUPS
     static function add_groups($id, $group_array){
-        return ClipitActivity::add_items($id, $group_array, ClipitActivity::REL_ACTIVITY_GROUP, true);
+        return UBCollection::add_items($id, $group_array, ClipitActivity::REL_ACTIVITY_GROUP, true);
     }
 
     static function remove_groups($id, $group_array){
-        return ClipitActivity::remove_items($id, $group_array, ClipitActivity::REL_ACTIVITY_GROUP);
+        return UBCollection::remove_items($id, $group_array, ClipitActivity::REL_ACTIVITY_GROUP);
     }
 
     static function get_groups($id){
-        return ClipitActivity::get_items($id, ClipitActivity::REL_ACTIVITY_GROUP);
+        return UBCollection::get_items($id, ClipitActivity::REL_ACTIVITY_GROUP);
     }
 
     // TASKS
     static function add_tasks($id, $task_array){
-        return ClipitActivity::add_items($id, $task_array, ClipitActivity::REL_ACTIVITY_TASK, true);
+        return UBCollection::add_items($id, $task_array, ClipitActivity::REL_ACTIVITY_TASK, true);
     }
 
     static function remove_tasks($id, $task_array){
-        return ClipitActivity::remove_items($id, $task_array, ClipitActivity::REL_ACTIVITY_TASK);
+        return UBCollection::remove_items($id, $task_array, ClipitActivity::REL_ACTIVITY_TASK);
     }
 
     static function get_tasks($id){
-        return ClipitActivity::get_items($id, ClipitActivity::REL_ACTIVITY_TASK);
+        return UBCollection::get_items($id, ClipitActivity::REL_ACTIVITY_TASK);
     }
 
     // VIDEOS
     static function add_videos($id, $video_array){
-        return ClipitActivity::add_items($id, $video_array, ClipitActivity::REL_ACTIVITY_VIDEO);
+        return UBCollection::add_items($id, $video_array, ClipitActivity::REL_ACTIVITY_VIDEO);
     }
 
     static function remove_videos($id, $video_array){
-        return ClipitActivity::remove_items($id, $video_array, ClipitActivity::REL_ACTIVITY_VIDEO);
+        return UBCollection::remove_items($id, $video_array, ClipitActivity::REL_ACTIVITY_VIDEO);
     }
 
     static function get_videos($id){
-        return ClipitActivity::get_items($id, ClipitActivity::REL_ACTIVITY_VIDEO);
+        return UBCollection::get_items($id, ClipitActivity::REL_ACTIVITY_VIDEO);
     }
 
     // FILES
     static function add_files($id, $file_array){
-        return ClipitActivity::add_items($id, $file_array, ClipitActivity::REL_ACTIVITY_FILE);
+        return UBCollection::add_items($id, $file_array, ClipitActivity::REL_ACTIVITY_FILE);
     }
 
     static function remove_files($id, $file_array){
-        return ClipitActivity::remove_items($id, $file_array, ClipitActivity::REL_ACTIVITY_FILE);
+        return UBCollection::remove_items($id, $file_array, ClipitActivity::REL_ACTIVITY_FILE);
     }
 
     static function get_files($id){
-        return ClipitActivity::get_items($id, ClipitActivity::REL_ACTIVITY_FILE);
+        return UBCollection::get_items($id, ClipitActivity::REL_ACTIVITY_FILE);
     }
 }

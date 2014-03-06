@@ -49,32 +49,13 @@ class ClipitQuizQuestion extends UBItem{
      */
     public $video = -1;
 
-    /**
-     * Loads a ClipitQuizQuestion instance from the system.
-     *
-     * @param int $id Id of the ClipitQuiz to load from the system.
-     *
-     * @return ClipitQuizQuestion|bool Returns ClipitQuiz instance, or false if error.
-     */
-    protected function _load($id){
-        if(!$elgg_object = new ElggObject((int)$id)){
-            return null;
-        }
-        $elgg_type = $elgg_object->type;
-        $elgg_subtype = get_subtype_from_id($elgg_object->subtype);
-        if(($elgg_type != $this::TYPE) || ($elgg_subtype != $this::SUBTYPE)){
-            return null;
-        }
-        $this->id = (int)$elgg_object->guid;
-        $this->name = (string)$elgg_object->name;
-        $this->description = (string)$elgg_object->description;
-        $this->owner_id = (int)$elgg_object->owner_guid;
-        $this->time_created = (int)$elgg_object->time_created;
+
+    protected function _load($elgg_object){
+        parent::_load($elgg_object);
         $this->option_array = (array)$elgg_object->option_array;
         $this->tag_array = (array)$elgg_object->tag_array;
         $this->option_type = (string)$elgg_object->option_type;
         $this->video = (int)$elgg_object->video;
-        return $this;
     }
 
     /**
@@ -85,7 +66,7 @@ class ClipitQuizQuestion extends UBItem{
     function save(){
         if($this->id == -1){
             $elgg_object = new ElggObject();
-            $elgg_object->subtype = (string)$this::SUBTYPE;
+            $elgg_object->subtype = (string)static::SUBTYPE;
         } elseif(!$elgg_object = new ElggObject($this->id)){
             return false;
         }

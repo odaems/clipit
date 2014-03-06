@@ -35,7 +35,7 @@ class UBUser extends UBItem{
      */
     const TYPE = "user";
     const SUBTYPE = "";
-    const DEFAULT_ROLE = "user";
+
     /**
      * @var string Login name used to authenticate
      * @var string Login password (md5 of password + password_hash)
@@ -46,34 +46,40 @@ class UBUser extends UBItem{
     public $login = "";
     public $password = "";
     public $email = "";
-    public $role = self::DEFAULT_ROLE;
+    public $role = "user";
     public $language = "";
     public $last_login = -1;
     private $password_hash = "";
 
+    function __construct($id = -1){
+        if($id != -1){
+            if(!($elgg_user = new ElggUser((int)$id))){
+                $called_class = get_called_class();
+                throw new APIException("ERROR: Id '" . $id . "' does not correspond to a " . $called_class . " object.");
+            }
+            $this->_load($elgg_user);
+        }
+    }
+
     /**
      * Loads a User instance from the system.
      *
-     * @param int $id Id of the User to load from the system.
+     * @param ElggUser $elgg_user User to load from the system.
      *
      * @return UBUser|bool Returns User instance, or false if error.
      */
-    protected function _load($id){
-        if(!$elgg_user = new ElggUser((int)$id)){
-            return null;
-        }
-        $this->description = (string)$elgg_user->description;
-        $this->email = (string)$elgg_user->email;
-        $this->name = (string)$elgg_user->name;
+    protected function _load($elgg_user){
         $this->id = (int)$elgg_user->guid;
+        $this->name = (string)$elgg_user->name;
+        $this->description = (string)$elgg_user->description;
+        $this->time_created = (int)$elgg_user->time_created;
+        $this->email = (string)$elgg_user->email;
         $this->login = (string)$elgg_user->username;
         $this->password = (string)$elgg_user->password;
         $this->password_hash = (string)$elgg_user->salt;
         $this->role = (string)$elgg_user->role;
         $this->language = (string)$elgg_user->language;
         $this->last_login = (int)$elgg_user->last_login;
-        $this->time_created = (int)$elgg_user->time_created;
-        return true;
     }
 
     /**
@@ -84,7 +90,7 @@ class UBUser extends UBItem{
     function save(){
         if($this->id == -1){
             $elgg_user = new ElggUser();
-            $elgg_user->subtype = (string)$this::SUBTYPE;
+            $elgg_user->subtype = (string)static::SUBTYPE;
         } elseif(!$elgg_user = new ElggUser($this->id)){
             return false;
         }
@@ -117,20 +123,15 @@ class UBUser extends UBItem{
      * @throws InvalidParameterException
      */
     function setProperties($prop_value_array){
+        $new_prop_value_array = array();
         foreach($prop_value_array as $prop => $value){
-            if(!array_key_exists($prop, $this->list_properties())){
-                throw new InvalidParameterException("ERROR: One or more property names do not exist.");
-            }
-            if($prop == "id"){
-                throw new InvalidParameterException("ERROR: Cannot modify 'id' of instance.");
-            }
             if($prop == "password"){
                 $this->setPassword($value);
             } else{
-                $this->$prop = $value;
+                $new_prop_value_array[$prop] = $value;
             }
         }
-        return $this->save();
+        return parent::setProperties($new_prop_value_array);
     }
 
     /**
@@ -163,7 +164,7 @@ class UBUser extends UBItem{
             return false;
         }
         $elgg_user = get_user_by_username($login);
-        login($elgg_user, $persistent);
+        return login($elgg_user, $persistent);
     }
 
     /**

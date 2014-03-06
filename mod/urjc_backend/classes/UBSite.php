@@ -50,7 +50,14 @@ class UBSite{
             $object['description'] = (string)$elgg_object->description;
             return $object;
         } catch(Exception $e){
-            throw new APIException("ERROR: Unidentified ID provided.");
+            try{
+                $elgg_user = new ElggUser((int)$id);
+                $object['type'] = (string)$elgg_user->type;
+                $object['subtype'] = (string)get_subtype_from_id($elgg_user->subtype);
+                return $object;
+            } catch(Exception $e){
+                throw new APIException("ERROR: Unidentified ID provided.");
+            }
         }
     }
 } 
